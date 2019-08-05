@@ -1,0 +1,170 @@
+﻿* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+body, html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent
+}
+
+body {
+    /*font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;*/
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif;
+    font-size: 12px;
+}
+.page, body {
+    background-color: #ededed;
+}
+.avatar{width:45px;height:45px;border-radius:100%;margin-right:20px}
+.avatar img{display:block;width:100%;height:100%;border-radius:100%}
+.list_icon{display:block;margin-right:15px;background:url(/images/icon_m_default.png) left top no-repeat;background-size:250px 500px;width:20px;height:20px}
+.list_icon.icon_1{background-position:-150px -300px}
+.list_icon.icon_2{background-position:-200px -300px}
+.list_icon.icon_3{background-position:-225px -300px}
+.list_icon.icon_4{background-position:-200px -325px}
+.list_icon.icon_5{background-position:-225px -325px}
+.list_icon.icon_6{background-position:0 -325px}
+.list_icon.icon_7{background-position:-25px -325px}
+.list_icon.icon_8{background-position:-175px -300px}
+.list_icon.icon_9{background-position:-50px -325px}
+.list_icon.icon_10{background-position:-75px -325px}
+.list_icon.icon_11{background-position:-100px -325px}
+.list_icon.icon_12{background-position:-125px -325px;width:16px;height:19px}
+tags{
+    
+}
+.tags span {
+    display: inline-block;
+    border: 1px solid #ccc;
+    font-size: 12px;
+    color: #999;
+    padding: 0 10px;
+    height: 18px;
+    line-height: 18px;
+    background: #fafafa;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.course_item .name {
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+.course_item .schedule {
+    color: #999;
+    font-size: 12px;
+    font-weight: 400;
+    padding-right: 10px;
+    margin-bottom: 5px;
+}
+.course_status{position:absolute;width:53px;height:30px;top:50%;right:15px;margin-top:-15px;text-align:center;line-height:30px;border-radius:3px;border-width:1px;border-style:solid}
+.course_status::before{font-size:14px;font-style:normal}
+.course_status.available{background-color:#fff}
+.course_status.available::before{content:"约"}
+.course_status.available.multi::before{content:'拼课'}
+.course_status.full{border-color:#999;background-color:#fff}
+.course_status.full::before{content:"满";color:#999}
+.course_status.stop{border-color:#999;background-color:#fff}
+.course_status.stop::before{content:"止";color:#999}
+.course_status.hot{border-color:#3a3c48;background-color:#3a3c48;}
+.course_status.hot::before{content:"爆";color:#fff}
+.course_status.queue::before{content:"候补"}
+.status_warning{display:block;height:14px;background:#999;color:#fff;font-size:9px;line-height:14px;padding:3px 5px;margin-left:8px;position:relative;border-radius:0 2px 2px 0;margin-top: -40px;}
+.status_warning::before{display:block;content:"";width:0;height:0;position:absolute;top:0;left:-8px;border-top:10px solid transparent;border-right:8px solid #999;border-bottom:10px solid transparent}
+.status_warning::after{display:block;content:"";width:4px;height:4px;background:#fff;position:absolute;top:8px;left:-2px;border-radius:50%}
+.date_show{height:50px;display:-webkit-box;display:-moz-flex;display:-o-flex;display:-ms-flex;display:box;border-bottom:1px solid #ddd}
+.date_show .date_list{-webkit-box-flex:1;-moz-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;list-style: none;}
+.date_show .date_list li{width:25%;float:left;position:relative}
+.date_show .date_list li a{display:block;height:50px;padding-top:11px;font-size:12px;color:#000;box-sizing:border-box;line-height:14px;text-align:center;margin:0 auto}
+.date_show .date_list li a.current{border-bottom-width:2px;border-bottom-style:solid}
+.date_show .date_list li:before{content:'';display:block;width:0;height:20px;border-right:1px solid #ddd;position:absolute;right:0;top:50%;margin-top:-10px}
+.date_show .date_calendar{display:block;width:40px;height:50px;line-height:50px;text-align:center;color:#86878b;font-size:22px}
+
+.weui-tab__bd-item .content {
+    padding-bottom: 53px;
+}
+.course_info {
+    background: -webkit-linear-gradient(left,#3a3c48 0,#3a3c48 100%);
+    color: white;
+    padding: 15px;
+    display: -webkit-box;
+    -webkit-box-align: center;
+}
+    .course_info .thumb {
+        display: block;
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        margin-right: 20px;
+    }
+.course_info .thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+}
+.course_desci, .schedule_info {
+    padding-bottom: 40px;
+}
+.course_desci .info_title,.schedule_title{height:35px;font-size:14px;color:grey;text-align:center;line-height:35px;font-weight:700}
+.course_desci .info_title::after {
+    content: " ";
+    display: inline-block;
+    height: 6px;
+    width: 6px;
+    border-width: 0 2px 2px 0;
+    border-color: #c8c8cd;
+    border-style: solid;
+    -webkit-transform: matrix(.71,.71,-.71,.71,0,0);
+    transform: matrix(.71,.71,-.71,.71,0,0);
+    position: relative;
+    top: -2px;
+    left: 4px;
+}
+.course_desci .info_detail{display:none;padding:10px 15px;background:#f5f5f5;font-size:12px;color:grey}
+.weui-footer_fixed-bottom {
+    background-color: white;
+    bottom:0;
+    padding:5px;
+    display:flex;
+}
+.weui-footer_fixed-bottom * {
+    align-self:center;
+}
+.quote-yellow {
+    padding: 5px 20px;
+    line-height: 22px;
+    border-radius: 10px;
+    background-color: #fff29a;
+    border: 1px solid #dea80d;
+}
+.schedule_info .aday {
+    width: 80px;
+    margin: 0 auto;
+    padding: 20px 8px;
+    border: 1px solid;
+    border-radius: 10px;
+}
+.schedule_info .weui-grid__label {
+    padding:5px 0;
+}
+.schedule_info .aday.current {
+    border: 1px solid green;
+    background-color: #c9e8c6;
+}
+.schedule_info .aday.full {
+    border: 1px solid #ccc;
+}
+.weui-grid-2 {
+    position: relative;
+    float: left;
+    padding: 15px 10px;
+    width: 33.33333333%;
+    box-sizing: border-box
+}

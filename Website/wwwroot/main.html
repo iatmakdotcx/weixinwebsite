@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>主页</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="stylesheet" href="../lib/weui.min.css">
+    <link rel="stylesheet" href="../css/jquery-weui.css">
+    <link rel="stylesheet" href="css/msite.css">
+</head>
+
+<body ontouchstart>
+    <div class="weui-tab">
+        <div class="weui-tab__bd">
+            <div id="tab1" class="weui-tab__bd-item">
+                <h1>页面一</h1>
+            </div>
+            <div id="tab2" class="weui-tab__bd-item">
+                <h1>页面二</h1>
+            </div>
+            <div id="tab3" class="weui-tab__bd-item">
+                <h1>页面三</h1>
+            </div>
+            <div id="tab4" class="weui-tab__bd-item weui-tab__bd-item--active">
+                <div class="weui-cells">
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__hd avatar"><img src="images/avatar.jpg"></div>
+                        <div class="weui-cell__bd">
+                            <p class="name">手机用户0272</p>
+                            <p class="tel">电话：15181670272</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </a>
+                </div>
+
+                <div class="weui-cells">
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <i class="list_icon icon_1"></i>
+                        <div class="weui-cell__bd">
+                            <p>我的预约</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </a>
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <i class="list_icon icon_2"></i>
+                        <div class="weui-cell__bd">
+                            <p>我的会员卡</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </a>
+                </div>
+                <div class="weui-cells">
+                    <div class="weui-cell">
+                        <i class="list_icon icon_1"></i>
+                        <div class="weui-cell__bd">
+                            <p>我的预约</p>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <i class="list_icon icon_2"></i>
+                        <div class="weui-cell__bd">
+                            <p>我的会员卡</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab5" class="weui-tab__bd-item">
+                <div>url</div>
+            </div>
+        </div>
+
+        <div class="weui-tabbar">
+            <a href="#tab1" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <img src="./images/icon_nav_button.png" alt="">
+                </div>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="#tab2" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <img src="./images/icon_nav_msg.png" alt="">
+                </div>
+                <p class="weui-tabbar__label">妹夫预约</p>
+            </a>
+            <a href="#tab3" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <img src="./images/icon_nav_article.png" alt="">
+                </div>
+                <p class="weui-tabbar__label">瑜伽预约</p>
+            </a>
+            <a href="#tab4" class="weui-tabbar__item weui-bar__item--on">
+                <div class="weui-tabbar__icon">
+                    <img src="./images/icon_nav_cell.png" alt="">
+                </div>
+                <p class="weui-tabbar__label">我</p>
+            </a>
+            <a href="#tab5" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <img src="./images/icon_nav_cell.png" alt="">
+                </div>
+                <p class="weui-tabbar__label">测试</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="../lib/jquery-2.1.4.js"></script>
+    <script src="../lib/fastclick.js"></script>
+    <script>
+        $(function () {
+            FastClick.attach(document.body);
+            if (location.hash) {
+                $("a[href=" + location.hash + "]").click();
+            }
+        });
+    </script>
+    <script src="../js/jquery-weui.js"></script>
+</body>
+</html>
