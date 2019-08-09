@@ -1,0 +1,58 @@
+﻿@model App.Data.Model.UserInfo;
+@{
+    ViewData["Title"] = "用户资料";
+    Layout = null;
+}
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="/profile">
+        <div class="weui-cell__hd avatar"><img src="@Model.avatar"></div>
+        <div class="weui-cell__bd">
+            <p class="name">@Model.nickname</p>
+            <p class="tel">Tel:@Model.tel</p>
+        </div>
+        <div class="weui-cell__ft">余额:@Model.balance</div>
+    </a>
+</div>
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="javascript:;">
+        <i class="list_icon icon_1"></i>
+        <div class="weui-cell__bd">
+            <p>我的预约</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" href="javascript:;">
+        <i class="list_icon icon_2"></i>
+        <div class="weui-cell__bd">
+            <p>我的会员卡</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" href="javascript:;">
+        <i class="list_icon icon_6"></i>
+        <div class="weui-cell__bd">
+            <p>优惠券</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <i class="list_icon icon_1"></i>
+        <div class="weui-cell__bd">
+            <p>我的预约</p>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <i class="list_icon icon_2"></i>
+        <div class="weui-cell__bd">
+            <p>我的会员卡</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+    });
+</script>

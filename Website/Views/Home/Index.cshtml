@@ -1,8 +1,268 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model MainViewModel;
+@{
+    ViewData["Title"] = "主页";
 }
+<div class="weui-tab">
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item">
+            <h1>页面一</h1>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <div class="date_show">
+                <ul class="date_list">
+                    <li>
+                        <a href="javascript:void(0);" data="2019-08-04" class="current">08-04<br>周日</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" data="2019-08-05">08-05<br>周一</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" data="2019-08-06">08-06<br>周二</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" data="2019-08-07">08-07<br>周三</a>
+                    </li>
+                </ul>
+                <a href="javascript:void(0);" class="date_calendar m_icon"></a>
+            </div>
+            <div class="weui-cells content">
+                <a class="weui-cell weui-cell_access course_item" href="/detail">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar.jpg"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">美眉速成班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status available"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>
+                <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar2.jpg"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">光头训练班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span> <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status stop"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>
+                <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar3.jpg"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">动物园一日游</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="weui-cell__ft">啊大苏打撒旦</div>
+                </a>
+                <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>  <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>  <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>  <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>  <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>  <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>  <a class="weui-cell weui-cell_access course_item" href="javascript:;">
+                    <div class="weui-cell__hd avatar"><img src="~/images/avatar4.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">B班</p>
+                        <p class="schedule">14:00 - 15:00 TaoZi</p>
+                        <div class="tags">
+                            <span>零基础</span>
+                            <span>成品舞</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status hot"></i>
+                        <i class="status_warning">名额不多</i>
+                    </div>
+                </a>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+            </div>
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+            <h1>页面三</h1>
+        </div>
+        <div id="tab4" data-href="/home/userinfo" class="weui-tab__bd-item weui-tab__bd-item--active">
+           
+        </div>
+        <div id="tab5" class="weui-tab__bd-item">
+            <div>url @Context.Request.QueryString</div>
+        </div>
+    </div>
+
+    <div class="weui-tabbar">
+        <a href="#tab1" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <img src="~/images/icon_nav_button.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">首页</p>
+        </a>
+        <a href="#tab2" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <img src="~/images/icon_nav_msg.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">美肤预约</p>
+        </a>
+        <a href="#tab3" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <img src="~/images/icon_nav_article.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">瑜伽预约</p>
+        </a>
+        <a href="#tab4" class="weui-tabbar__item weui-bar__item--on">
+            <div class="weui-tabbar__icon">
+                <img src="~/images/icon_nav_cell.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">我</p>
+        </a>
+        <a href="#tab5" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <img src="~/images/icon_nav_cell.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">测试</p>
+        </a>
+    </div>
 </div>
+
+@section Scripts{
+<script>
+    $(function () {
+        if (location.hash) {
+            $("a[href=" + location.hash + "]").click();
+        }
+        $(".date_list a").click(function () {
+            var t = $(this);
+            t.parent().parent().find(".current").removeClass("current");
+            var data = t.addClass("current").attr("data");
+            courseData(data);
+        });
+        function courseData(rq) {
+            
+        }
+
+        $(".weui-tabbar__item").click(function () {
+            var hash = $(this).attr("href");           
+            console.log(hash);
+            var url = $(hash).attr("data-href");
+            if (url) {
+                loadurl(hash, url);
+            }
+        });
+
+        function loadurl(id, url) {
+            $.ajax({
+                url: url,
+                type: "get",
+                success: function (data) {
+                    $(id).html(data);
+                },
+                error: function (xhr, status, error) {                    
+                    if (xhr.status==401) {
+                        var rurl = xhr.getResponseHeader("Location");
+                        if (rurl) loadurl(id, rurl);
+                    }
+                }
+            })
+        }
+        if (location.hash) {
+            var url = $(location.hash).attr("data-href");
+            if (url) {
+                loadurl(location.hash, url);
+            }
+        }
+
+    });
+</script>
+}
+   

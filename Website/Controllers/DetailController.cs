@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication1.Controllers
+namespace Website.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "user")]
     public class DetailController : Controller
     {
        

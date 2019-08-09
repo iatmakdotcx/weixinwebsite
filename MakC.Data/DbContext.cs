@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MakC.Data
+namespace App.Data
 {
     public class DbContext
     {
@@ -69,5 +69,9 @@ namespace MakC.Data
         {
             Init(strConnectionString, getDbType(enmDbType));            
         }
+
+
+
+        public SimpleClient<Setting> setting => new SimpleClient<Setting>(Db);
     }
 }

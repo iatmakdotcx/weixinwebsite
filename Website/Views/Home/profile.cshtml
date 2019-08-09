@@ -1,0 +1,68 @@
+﻿@model App.Data.Model.UserInfo;
+@{
+    ViewData["Title"] = "个人信息编辑";
+}
+    <form action="" enctype="multipart/form-data" method="post">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">头像</label></div>
+                <div class="weui-cell__bd"></div>
+                <div class="weui-cell__ft avatar">
+                    <img src="@Model.avatar">
+                    <input id="file_avatar" name="file_avatar" style="display:none"  type="file" accept="image/*">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">昵称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="nickname" type="text" value="@Model.nickname">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">身高</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="height" type="number" pattern="[0-9]*" value="@Model.height">
+                </div>cm
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">体重</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="weight" type="number" pattern="[0-9\.]*" value="@Model.weight">
+                </div>kg
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="" class="weui-label">生日</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="birthday" type="date" value="@Model.birthday?.ToString("yyyy-MM-dd")">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="" class="weui-label">地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="address" type="text" value="@Model.address">
+                </div>
+            </div>
+            <div class="weui-cell">
+
+            </div>
+            <button type="submit" class="weui-btn weui-btn_primary">保存</button>
+            <a href="javascript:history.go(-1);" class="weui-btn weui-btn_default" style="margin-top:16px;">返回</a>
+        </div>
+    </form>
+@section Scripts{
+<script>
+    $(function () {
+        $("#file_avatar").change(function () {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(".avatar img").attr('src', reader.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
+        $(".avatar img").click(function () {
+            $("#file_avatar").click();
+        });
+    });
+</script>
+}
+   

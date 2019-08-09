@@ -13,11 +13,11 @@ namespace MakC.Common
         /// <summary>
         /// 是否成功
         /// </summary>
-        public bool ok { get; set; } = true;
+        public bool ok { get; set; } = false;
         /// <summary>
         /// 信息
         /// </summary>
-        public string message { get; set; }
+        public string msg { get; set; }
 
         /// <summary>
         /// 状态码

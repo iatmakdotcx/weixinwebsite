@@ -1,0 +1,68 @@
+﻿@page
+@model Website.Pages.Admin.setting.registerModel
+@{
+    ViewData["Title"] = "register";
+}
+
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>设置</cite></a><span lay-separator="">/</span>
+            <a><cite>注册设置</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-card">
+                <div class="layui-card-header">公众号信息</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="register-setting">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">允许注册</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="open" @(Website.Models.SettingModel.getInstance().reg_open?"checked=\"checked\"":"") lay-skin="switch" lay-text="ON|OFF">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户协议</label>
+                            <div class="layui-input-block">
+                                <textarea name="agreement" style="height:500px" class="layui-textarea">@Html.Raw(Website.Models.SettingModel.getInstance().reg_agreement.Replace("<br />","\n"))</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="register-setting">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['admin', 'form'], function () {
+        var element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'register-setting');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(register-setting)', function (data) {            
+            layui.layer.load(2);
+            layui.config.ajax('/api/admin/setting/register', data.field, function (res) {
+                layer.closeAll('loading');
+                if (res.ok) {
+                    layer.msg("成功", { time: 1000 });
+                } else {
+                    layer.msg(res.message, { time: 1000 });
+                }
+            }, function () {
+                layer.closeAll('loading');
+                layer.msg("操作失败", { time: 1000 });
+            });
+            return false;
+        });
+    });
+</script>

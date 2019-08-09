@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Extensions;
 using log4net;
 using log4net.Config;
 using log4net.Repository;
@@ -15,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace WebApplication1
+namespace Website
 {
     public class Startup
     {
@@ -31,7 +32,7 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            MakC.Data.DbContext.Init(Configuration["DbCfg:ConnectionString"], Configuration["DbCfg:DbType"]);
+            App.Data.DbContext.Init(Configuration["DbCfg:ConnectionString"], Configuration["DbCfg:DbType"]);
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -45,6 +46,10 @@ namespace WebApplication1
             {
                 o.LoginPath = new PathString("/login");
                 o.AccessDeniedPath = new PathString("/login");
+            }).AddCookie(AdminAuthorizeAttribute.AuthenticationScheme, o =>
+            {
+                o.LoginPath = new PathString("/admin/login");
+                o.AccessDeniedPath = new PathString("/admin/login");
             });
             services.AddSingleton<ILoggerHelper, LogHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -71,7 +76,7 @@ namespace WebApplication1
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=main}/{action=Index}/{id?}");
+                    template: "{controller=home}/{action=Index}/{id?}");
             });
             //app.UseMvc();
         }

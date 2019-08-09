@@ -17,8 +17,16 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\App.Extensions\App.Extensions.csproj" />
     <ProjectReference Include="..\MakC.Common\MakC.Common.csproj" />
-    <ProjectReference Include="..\MakC.Data\MakC.Data.csproj" />
+    <ProjectReference Include="..\MakC.Data\App.Data.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 

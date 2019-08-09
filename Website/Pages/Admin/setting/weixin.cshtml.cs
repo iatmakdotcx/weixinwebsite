@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MakC.Data;
+using App.Extensions;
+using MakC.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Website.Pages.Admin.setting
 {
+    [AdminAuthorize(Roles = "Admin")]
     public class weixinModel : PageModel
     {
         public string Appid;
@@ -15,15 +18,9 @@ namespace Website.Pages.Admin.setting
 
         public void OnGet()
         {
-            var data = DbContext.Get().GetEntityDB<MakC.Data.Model.Setting>().GetList(ii => ii.key == "weixin_appid" || ii.key == "weixin_key");
-            if (data[0].key)
-            {
-                
-            }
+            Appid = ConfigHelper.Configuration["Weixin:appID"];
+            Key = ConfigHelper.Configuration["Weixin:appsecret"];
         }
-        public void OnPost()
-        {
 
-        }
     }
 }

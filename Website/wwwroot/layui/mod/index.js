@@ -185,16 +185,16 @@ layui.define(['config', 'admin', 'layer', 'element', 'form'], function (exports)
                 }
                 , error: function (e) {
                     layer.closeAll('loading');
-                    index.render("Error", e);
+                    index.render(e.responseText, e);
                     //view.removeLoad();
                     //if (that.render.isError) {
                     //    return view.error('请求视图文件异常，状态：' + e.status);
                     //};
-                    //if (e.status === 404) {
-                    //    that.render('template/tips/404');
+                    if (e.status === 401) {
+                        location.href = "/admin/login"
                     //} else {
                     //    that.render('template/tips/error');
-                    //}
+                    }
                     //that.render.isError = true;
                 }
             });

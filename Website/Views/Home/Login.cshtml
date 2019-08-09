@@ -1,6 +1,6 @@
 ﻿@model MainViewModel;
 @{
-    ViewData["Title"] = "主页";
+    ViewData["Title"] = "登录";
 }
 <style>
     .demos-header{
@@ -21,7 +21,7 @@
                 <label class="weui-label">手机号</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="tel" placeholder="请输入手机号">
+                <input class="weui-input" id="tel" type="tel" placeholder="请输入手机号">
             </div>
         </div>
         <div class="weui-cell">
@@ -29,7 +29,7 @@
                 <label class="weui-label">密码</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="tel" placeholder="请输入密码">
+                <input class="weui-input" id="pwd" type="password" placeholder="请输入密码">
             </div>
         </div>
         <div class="weui-cell weui-cell_vcode">
@@ -49,7 +49,28 @@
 @section Scripts{
 <script>
     $(function () {
-
+        $("#showTooltips").click(function () {
+            $.showLoading();
+            $.ajax({
+                url: "/login",
+                async: true,
+                type: "POST",
+                data: { tel: $("#tel").val(),pwd: $("#pwd").val()},
+                dataType: "json",
+                success: function (data) {
+                    $.hideLoading();
+                    if (data.ok) {
+                        location.href = "/home"
+                    } else {
+                        $.toast(data.msg, "text");
+                    }
+                },
+                error: function (err) {
+                    $.hideLoading();
+                    $.toptip('连接服务器失败', 'error');                    
+                }
+            });
+        });
     });
 </script>
 }

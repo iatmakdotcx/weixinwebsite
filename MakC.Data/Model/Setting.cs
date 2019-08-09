@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MakC.Data.Model
+namespace App.Data
 {
     [SugarTable("setting")]
     public class Setting

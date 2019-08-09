@@ -49,10 +49,9 @@
         form.render(null, 'weixin-setting');
         element.render('breadcrumb', 'breadcrumb');
 
-        form.on('submit(weixin-setting)', function (data) {
-            layer.msg(JSON.stringify(data.field));
+        form.on('submit(weixin-setting)', function (data) {            
             layui.layer.load(2);
-            os.ajax('/api/admin/setting/weixin', data.field, function (res) {
+            layui.config.ajax('/api/admin/setting/weixin', data.field, function (res) {
                 layer.closeAll('loading');
                 if (res.ok) {
                     layer.msg("成功", { time: 1000 });
@@ -61,7 +60,7 @@
                 }
             }, function () {
                 layer.closeAll('loading');
-                layer.msg("登录失败", { time: 1000 });
+                layer.msg("操作失败", { time: 1000 });
             });
             return false;
         });

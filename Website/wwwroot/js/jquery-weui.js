@@ -3480,7 +3480,7 @@ if (typeof define === 'function' && define.amd) {
   
   var show = function(html, className) {
     className = className || "";
-    var mask = $("<div class='weui-mask_transparent'></div>").appendTo(document.body);
+    //var mask = $("<div class='weui-mask_transparent'></div>").appendTo(document.body);
 
     var tpl = '<div class="weui-toast ' + className + '">' + html + '</div>';
     var dialog = $(tpl).appendTo(document.body);
@@ -3490,7 +3490,7 @@ if (typeof define === 'function' && define.amd) {
   };
 
   var hide = function(callback) {
-    $(".weui-mask_transparent").remove();
+    //$(".weui-mask_transparent").remove();
     var done = false;
     var $el = $(".weui-toast--visible").removeClass("weui-toast--visible").transitionEnd(function() {
       var $this = $(this);

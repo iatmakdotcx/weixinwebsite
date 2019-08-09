@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "会员协议";
+}
+<style>
+    .demos-header {
+        display: flex;
+        padding-top: 20px;
+    }
+
+    .demos-title {
+        align-self: center;
+        margin: 0 auto;
+    }
+</style>
+<header class="demos-header">
+    <h1 class="demos-title">会员协议</h1>
+</header>
+@Html.Raw(Website.Models.SettingModel.getInstance().reg_agreement)
