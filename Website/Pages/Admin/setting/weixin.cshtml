@@ -1,0 +1,69 @@
+﻿@page
+@model Website.Pages.Admin.setting.weixinModel
+@{
+    ViewData["Title"] = "weixin";
+}
+
+    <div class="layadmin-tabsbody-item layui-show">
+        <div class="layui-card layadmin-header">
+            <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                <a lay-href="">主页</a><span lay-separator="">/</span>
+                <a><cite>设置</cite></a><span lay-separator="">/</span>
+                <a><cite>微信设置</cite></a>
+            </div>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-card">
+                    <div class="layui-card-header">公众号信息</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form" action="" lay-filter="weixin-setting">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">AppId：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="appId" lay-verify="required" value="@Model.Appid" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">key：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="key" lay-verify="required" value="@Model.Key" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="weixin-setting">立即提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    layui.use(['admin', 'form'], function () {
+        var element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'weixin-setting');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(weixin-setting)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            layui.layer.load(2);
+            os.ajax('/api/admin/setting/weixin', data.field, function (res) {
+                layer.closeAll('loading');
+                if (res.ok) {
+                    layer.msg("成功", { time: 1000 });
+                } else {
+                    layer.msg(res.message, { time: 1000 });
+                }
+            }, function () {
+                layer.closeAll('loading');
+                layer.msg("登录失败", { time: 1000 });
+            });
+            return false;
+        });
+    });
+</script>

@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
+using MakC.Common;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,16 +19,20 @@ namespace WebApplication1
 {
     public class Startup
     {
+        public static ILoggerRepository Repository { get; set; }
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
+            //指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看.csproj,并删之
+            XmlConfigurator.Configure(Repository, new FileInfo("log4net.config"));            
         }
-
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            MakC.Data.DbContext.Init(Configuration["DbCfg:ConnectionString"], Configuration["DbCfg:DbType"]);
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -30,7 +40,13 @@ namespace WebApplication1
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+            {
+                o.LoginPath = new PathString("/login");
+                o.AccessDeniedPath = new PathString("/login");
+            });
+            services.AddSingleton<ILoggerHelper, LogHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -47,7 +63,9 @@ namespace WebApplication1
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
+          //  app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {
@@ -55,6 +73,7 @@ namespace WebApplication1
                     name: "default",
                     template: "{controller=main}/{action=Index}/{id?}");
             });
+            //app.UseMvc();
         }
     }
 }

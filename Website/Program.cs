@@ -18,7 +18,7 @@ namespace WebApplication1
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args).UseUrls("https://*:443;http://*:80")
                 .UseStartup<Startup>();
     }
 }

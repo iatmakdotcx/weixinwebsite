@@ -1,0 +1,86 @@
+@page
+@model Website.Pages.Admin.components.MessageModel
+@{
+
+
+}
+<div id="message-view" class="layui-card-body layui-tab layui-tab-brief" style="padding: 5px 0;margin: 0;">
+    <ul class="layui-tab-title" style="text-align: center;">
+        <li class="layui-this">通知({{notices.length}})</li>
+        <li>私信({{messages.length}})</li>
+        <li>待办({{schedules.length}})</li>
+    </ul>
+    <div class="layui-tab-content" style="padding: 5px 0;">
+        <div class="layui-tab-item message-list layui-show">
+            <a class="message-list-item" href="javascript:;" v-for="notice in notices">
+                <img class="message-item-icon" v-bind:src="notice.icon">
+                <div class="message-item-right">
+                    <h2 class="message-item-title">{{notice.title}}</h2>
+                    <p class="message-item-text">{{notice.time}}</p>
+                </div>
+            </a>
+        </div>
+        <div class="layui-tab-item">
+            <a class="message-list-item" href="javascript:;" v-for="message in messages">
+                <img class="message-item-icon" v-bind:src="message.icon">
+                <div class="message-item-right">
+                    <h2 class="message-item-title">{{message.title}}</h2>
+                    <p class="message-item-text">{{message.content}}</p>
+                    <p class="message-item-text">{{message.time}}</p>
+                </div>
+            </a>
+        </div>
+        <div class="layui-tab-item">
+            <a class="message-list-item" href="javascript:;" v-for="schedule in schedules">
+                <div class="message-item-right">
+                    <span class="layui-badge pull-right" v-if="schedule.state==1">待完成</span>
+                    <span class="layui-badge layui-bg-gray pull-right" v-if="schedule.state==2">已完成</span>
+                    <h2 class="message-item-title">{{schedule.title}}</h2>
+                    <p class="message-item-text">{{schedule.time}}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var dataList = {
+        notices: [{
+            icon: 'assets/images/message.png',
+            title: '你收到了14份新周报',
+            time: '10个月前'
+        }, {
+            icon: 'assets/images/message.png',
+            title: '你收到了14份新周报',
+            time: '10个月前'
+        }],
+        messages: [{
+            icon: 'assets/images/head.png',
+            title: 'xx评论了你',
+            content: '哈哈哈哈哈哈',
+            time: '10个月前'
+        }, {
+            icon: 'assets/images/head.png',
+            title: 'xx评论了你',
+            content: '哈哈哈哈哈哈',
+            time: '10个月前'
+        }],
+        schedules: [{
+            title: '你收到了14份新周报',
+            time: '10个月前',
+            state: 1
+        }, {
+            title: '你收到了14份新周报',
+            time: '10个月前',
+            state: 2
+        }]
+    };
+
+    layui.use('element', function () {
+        var element = layui.element;
+        new Vue({
+            el: '#message-view',
+            data: dataList
+        });        
+    });
+</script>
