@@ -75,6 +75,9 @@ tags{
     padding-right: 10px;
     margin-bottom: 5px;
 }
+.course_item .tags span {
+    margin:0 2px;
+}
 .course_status{position:absolute;width:53px;height:30px;top:50%;right:15px;margin-top:-15px;text-align:center;line-height:30px;border-radius:3px;border-width:1px;border-style:solid}
 .course_status::before{font-size:14px;font-style:normal}
 .course_status.available{background-color:#fff}
@@ -98,9 +101,7 @@ tags{
 .date_show .date_list li:before{content:'';display:block;width:0;height:20px;border-right:1px solid #ddd;position:absolute;right:0;top:50%;margin-top:-10px}
 .date_show .date_calendar{display:block;width:40px;height:50px;line-height:50px;text-align:center;color:#86878b;font-size:22px}
 
-.weui-tab__bd-item .content {
-    padding-bottom: 53px;
-}
+
 .course_info {
     background: -webkit-linear-gradient(left,#3a3c48 0,#3a3c48 100%);
     color: white;

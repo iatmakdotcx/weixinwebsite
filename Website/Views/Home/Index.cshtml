@@ -44,23 +44,13 @@
 @section Scripts{
 <script>
     $(function () {
-        $(".date_list a").click(function () {
-            var t = $(this);
-            t.parent().parent().find(".current").removeClass("current");
-            var data = t.addClass("current").attr("data");
-            courseData(data);
-        });
-        function courseData(rq) {
-            
-        }
         $("body").on("click", "a[data-href]" , function () {
             var url = $(this).attr("data-href");
             if (url) {
                 location.hash = "#" + url;
-               // loadurl(hash, url);
             }
         })
-        function loadurl(id, url) {
+        function loadurl(id, url) {            
             $.ajax({
                 url: url,
                 type: "get",
@@ -77,12 +67,14 @@
         }
         if (location.hash) {
             loadurl("#mainview", location.hash.substr(1));
+            $("a[data-href='" + location.hash.substr(1) + "']").addClass("weui-bar__item--on");
         } else {
             loadurl("#mainview", "/home/mycards");
         }
         window.onhashchange = function () {
             loadurl("#mainview", location.hash.substr(1));
         }
+        $(".weui-tab__bd").height($(".weui-tab__bd").height() - $(".weui-tabbar").height());
     });
 </script>
 }

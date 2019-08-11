@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using App.Data;
-using App.Data.Model;
 using App.Extensions;
 using MakC.Common;
 using Microsoft.AspNetCore.Authentication;
@@ -14,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Website.Models;
 
 namespace Website.Controllers
 {
@@ -150,8 +151,16 @@ namespace Website.Controllers
         }
         [Route("agreement")]
         [AllowAnonymous]
-        public IActionResult agreement()
+        public IActionResult agreement(int id=1)
         {
+            if (id == 2)
+            {
+                ViewData["agreementdata"] = SettingModel.getInstance().skincare_apc_agreement;
+            }
+            else
+            {
+                ViewData["agreementdata"] = SettingModel.getInstance().reg_agreement;             
+            }
             return View();
         }
 
@@ -210,10 +219,15 @@ namespace Website.Controllers
      
             return View();
         }
+
+        [AllowAnonymous]
         public IActionResult skincare()
         {
-     
-            return View();
+            var data = DbContext.Get().Db.Queryable<SkinCareClass>()
+                .Where(ii => ii.enabled)
+                .Select(ii => new { ii.id, ii.name, ii.avatar, ii.tags }).ToList();
+            var jsonDat = JsonConvert.SerializeObject(data);
+            return View((object)jsonDat);
         }
         public IActionResult mycards()
         {

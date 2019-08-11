@@ -31,6 +31,10 @@ namespace Website.Models
                                     {
                                         mbr.SetValue(instance, item.value.Asbool());
                                     }
+                                    else if (mbr.PropertyType == typeof(int))
+                                    {
+                                        mbr.SetValue(instance, item.value.AsInt());
+                                    }
                                     else
                                     mbr.SetValue(instance, item.value);
                                 }
@@ -39,8 +43,22 @@ namespace Website.Models
                     }
             return instance;
         }
+        /// <summary>
+        /// 允许注册
+        /// </summary>
         public bool reg_open { get; set; }
+        /// <summary>
+        /// 注册会员条款
+        /// </summary>
         public string reg_agreement { get; set; }
+        /// <summary>
+        /// 美肤每天可预约数量
+        /// </summary>
+        public int skincare_apc_p_day { get; set; }
+        /// <summary>
+        /// 预约规则协议
+        /// </summary>
+        public string skincare_apc_agreement { get; set; }
         
     }
 }
