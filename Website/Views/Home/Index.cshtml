@@ -4,41 +4,35 @@
 }
 <div class="weui-tab">
     <div class="weui-tab__bd">
-        <div id="tab1" data-href="/home/mycards" class="weui-tab__bd-item"></div>
-        <div id="tab2" data-href="/home/skincare" class="weui-tab__bd-item"></div>
-        <div id="tab3" data-href="/home/yoga" class="weui-tab__bd-item"></div>
-        <div id="tab4" data-href="/home/userinfo" class="weui-tab__bd-item weui-tab__bd-item--active"> </div>
-        <div id="tab5" class="weui-tab__bd-item">
-            <div>url @Context.Request.QueryString</div>
-        </div>
+        <div id="mainview" class="weui-tab__bd-item weui-tab__bd-item--active"> </div>
     </div>
 
     <div class="weui-tabbar">
-        <a href="#tab1" class="weui-tabbar__item">
+        <a href="#mainview" data-href="/home/mycards" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="~/images/icon_nav_button.png" alt="">
             </div>
             <p class="weui-tabbar__label">首页</p>
         </a>
-        <a href="#tab2" class="weui-tabbar__item">
+        <a href="#mainview" data-href="/home/skincare" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="~/images/icon_nav_msg.png" alt="">
             </div>
             <p class="weui-tabbar__label">美肤预约</p>
         </a>
-        <a href="#tab3" class="weui-tabbar__item">
+        <a href="#mainview" data-href="/home/yoga" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="~/images/icon_nav_article.png" alt="">
             </div>
             <p class="weui-tabbar__label">瑜伽预约</p>
         </a>
-        <a href="#tab4" class="weui-tabbar__item weui-bar__item--on">
+        <a href="#mainview" data-href="/home/userinfo" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="~/images/icon_nav_cell.png" alt="">
             </div>
             <p class="weui-tabbar__label">我</p>
         </a>
-        <a href="#tab5" class="weui-tabbar__item">
+        <a href="#mainview" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="~/images/icon_nav_cell.png" alt="">
             </div>
@@ -59,24 +53,22 @@
         function courseData(rq) {
             
         }
-        $(".weui-tabbar__item").click(function () {
-            var hash = $(this).attr("href");
-            location.hash = hash;
-            var url = $(hash).attr("data-href");
+        $("body").on("click", "a[data-href]" , function () {
+            var url = $(this).attr("data-href");
             if (url) {
-                loadurl(hash, url);
+                location.hash = "#" + url;
+               // loadurl(hash, url);
             }
-        });
-
+        })
         function loadurl(id, url) {
             $.ajax({
                 url: url,
                 type: "get",
-                success: function (data) {
-                    $(id).html(data);
+                success: function (data) {                    
+                    $(id).html(data);                    
                 },
                 error: function (xhr, status, error) {                    
-                    if (xhr.status==401) {
+                    if (xhr.status == 401) {
                         var rurl = xhr.getResponseHeader("Location");
                         if (rurl) loadurl(id, rurl);
                     }
@@ -84,9 +76,12 @@
             })
         }
         if (location.hash) {
-             $("a[href=" + location.hash + "]").click();
+            loadurl("#mainview", location.hash.substr(1));
         } else {
-            $(".weui-tabbar>.weui-tabbar__item:eq(0)").click();
+            loadurl("#mainview", "/home/mycards");
+        }
+        window.onhashchange = function () {
+            loadurl("#mainview", location.hash.substr(1));
         }
     });
 </script>

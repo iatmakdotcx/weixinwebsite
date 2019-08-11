@@ -195,7 +195,7 @@ namespace Website.Controllers
             }
             dbh.Db.Updateable(user).ExecuteCommand();
 
-            return Redirect("/home#tab4");
+            return Redirect("/#/home/userinfo");
         }
         public IActionResult userinfo()
         {

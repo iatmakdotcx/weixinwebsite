@@ -22,6 +22,9 @@ li {
 .page, body {
     background-color: #ededed;
 }
+.weui_loading{
+    margin-top:-10px;
+}
 .weui-cell.profile {
     padding: 10px 2px;
 }
