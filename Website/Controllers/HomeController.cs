@@ -205,6 +205,28 @@ namespace Website.Controllers
             return View(user);
         }
 
+        public IActionResult yoga()
+        {
+     
+            return View();
+        }
+        public IActionResult skincare()
+        {
+     
+            return View();
+        }
+        public IActionResult mycards()
+        {
+     
+            return View();
+        }
+
+        public IActionResult mycoupon()
+        {
+     
+            return View();
+        }
+
 
 
 

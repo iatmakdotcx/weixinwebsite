@@ -27,7 +27,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">体重</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" name="weight" type="number" pattern="[0-9\.]*" value="@Model.weight">
+                    <input class="weui-input" name="weight" type="number" value="@Model.weight" step="0.1">
                 </div>kg
             </div>
             <div class="weui-cell">
@@ -45,8 +45,8 @@
             <div class="weui-cell">
 
             </div>
-            <button type="submit" class="weui-btn weui-btn_primary">保存</button>
-            <a href="javascript:history.go(-1);" class="weui-btn weui-btn_default" style="margin-top:16px;">返回</a>
+            <input type="submit" class="weui-btn weui-btn_primary" value="保存">
+            <a href="/#tab4" class="weui-btn weui-btn_default" style="margin-top:16px;">返回</a>
         </div>
     </form>
 @section Scripts{

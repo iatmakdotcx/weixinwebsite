@@ -1,6 +1,6 @@
 ﻿* {
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
+    /*-webkit-user-select: none;*/
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -16,11 +16,20 @@ body {
     /*font-family: Menlo,Monaco,Consolas,"Courier New",monospace,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif;*/
     font-size: 12px;
 }
+li {
+    list-style: none;
+}
 .page, body {
     background-color: #ededed;
 }
-.avatar{width:45px;height:45px;border-radius:100%;margin-right:20px}
-.avatar img{display:block;width:100%;height:100%;border-radius:100%}
+.weui-cell.profile {
+    padding: 10px 2px;
+}
+.weui-cell.profile .weui-cell__ft {
+    font-size: 12px;
+}
+.avatar{width:45px;height:45px;border-radius:100%;margin-right:5px}
+.avatar img{display:block;width:45px;height:45px;border-radius:100%}
 .list_icon{display:block;margin-right:15px;background:url(/images/icon_m_default.png) left top no-repeat;background-size:250px 500px;width:20px;height:20px}
 .list_icon.icon_1{background-position:-150px -300px}
 .list_icon.icon_2{background-position:-200px -300px}
@@ -168,3 +177,152 @@ tags{
     width: 33.33333333%;
     box-sizing: border-box
 }
+
+.bg-coupon {
+    position: relative;
+    background: #eeeeee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+    .bg-coupon .ticket {
+        height: 100%;
+        width: 100%;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: -2px 2px 2px #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        padding: 20px 10px;
+    }
+
+        .bg-coupon .ticket .box-l {
+            padding: 0 10px;
+        }
+
+    .bg-coupon .split-line::before {
+        content: '';
+        width: 16px;
+        height: 8px;
+        background-color: #eeeeee;
+        z-index: 1;
+        border-radius: 0 0 8px 8px;
+        position: absolute;
+        border-bottom: none;
+        top: 0px;
+        margin-left: -8px;
+    }
+
+    .bg-coupon .split-line:after {
+        content: '';
+        width: 16px;
+        height: 12px;
+        z-index: 1;
+        background: #eeeeee;
+        border-radius: 12px 12px 0 0;
+        position: absolute;
+        border-bottom: none;
+        bottom: -4px;
+        margin-left: -8px;
+    }
+
+    .bg-coupon .ticket .title {
+        font-size: 18px;
+        font-weight: bold;
+        padding-bottom: 10px;
+        color: #888;
+    }
+
+    .bg-coupon .ticket .time {
+        font-size: 14px;
+        color: #9E9E9E;
+    }
+
+    .bg-coupon .ticket .money {
+        color: red;
+        font-size: 16px;
+    }
+
+    .bg-coupon .ticket .discount {
+        color: red;
+        font-size: 16px;
+    }
+
+    .bg-coupon .ticket .box-r {
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .bg-coupon .split-line {
+        height: inherit;
+        border-left: 2px dashed #eee;
+        right: 130px;
+        position: absolute;
+    }
+
+.cards_content {
+    padding: 10px;
+}
+
+    .cards_content .card {
+        border-radius: 10px;
+        padding: 10px;
+        height: 140px;
+        background: -webkit-linear-gradient(#6489f1, #2581db);
+        background: -o-linear-gradient(#6489f1, #2581db);
+        background: -moz-linear-gradient(#6489f1, #2581db);
+        background: linear-gradient(#6489f1, #2581db);
+        color: white;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+    }
+
+        .cards_content .card + .card {
+            margin-top: 10px;
+        }
+
+        .cards_content .card .name {
+            font-size: 18px;
+        }
+
+        .cards_content .card .type {
+            margin-top: 65px;
+            text-align: right;
+            border-bottom: 1px solid #BBB;
+        }
+
+        .cards_content .card .description {
+            margin-top: 10px;
+        }
+
+    .cards_content .corner_newer {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
+
+        .cards_content .corner_newer .des {
+            position: absolute;
+            width: 100px;
+            height: 20px;
+            right: -25px;
+            top: 17px;
+            z-index: 2;
+            background-color: #e63434;
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+        }
