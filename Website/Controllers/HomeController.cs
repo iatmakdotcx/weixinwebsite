@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Website.Models;
 
 namespace Website.Controllers
@@ -238,6 +239,55 @@ namespace Website.Controllers
         public IActionResult mycoupon()
         {
      
+            return View();
+        }
+        public IActionResult myscorder()
+        {
+            var userid = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            var qryd = dbh.Db.Queryable<SkinCareOrder, SkinCareClass>((t1, t2) => new object[] { SqlSugar.JoinType.Left, t1.ClassId == t2.id })
+                .Where((t1, t2) => t1.UserId == userid && t1.reserveDate > DateTime.Now.Date.AddDays(-365))
+                .Select((t1, t2) => new { t1.id, t1.reserveDate, className = t2.name, t2.teacher, t2.address, t1.canceled })
+                .OrderBy(t1 => t1.reserveDate, SqlSugar.OrderByType.Desc).ToList();
+            var d1 = new JArray();
+            var d2 = new JArray();
+            var d3 = new JArray();
+            var tdv =DateTime.Now.Date;
+            foreach (var item in qryd)
+            {
+                if (item.canceled)
+                {
+                    d3.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("reserveDate", item.reserveDate.ToString("yyyy-MM-dd")),
+                        new JProperty("className", item.className),
+                        new JProperty("teacher", item.teacher),
+                        new JProperty("address", item.address)
+                        ));
+                }
+                else if (item.reserveDate< tdv)
+                {
+                    d2.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("reserveDate", item.reserveDate.ToString("yyyy-MM-dd")),
+                        new JProperty("className", item.className),
+                        new JProperty("teacher", item.teacher),
+                        new JProperty("address", item.address)
+                        ));
+                }
+                else
+                {
+                    d1.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("reserveDate", item.reserveDate.ToString("yyyy-MM-dd")),
+                        new JProperty("className", item.className),
+                        new JProperty("teacher", item.teacher),
+                        new JProperty("address", item.address)
+                        ));
+                }
+            }
+            var tmpAllData = new JObject(new JProperty("d1", d1), new JProperty("d2", d2), new JProperty("d3", d3));
+            TempData["listdata"]= tmpAllData.ToString(Formatting.None);
             return View();
         }
 

@@ -1,8 +1,9 @@
 ﻿@model App.Data.UserInfo;
 @{
-    ViewData["Title"] = "用户资料";
+    ViewData["Title"] = "用户";
     Layout = null;
 }
+    <title>@ViewData["Title"]</title>
 <div class="weui-cells">
     <a class="weui-cell weui-cell_access profile" href="/profile">
         <div class="weui-cell__hd avatar"><img src="@Model.avatar"></div>
@@ -13,42 +14,38 @@
         <div class="weui-cell__ft">余额:@Model.balance</div>
     </a>
 </div>
-<div class="weui-cells">
-    <a class="weui-cell weui-cell_access" href="javascript:$.showLoading();">
-        <i class="list_icon icon_1"></i>
-        <div class="weui-cell__bd">
-            <p>我的预约</p>
-        </div>
-        <div class="weui-cell__ft"></div>
-    </a>
+<div class="weui-cells userinfo">
     <a class="weui-cell weui-cell_access" data-href="/home/mycards" >
-        <i class="list_icon icon_2"></i>
+        <i class="fa fa-credit-card" aria-hidden="true" style="color:#fa7973"></i>
         <div class="weui-cell__bd">
             <p>我的会员卡</p>
         </div>
         <div class="weui-cell__ft"></div>
     </a>
     <a class="weui-cell weui-cell_access" data-href="/home/mycoupon" >
-        <i class="list_icon icon_6"></i>
+        <i class="fa fa-ticket" aria-hidden="true" style="color:#fa7973"></i>
         <div class="weui-cell__bd">
             <p>优惠券</p>
         </div>
         <div class="weui-cell__ft"></div>
     </a>
 </div>
-<div class="weui-cells">
-    <div class="weui-cell">
-        <i class="list_icon icon_1"></i>
+<div class="weui-cells__title">我的预约</div>
+<div class="weui-cells userinfo">
+    <a class="weui-cell weui-cell_access" data-href="/home/myygorder">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
         <div class="weui-cell__bd">
-            <p>我的预约</p>
+            <p>瑜伽预约</p>
         </div>
-    </div>
-    <div class="weui-cell">
-        <i class="list_icon icon_2"></i>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" data-href="/home/myscorder">        
+        <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
         <div class="weui-cell__bd">
-            <p>我的会员卡</p>
+            <p>美肤预约</p>
         </div>
-    </div>
+        <div class="weui-cell__ft"></div>
+    </a>
 </div>
 
 <script>

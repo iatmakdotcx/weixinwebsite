@@ -59,6 +59,14 @@ namespace Website.Models
         /// 预约规则协议
         /// </summary>
         public string skincare_apc_agreement { get; set; }
+        /// <summary>
+        /// 美肤场馆电话
+        /// </summary>
+        public string skincare_Tel { get; set; }
+        /// <summary>
+        /// 瑜伽场馆电话
+        /// </summary>
+        public string Yoga_Tel { get; set; }
         
     }
 }

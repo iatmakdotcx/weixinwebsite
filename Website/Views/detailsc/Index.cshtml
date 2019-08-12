@@ -3,64 +3,80 @@
     ViewData["Title"] = "详情";
 }
 
-<div class="bd">
-    <div class="weui-flex course_info">
-        <a href="/m/36474d03/coach/info/5740387" class="thumb"><img src="@Model.data.avatar"></a>
-        <div class="weui-flex__item detail">
-            <p class="name">@Model.data.name</p>
-            <p class="locate">地点：@Model.data.address</p>
-            <p class="coach">老师：@Model.data.teacher</p>
+    <div class="bd">
+        <div class="weui-flex course_info">
+            <a class="thumb"><img src="@Model.data.avatar"></a>
+            <div class="weui-flex__item detail">
+                <p class="name">@Model.data.name</p>
+                <p class="locate">地点：@Model.data.address</p>
+                <p class="coach">老师：@Model.data.teacher</p>
+            </div>
+            <div></div>
         </div>
-        <div></div>
-    </div>
-    <div class="course_desci">
-        <p class="info_title">课程介绍</p>
-        <div class="info_detail" style="display: none;">
-            @Html.Raw(Model.data.description)
-        </div>
-    </div>
-    <div class="schedule_info" style="display:">
-        <p class="schedule_title">选择日期</p>
-        <div class="weui-grids">
-
-            @foreach (var item in Model.dayinfo.OrderBy(ii => ii.date))
-            {
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        @item.date.ToString("MM月dd日")
-                    </p>
-                    <hr>
-                    <p class="weui-grid__label remain">
-                        余 @item.remain 次
-                    </p>
+        @if (User == null || User.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone) == null) //游客
+        {
+            <div class="course_desci">
+                <p class="info_title">项目介绍</p>
+                <div class="info_detail">
+                    @Html.Raw(Model.data.description)
                 </div>
             </div>
-            }
-        </div>
-        <blockquote class="quote-yellow"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 预约后不可更改</blockquote>
-        <div class="weui-agree">
-            <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
-            <span class="weui-agree__text">
-                <label for="weuiAgree">阅读并同意</label>  <a href="/agreement?id=2">《预约协议》</a>
-            </span>
-        </div>
-        <div class="weui-cells weui-cells_form">
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="tel" placeholder="请输入手机号" value="@User.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone).Value">
+            <div class="weui-footer_fixed-bottom">                
+                <a class="weui-btn weui-btn_plain-default weui-btn_mini" href="/login?ReturnUrl=@System.Web.HttpUtility.UrlEncode(Context.Request.Path)">立即预约</a>
+            </div>
+        }
+        else //已登录的用户可以预约
+        {
+            <div class="course_desci">
+                <p class="info_title">项目介绍</p>
+                <div class="info_detail" style="display:none">
+                    @Html.Raw(Model.data.description)
                 </div>
             </div>
-        </div>
+            <div class="schedule_info">
+                <p class="schedule_title">选择日期</p>
+                <div class="weui-grids">
 
+                    @foreach (var item in Model.dayinfo.OrderBy(ii => ii.date))
+                    {
+                        <div class="weui-grid-2">
+                            <div class="aday" data-date="@item.date.ToString("yyyy-MM-dd")">
+                                <p class="weui-grid__label date">
+                                    @item.date.ToString("MM月dd日")
+                                </p>
+                                <hr>
+                                <p class="weui-grid__label remain">
+                                    余 @item.remain 次
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <blockquote class="quote-yellow"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 预约后不可更改</blockquote>
+                <div class="weui-agree">
+                    <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+                    <span class="weui-agree__text">
+                        <label for="weuiAgree">阅读并同意</label>  <a href="/agreement?id=2">《预约协议》</a>
+                    </span>
+                </div>
+                <form id="apform" action="/detailsc/save" enctype="multipart/form-data" method="post">
+                    <div class="weui-cells weui-cells_form">
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="tel" name="tel" placeholder="请输入手机号" value="@User.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone).Value">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="@Context.Request.Query["id"]" />
+                    <input type="hidden" id="apdate" name="apdate" />
+                </form>
+            </div>
+            <div class="weui-footer_fixed-bottom button_sp_area">
+                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary weui-btn_disabled" id="btn_appointment">预约</a> 
+            </div>
+        }
     </div>
-    <div class="weui-footer_fixed-bottom">
-        <a href="javascript:;" class="weui-btn weui-btn_plain-default weui-btn_mini" id="btn_appointment">预约</a>
-        <a class="weui-btn weui-btn_plain-default weui-btn_mini" asp-area="" asp-controller="detail" asp-action="save" id="btn_save" style="display:none">确认</a>
-    </div>
-</div>
-
 @section Scripts{
     <script>
         $(function () {
@@ -71,11 +87,28 @@
                 adys.removeClass("current");
                 $(this).addClass("current");
             });
+            $("#weuiAgree").change(function () {
+                if (this.checked) {
+                    $("#btn_appointment").removeAttr("disabled").removeClass("weui-btn_disabled");
+                } else {
+                    $("#btn_appointment").attr("disabled", "disabled").addClass("weui-btn_disabled");
+                }
+            }).change();
             $("#btn_appointment").click(function () {
-                $(this).hide();
-                $(".course_desci").hide();
-                $(".schedule_info").show();
-                $("#btn_save").show();
+                if ($(this).hasClass("weui-btn_disabled")) {
+                    return false;
+                }
+                var apDate = $(".schedule_info .aday.current").attr("data-date");
+                if (!apDate) {
+                    $.alert("请选择一个日期");
+                    return;
+                }
+                $.confirm("确认预约 " + apDate + " 的课程？", function () {
+                    $.showLoading();
+                    $("#apdate").val(apDate);
+                    apform.submit();
+                }, function() {
+                });
             });
             $("#btn_save").click(function () {
 

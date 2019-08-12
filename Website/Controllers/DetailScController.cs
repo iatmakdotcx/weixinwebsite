@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using App.Data;
+using MakC.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -48,9 +50,46 @@ namespace Website.Controllers
             }
             return View(model);
         }
-        public IActionResult Save()
+        public IActionResult Save(string apdate, string tel, int id)
         {
+            DateTime reserveDate;
+            if (!DateTime.TryParse(apdate, out reserveDate) || id <= 0)
+            {
+                return ShowErrorPage("预约失败","请求参数错误！请稍后重试！");
+            }
+            var userid = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            UserInfo user = dbh.Db.Queryable<UserInfo>().InSingle(userid);
+            if (user == null)
+            {                
+                return ShowErrorPage("登录已失效");
+            }
+
+            SkinCareOrder sco = dbh.GetEntityDB<SkinCareOrder>().AsQueryable().First(ii => ii.UserId == userid && ii.ClassId == id && ii.reserveDate == reserveDate);
+            if (sco != null)
+            {                
+                return ShowErrorPage("已预约过相同日期");
+            }
+            sco = new SkinCareOrder();
+            sco.create_at = DateTime.Now;
+            sco.tel = tel;
+            sco.UserId = userid;
+            sco.ClassId = id;
+            sco.reserveDate = reserveDate;
+            dbh.Db.Insertable(sco).ExecuteCommand();
+
             return View();
+        }
+
+
+        private IActionResult ShowErrorPage(string msg, string description = "")
+        {
+            ErrorViewModel erv = new ErrorViewModel();
+            erv.Msg = msg;
+            erv.Description = description;
+            erv.Url = HttpContext.Request.Path;
+            //erv.Referer = HttpContext.Request.Headers["Referer"];
+            return View("Error", erv);
         }
     }
 }

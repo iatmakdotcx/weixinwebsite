@@ -50,14 +50,20 @@
                 location.hash = "#" + url;
             }
         })
-        function loadurl(id, url) {            
+        function loadurl(id, url) {
+            $.showLoading();
             $.ajax({
                 url: url,
                 type: "get",
-                success: function (data) {                    
-                    $(id).html(data);                    
+                success: function (data) {
+                    $.hideLoading();
+                    var ttl = $(id).html(data).find("title").text();
+                    if (ttl) {
+                        document.title = ttl;
+                    }
                 },
-                error: function (xhr, status, error) {                    
+                error: function (xhr, status, error) {
+                    $.hideLoading();
                     if (xhr.status == 401) {
                         var rurl = xhr.getResponseHeader("Location");
                         if (rurl) loadurl(id, rurl);

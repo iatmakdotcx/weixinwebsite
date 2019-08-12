@@ -19,5 +19,8 @@ namespace App.Data
         public DateTime create_at { get; set; }
         public DateTime reserveDate { get; set; }
         public string tel { get; set; }
+        public bool canceled { get; set; }
+        public int? cancelUser { get; set; }
+        public DateTime? cancelTime { get; set; }
     } 
 }

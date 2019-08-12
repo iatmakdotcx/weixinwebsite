@@ -122,7 +122,7 @@ tags{
     height: 100%;
     border-radius: 100%;
 }
-.course_desci, .schedule_info {
+.schedule_info {
     padding-bottom: 40px;
 }
 .course_desci .info_title,.schedule_title{height:35px;font-size:14px;color:grey;text-align:center;line-height:35px;font-weight:700}
@@ -330,3 +330,16 @@ tags{
             font-size: 12px;
             text-align: center;
         }
+
+
+.userinfo .fa {
+    font-weight: 200;
+    color: #36cad5;
+    margin-right: 15px;
+    display: block;
+    width: 20px; 
+    height: 20px; 
+}
+.weui-form-preview {
+    margin-bottom: 20px;
+}
