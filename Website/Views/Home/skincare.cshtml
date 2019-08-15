@@ -48,7 +48,7 @@
         <a class="weui-cell weui-cell_access course_item" v-bind:href="'/detailsc?id='+arow.id" v-for="arow in all">
             <div class="weui-cell__hd avatar"><img v-bind:src="arow.avatar"></div>
             <div class="weui-cell__bd">
-                <p class="name">{{ arow.name }}</p>                
+                <p class="name">{{ arow.name }}</p>
                 <div class="tags">
                     <span v-for="tag in arow.tags.split('|')">{{tag}}</span>
                 </div>

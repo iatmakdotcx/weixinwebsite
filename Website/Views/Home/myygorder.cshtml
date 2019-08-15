@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "我的预约";
+    ViewData["Title"] = "我的瑜伽预约";
     Layout = null;
 }
 <style>
@@ -20,133 +20,97 @@
     </div>
     <div class="weui-tab__bd orders" style="padding-top: 50px;">
         <div class="weui-tab__bd-item weui-tab__bd-item--active">
-            <div class="weui-form-preview">
+            <div class="weui-form-preview" v-for="aord in listData.d1">
                 <div class="weui-form-preview__hd">
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">预约日期</label>
-                        <em class="weui-form-preview__value">2019-08-12</em>
+                        <em class="weui-form-preview__value">{{aord.rdate}}</em>
                     </div>
                 </div>
                 <div class="weui-form-preview__bd">
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">项目</label>
-                        <span class="weui-form-preview__value">课程A</span>
+                        <span class="weui-form-preview__value">{{aord.className}}</span>
+                    </div>
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">时间</label>
+                        <span class="weui-form-preview__value">{{aord.rtimeRange}}</span>
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">老师</label>
-                        <span class="weui-form-preview__value">张三的名字</span>
+                        <span class="weui-form-preview__value">{{aord.teacher}}</span>
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">地点</label>
-                        <span class="weui-form-preview__value">北京北京北京北京北京北京北京</span>
+                        <span class="weui-form-preview__value">{{aord.address}}</span>
                     </div>
                 </div>
                 <div class="weui-form-preview__ft">
                     <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
                 </div>
             </div>
-            <br />
         </div>
         <div class="weui-tab__bd-item">
-            <div class="weui-form-preview">
+            <div class="weui-form-preview" v-for="aord in listData.d2">
                 <div class="weui-form-preview__hd">
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">预约日期</label>
-                        <em class="weui-form-preview__value">2019-08-12</em>
+                        <em class="weui-form-preview__value">{{aord.rdate}}</em>
                     </div>
                 </div>
                 <div class="weui-form-preview__bd">
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">项目</label>
-                        <span class="weui-form-preview__value">课程A</span>
+                        <span class="weui-form-preview__value">{{aord.className}}</span>
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">老师</label>
-                        <span class="weui-form-preview__value">张三的名字</span>
+                        <span class="weui-form-preview__value">{{aord.teacher}}</span>
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">地点</label>
-                        <span class="weui-form-preview__value">北京北京北京北京北京北京北京</span>
+                        <span class="weui-form-preview__value">{{aord.address}}</span>
                     </div>
                 </div>
             </div>
-            <br /> <div class="weui-form-preview">
-                <div class="weui-form-preview__hd">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">预约日期</label>
-                        <em class="weui-form-preview__value">2019-08-12</em>
-                    </div>
-                </div>
-                <div class="weui-form-preview__bd">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">项目</label>
-                        <span class="weui-form-preview__value">课程A</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">老师</label>
-                        <span class="weui-form-preview__value">张三的名字</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">地点</label>
-                        <span class="weui-form-preview__value">北京北京北京北京北京北京北京</span>
-                    </div>
-                </div>
-            </div>
-            <br />
         </div>
 
         <div class="weui-tab__bd-item">
-            <div class="weui-form-preview">
+            <div class="weui-form-preview" v-for="aord in listData.d3">
                 <div class="weui-form-preview__hd">
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">预约日期</label>
-                        <em class="weui-form-preview__value">2019-08-12</em>
+                        <em class="weui-form-preview__value">{{aord.rdate}}</em>
                     </div>
                 </div>
                 <div class="weui-form-preview__bd">
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">项目</label>
-                        <span class="weui-form-preview__value">课程A</span>
+                        <span class="weui-form-preview__value">{{aord.className}}</span>
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">老师</label>
-                        <span class="weui-form-preview__value">张三的名字</span>
+                        <span class="weui-form-preview__value">{{aord.teacher}}</span>
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">地点</label>
-                        <span class="weui-form-preview__value">北京北京北京北京北京北京北京</span>
+                        <span class="weui-form-preview__value">{{aord.address}}</span>
                     </div>
                 </div>
             </div>
-            <br /><div class="weui-form-preview">
-                <div class="weui-form-preview__hd">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">预约日期</label>
-                        <em class="weui-form-preview__value">2019-08-12</em>
-                    </div>
-                </div>
-                <div class="weui-form-preview__bd">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">项目</label>
-                        <span class="weui-form-preview__value">课程A</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">老师</label>
-                        <span class="weui-form-preview__value">张三的名字</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">地点</label>
-                        <span class="weui-form-preview__value">北京北京北京北京北京北京北京</span>
-                    </div>
-                </div>
-            </div>
-            <br />
         </div>
 
     </div>
-    </div>
+</div>
     <script>
+        var data = {
+            listData: @Html.Raw(TempData["listdata"])
+        }
         $(function () {
+            new Vue({
+                el: '.weui-tab__bd.orders',
+                data: data
+            });  
             $(".weui-navbar .weui-navbar__item").click(function () {
                 $(this).addClass("weui-bar__item--on").siblings(".weui-bar__item--on").removeClass("weui-bar__item--on");
                 $(".weui-tab__bd.orders .weui-tab__bd-item").eq($(this).index()).addClass("weui-tab__bd-item--active").siblings(".weui-tab__bd-item--active").removeClass("weui-tab__bd-item--active");
@@ -154,28 +118,21 @@
             $(".orders").on("click", ".weui-form-preview__ft>a", function () {
                 $.actions({
                     title: "选择操作",
-                    onClose: function () {                      
+                    onClose: function () {
                     },
                     actions: [
                         {
                             text: "联系场馆",
                             className: "color-primary",
                             onClick: function () {
-                                $.alert("<a href='tel:10086'>拨打10086</a><br><br><a href='tel:10086'>拨打10086</a>");
+                                $.alert("<br><a href='tel:@Website.Models.SettingModel.getInstance().Yoga_Tel'>请拨打电话:@Website.Models.SettingModel.getInstance().Yoga_Tel</a><br><br>");
                             }
                         },
-                        @*{
-                            text: "编辑",
-                            className: "color-warning",
-                            onClick: function () {
-                                $.alert("你选择了“编辑”");
-                            }
-                        },*@
                         {
                             text: "取消预约",
                             className: 'color-danger',
                             onClick: function () {
-                                $.alert("<a href='tel:10086'>拨打10086</a><br><br><a href='tel:10086'>拨打10086</a>");
+                                $.alert("<a href='tel:@Website.Models.SettingModel.getInstance().Yoga_Tel'>请拨打电话:@Website.Models.SettingModel.getInstance().Yoga_Tel</a><br><br>");
                             }
                         }
                     ]

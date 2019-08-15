@@ -1,231 +1,118 @@
-﻿@model MainViewModel;
+﻿@model detailModel;
 @{
     ViewData["Title"] = "详情";
 }
-
-<div class="bd">
-    <div class="weui-flex course_info">
-        <a href="/m/36474d03/coach/info/5740387" class="thumb"><img src="~/images/avatar.jpg" alt="150*150"></a>
-        <div class="weui-flex__item detail">
-            <p class="name"><i class="icon_type team">团课</i>TWICE - FANCY</p>
-            <p class="date">日期：2019-08-05（周一）</p>
-            <p class="time">时间：14:00 ~ 15:20</p>
-            <p class="shop">场馆：SMILE舞蹈室（财富店）</p>
-            <p class="locate">场地：A Class</p>
-            <p class="coach">老师：樨樨</p>
+<style>
+    .course_info .star span{
+        color: #FFB800;
+    }
+</style>
+    <div class="bd">
+        <div class="weui-flex course_info">
+            <p class="thumb"><img src="@Model.data.avatar"></p>
+            <div class="weui-flex__item detail">
+                <p class="name">@Model.data.name</p>
+                <p class="star">难度：<span></span></p>                
+                <p class="date">日期：@Model.data.rdate.ToString("yyyy-MM-dd")（@MakC.Common.mUtils.getweekText(Model.data.rdate.DayOfWeek)）</p>
+                <p class="time">时间：@Model.data.rtimeRange</p>
+                <p class="locate">场地：@Model.data.address</p>
+                <p class="coach">老师：@Model.data.teacher</p>
+            </div>
+            <div></div>
         </div>
-        <div></div>
+        @if (User == null || User.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone) == null || Model.ordered) //游客  或 已预约
+        {
+            <div class="course_desci">
+                <p class="info_title">项目介绍</p>
+                <div class="info_detail" style="display:block">
+                    @Html.Raw(Model.data.description)
+                </div>
+            </div>
+            <div class="weui-footer_fixed-bottom">
+                @if (Model.ordered)
+                {
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary weui-btn_disabled">已预约</a>
+                }
+                else
+                {
+            <a class="weui-btn weui-btn_plain-default weui-btn_mini" href="/login?ReturnUrl=@System.Web.HttpUtility.UrlEncode(Context.Request.Path)">立即预约</a>
+                }
+            </div>
+        }
+        else //已登录的用户可以预约
+        {
+            <div class="course_desci">
+                <p class="info_title">项目介绍</p>
+                <div class="info_detail" style="display:none">
+                    @Html.Raw(Model.data.description)
+                </div>
+            </div>
+            <div class="schedule_info">
+                <blockquote class="quote-yellow"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 预约后不可更改</blockquote>
+                <div class="weui-agree">
+                    <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+                    <span class="weui-agree__text">
+                        <label for="weuiAgree">阅读并同意</label>  <a href="/agreement?id=2">《预约协议》</a>
+                    </span>
+                </div>
+                <form id="apform" action="/detail/save" enctype="multipart/form-data" method="post">
+                    <div class="weui-cells weui-cells_form">
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="tel" name="tel" placeholder="请输入手机号" value="@User.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone).Value">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="@Context.Request.Query["id"]" />                    
+                </form>
+            </div>
+            <div class="weui-footer_fixed-bottom button_sp_area">                
+                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary weui-btn_disabled" id="btn_appointment">预约</a>                
+            </div>
+        }
     </div>
-    <div class="course_desci">
-        <p class="info_title">课程介绍</p>
-        <div class="info_detail" style="display: block;">
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-            介绍内容<br />
-        </div>
-    </div>
-    <div class="schedule_info" style="display:none">
-        <p class="schedule_title">选择日期</p>
-        <div class="weui-grids">
-            <div class="weui-grid-2">
-                <div class="aday current">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p>
-                    <hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-            <div class="weui-grid-2">
-                <div class="aday">
-                    <p class="weui-grid__label date">
-                        08-05
-                    </p><hr>
-                    <p class="weui-grid__label remain">
-                        余4
-                    </p>
-                </div>
-            </div>
-        </div>
-        <blockquote class="quote-yellow"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 预约后不可更改</blockquote>
-        <div class="weui-cells weui-cells_form">
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="tel" placeholder="请输入手机号">
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="weui-footer_fixed-bottom">
-        <a href="javascript:;" class="weui-btn weui-btn_plain-default weui-btn_mini" id="btn_appointment">预约</a>
-        <a class="weui-btn weui-btn_plain-default weui-btn_mini" asp-area="" asp-controller="detail" asp-action="save" id="btn_save" style="display:none">确认</a>
-    </div>
-</div>
 
 @section Scripts{
     <script>
         $(function () {
-            $(".info_title").click(function () {
+             $(".info_title").click(function () {
                 $(".info_detail").slideToggle();
-            });
-            var adys = $(".schedule_info .aday").click(function () {
-                adys.removeClass("current");
-                $(this).addClass("current");
-            });
+             });
+            $("#weuiAgree").change(function () {
+                if (this.checked) {
+                    $("#btn_appointment").removeAttr("disabled").removeClass("weui-btn_disabled");
+                } else {
+                    $("#btn_appointment").attr("disabled", "disabled").addClass("weui-btn_disabled");
+                }
+            }).change();
             $("#btn_appointment").click(function () {
-                $(this).hide();
-                $(".course_desci").hide();
-                $(".schedule_info").show();
-                $("#btn_save").show();
+                if ($(this).hasClass("weui-btn_disabled")) {
+                    return false;
+                }
+                $.confirm("确认预约当前课程？", function () {
+                    $.showLoading();                    
+                    apform.submit();
+                }, function() {
+                });
             });
-            $("#btn_save").click(function () {
-
-                return true;
-            });
+            function disStar() {
+                var starVal = @Model.data.star;
+                var fillStar = parseInt(starVal / 2);
+                var HalfStar = parseInt(starVal % 2);
+                var EnptyStar = 5 - (fillStar + HalfStar);
+                var htmlv = "";
+                for (var i = 0; i < fillStar; i++) {
+                    htmlv += '<i class="fa fa-star" aria-hidden="true"></i>';
+                }
+                for (var i = 0; i < HalfStar; i++) {
+                    htmlv += '<i class="fa fa-star-half-o" aria-hidden="true"></i>';
+                } for (var i = 0; i < EnptyStar; i++) {
+                    htmlv += '<i class="fa fa-star-o" aria-hidden="true"></i>';
+                }
+                $(".course_info .star span").html(htmlv);
+            }
+            disStar();
         });
     </script>
 }

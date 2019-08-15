@@ -31,21 +31,8 @@ li {
 .weui-cell.profile .weui-cell__ft {
     font-size: 12px;
 }
-.avatar{width:45px;height:45px;border-radius:100%;margin-right:5px}
+.avatar{width:45px;height:45px;border-radius:100%;margin-right:15px}
 .avatar img{display:block;width:45px;height:45px;border-radius:100%}
-.list_icon{display:block;margin-right:15px;background:url(/images/icon_m_default.png) left top no-repeat;background-size:250px 500px;width:20px;height:20px}
-.list_icon.icon_1{background-position:-150px -300px}
-.list_icon.icon_2{background-position:-200px -300px}
-.list_icon.icon_3{background-position:-225px -300px}
-.list_icon.icon_4{background-position:-200px -325px}
-.list_icon.icon_5{background-position:-225px -325px}
-.list_icon.icon_6{background-position:0 -325px}
-.list_icon.icon_7{background-position:-25px -325px}
-.list_icon.icon_8{background-position:-175px -300px}
-.list_icon.icon_9{background-position:-50px -325px}
-.list_icon.icon_10{background-position:-75px -325px}
-.list_icon.icon_11{background-position:-100px -325px}
-.list_icon.icon_12{background-position:-125px -325px;width:16px;height:19px}
 tags{
     
 }
@@ -122,6 +109,10 @@ tags{
     height: 100%;
     border-radius: 100%;
 }
+    .course_info .name {
+        font-size: 18px;
+        font-weight: 700;
+    }
 .schedule_info {
     padding-bottom: 40px;
 }
@@ -248,7 +239,8 @@ tags{
 
     .bg-coupon .ticket .money {
         color: red;
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: 700;
     }
 
     .bg-coupon .ticket .discount {
@@ -273,6 +265,7 @@ tags{
 }
 
     .cards_content .card {
+        display:block;
         border-radius: 10px;
         padding: 10px;
         height: 140px;
@@ -342,4 +335,18 @@ tags{
 }
 .weui-form-preview {
     margin-bottom: 20px;
+}
+
+.date_show {
+    background: #fff;
+}
+
+.calendar_show {
+    background: #fff;
+    width: 100%;
+    position: absolute;
+    z-index: 99;
+    left: 0;
+    top: 50px;
+    box-shadow: 0 3px 3px rgba(123,123,123,.2)
 }

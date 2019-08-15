@@ -215,11 +215,38 @@ namespace Website.Controllers
             return View(user);
         }
 
+        [AllowAnonymous]
         public IActionResult yoga()
         {
-     
+            var ydata = yoga_data(DateTime.Now);
+            if (!ydata.ok)
+            {
+                //error
+            }
+            TempData["data"] = JsonConvert.SerializeObject(ydata.data);
+
             return View();
         }
+        [AllowAnonymous]
+        public ApiResult<List<YogaClass>> yoga_data(DateTime rq)
+        {
+            ApiResult<List<YogaClass>> result = new ApiResult<List<YogaClass>>();
+            var dbh = DbContext.Get();
+            var lstdata = dbh.Db.Queryable<YogaClass>()
+                .Where(ii => ii.rdate == rq.Date && ii.enabled)
+                .OrderBy(ii => ii.rtimeRange)
+                .IgnoreColumns(ii=> new { ii.description, ii.enabled })
+                //.Select(ii => new { ii.id, ii.name, ii.RtimeRange, ii.star, ii.tags, ii.avatar, ii.teacher })
+                .ToList();
+
+            result.data = lstdata;
+            result.ok = true;
+
+            return result;
+        }
+
+
+
 
         [AllowAnonymous]
         public IActionResult skincare()
@@ -232,13 +259,94 @@ namespace Website.Controllers
         }
         public IActionResult mycards()
         {
-     
-            return View();
+            var userid = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            var qryd = dbh.Db.Queryable<UserCard, Card>((t1, t2) => new object[] { SqlSugar.JoinType.Left, t1.cardsId == t2.id })
+                .Where((t1, t2) => t1.userid == userid && t1.cardexpiryDate >= DateTime.Now.Date && t1.usedCnt<t1.canUseCnt)
+                .Select((t1, t2) => new MyCardsModel() {
+                    name = t1.cardname,
+                    img = t2.img,
+                    type = t1.cardtype,
+                    description = t2.description,
+                    cornerMark = t2.cornerMark,
+                    expiryDate = t1.cardexpiryDate,
+                    canUseCnt = t1.canUseCnt,
+                    usedCnt = t1.usedCnt })
+                .ToList();
+
+            return View(qryd);
+        } public IActionResult mytickets()
+        {
+            var userid = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            var qryd = dbh.Db.Queryable<UserTicket, Ticket>((t1, t2) => new object[] { SqlSugar.JoinType.Left, t1.ticketid == t2.id })
+                .Where((t1, t2) => t1.userid == userid && !t1.deleted && t1.expiryDate >= DateTime.Now.Date && t1.useOrder == null)
+                .Select((t1, t2) => new MyticketsModel()
+                {
+                    name = t2.name,
+                    type = t2.type,
+                    expiryDate = t1.expiryDate,
+                    value = t2.value,
+                    threshold = t2.threshold
+                })
+                .ToList();
+
+            return View(qryd);
         }
 
-        public IActionResult mycoupon()
+        public IActionResult myygorder()
         {
-     
+            var userid = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            var dd = DateTime.Now.Date.AddDays(-365);
+
+            var qryd = dbh.Db.Queryable<YogaOrder, YogaClass>((t1, t2) => new object[] { SqlSugar.JoinType.Left, t1.classId == t2.id })
+                .Where((t1, t2) => t1.userId == userid && t2.rdate > dd)
+                .Select((t1, t2) => new { t1.id, t2.rdate, t2.rtimeRange, className = t2.name, t2.teacher, t2.address, t1.canceled })
+                .MergeTable()
+                .OrderBy(ii => ii.rdate, SqlSugar.OrderByType.Desc).ToList();
+            var d1 = new JArray();
+            var d2 = new JArray();
+            var d3 = new JArray();
+            var tdv = DateTime.Now.Date;
+            foreach (var item in qryd)
+            {
+                if (item.canceled)
+                {
+                    d3.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("rdate", item.rdate.ToString("yyyy-MM-dd")),
+                        new JProperty("className", item.className),
+                        new JProperty("rtimeRange", item.rtimeRange),
+                        new JProperty("teacher", item.teacher),
+                        new JProperty("address", item.address)
+                        ));
+                }
+                else if (item.rdate < tdv)
+                {
+                    d2.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("rdate", item.rdate.ToString("yyyy-MM-dd")),
+                        new JProperty("className", item.className),
+                        new JProperty("rtimeRange", item.rtimeRange),
+                        new JProperty("teacher", item.teacher),
+                        new JProperty("address", item.address)
+                        ));
+                }
+                else
+                {
+                    d1.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("rdate", item.rdate.ToString("yyyy-MM-dd")),
+                        new JProperty("className", item.className),
+                        new JProperty("rtimeRange", item.rtimeRange),
+                        new JProperty("teacher", item.teacher),
+                        new JProperty("address", item.address)
+                        ));
+                }
+            }
+            var tmpAllData = new JObject(new JProperty("d1", d1), new JProperty("d2", d2), new JProperty("d3", d3));
+            TempData["listdata"] = tmpAllData.ToString(Formatting.None);
             return View();
         }
         public IActionResult myscorder()

@@ -1,0 +1,80 @@
+﻿@model App.Data.Card
+@{
+    ViewData["Title"] = "购买会员卡";
+    Layout = null;
+}
+<style>
+.card_item label{display:block;-webkit-box-flex:1;-moz-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
+.card_item label b{font-size:15px;color:#333;line-height:20px}
+.card_item label span{font-size:12px;color:#a5a5a5}
+.card_item label .expiry{display:block;padding:6px 0}
+.card_item label .price{padding-left: 20px;}
+.card_item label .price span{text-decoration:line-through}
+#cardspecific .weui-cells_form{
+    margin-top:0;
+}
+</style>
+<div id="cardspecific">
+    <div class="cards_content content">
+        <a class="card" href="/cards/buy?id=@Model.id" @(string.IsNullOrEmpty(Model.img) ? "" : "style=background-image:url(" + Model.img + ")")>
+            <p class="name">@Model.name</p>
+            <p class="type">@Model.type</p>
+            <p class="description">特别说明：@Model.description</p>
+            @if (!string.IsNullOrEmpty(Model.cornerMark))
+            {
+                <p class="corner_newer">
+                    <span class="des">@Model.cornerMark</span>
+                </p>
+            }
+        </a>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell card_item">
+            <label>
+                @if (Model.type == "次卡")
+                {
+                    <b>@Model.price 元（@Model.canUseCount 次）</b>
+                }
+                else
+                {
+                    <b>@Model.price 元</b>
+                }
+                @if (Model.price2 > 0)
+                {
+                    <span class="price">原价 <span>¥@Model.price2</span></span>
+                }
+                else
+                {
+                    <span class="price"></span>
+                }
+                <span class="expiry">使用期限：@Model.expiry 天</span>
+            </label>
+        </div>
+        <form action="/cards/buy" enctype="multipart/form-data" method="post">
+            <div class="weui-agree">
+                <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+                <span class="weui-agree__text">
+                    <label for="weuiAgree">阅读并同意</label>  <a href="/agreement?id=1">《会员协议》</a>
+                </span>
+            </div>
+            <input type="hidden" name="id" value="@Context.Request.Query["id"]" />
+            <input type="submit" id="btn_buy" class="weui-btn weui-btn_primary" value="购买">
+        </form>
+        <a href="javascript:history.go(-1);" class="weui-btn weui-btn_default" style="margin-top:16px;">返回</a>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#weuiAgree").change(function () {
+            if (this.checked) {
+                $("#btn_buy").removeAttr("disabled").removeClass("weui-btn_disabled");
+            } else {
+                $("#btn_buy").attr("disabled", "disabled").addClass("weui-btn_disabled");
+            }
+        }).change();
+        $("#btn_buy").click(function () {
+
+        });
+    });
+</script>
+

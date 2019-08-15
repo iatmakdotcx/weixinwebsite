@@ -65,7 +65,7 @@ namespace Website.Controllers
                 return ShowErrorPage("登录已失效");
             }
 
-            SkinCareOrder sco = dbh.GetEntityDB<SkinCareOrder>().AsQueryable().First(ii => ii.UserId == userid && ii.ClassId == id && ii.reserveDate == reserveDate);
+            SkinCareOrder sco = dbh.GetEntityDB<SkinCareOrder>().AsQueryable().First(ii => ii.UserId == userid && ii.ClassId == id && ii.reserveDate == reserveDate && !ii.canceled);
             if (sco != null)
             {                
                 return ShowErrorPage("已预约过相同日期");

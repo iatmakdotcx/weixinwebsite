@@ -5,7 +5,7 @@
 
     <div class="bd">
         <div class="weui-flex course_info">
-            <a class="thumb"><img src="@Model.data.avatar"></a>
+            <p class="thumb"><img src="@Model.data.avatar"></p>
             <div class="weui-flex__item detail">
                 <p class="name">@Model.data.name</p>
                 <p class="locate">地点：@Model.data.address</p>
@@ -17,11 +17,11 @@
         {
             <div class="course_desci">
                 <p class="info_title">项目介绍</p>
-                <div class="info_detail">
+                <div class="info_detail" style="display:block">
                     @Html.Raw(Model.data.description)
                 </div>
             </div>
-            <div class="weui-footer_fixed-bottom">                
+            <div class="weui-footer_fixed-bottom">
                 <a class="weui-btn weui-btn_plain-default weui-btn_mini" href="/login?ReturnUrl=@System.Web.HttpUtility.UrlEncode(Context.Request.Path)">立即预约</a>
             </div>
         }
@@ -36,7 +36,6 @@
             <div class="schedule_info">
                 <p class="schedule_title">选择日期</p>
                 <div class="weui-grids">
-
                     @foreach (var item in Model.dayinfo.OrderBy(ii => ii.date))
                     {
                         <div class="weui-grid-2">

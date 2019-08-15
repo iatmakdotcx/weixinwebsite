@@ -5,12 +5,11 @@
     <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
     <div class="weui-msg__text-area">
         <h2 class="weui-msg__title">操作成功</h2>
-        <p class="weui-msg__desc">您的预约单已提交，工作人员稍后会电话与您确认。</p>
+        <p class="weui-msg__desc"></p>
     </div>
     <div class="weui-msg__opr-area">
         <p class="weui-btn-area">
-            <a href="/#/home/yoga" class="weui-btn weui-btn_primary">继续预约</a>
-            <a href="/#/home/userinfo" class="weui-btn weui-btn_default" style="margin-top:16px;">返回主页</a>
+            <a href="/#/home/mycards" class="weui-btn weui-btn_primary">返回我的会员卡</a>
         </p>
     </div>
     <div class="weui-msg__extra-area">
@@ -19,3 +18,13 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script>
+        $(function () {
+            history.pushState(null, null, window.location.href)
+            window.onpopstate = function (event) {
+                history.go(1)
+            }
+        });
+    </script>
+}

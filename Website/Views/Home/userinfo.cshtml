@@ -3,7 +3,7 @@
     ViewData["Title"] = "用户";
     Layout = null;
 }
-    <title>@ViewData["Title"]</title>
+<title>@ViewData["Title"]</title>
 <div class="weui-cells">
     <a class="weui-cell weui-cell_access profile" href="/profile">
         <div class="weui-cell__hd avatar"><img src="@Model.avatar"></div>
@@ -15,14 +15,14 @@
     </a>
 </div>
 <div class="weui-cells userinfo">
-    <a class="weui-cell weui-cell_access" data-href="/home/mycards" >
+    <a class="weui-cell weui-cell_access" data-href="/home/mycards">
         <i class="fa fa-credit-card" aria-hidden="true" style="color:#fa7973"></i>
         <div class="weui-cell__bd">
             <p>我的会员卡</p>
         </div>
         <div class="weui-cell__ft"></div>
     </a>
-    <a class="weui-cell weui-cell_access" data-href="/home/mycoupon" >
+    <a class="weui-cell weui-cell_access" data-href="/home/mytickets">
         <i class="fa fa-ticket" aria-hidden="true" style="color:#fa7973"></i>
         <div class="weui-cell__bd">
             <p>优惠券</p>
@@ -39,7 +39,7 @@
         </div>
         <div class="weui-cell__ft"></div>
     </a>
-    <a class="weui-cell weui-cell_access" data-href="/home/myscorder">        
+    <a class="weui-cell weui-cell_access" data-href="/home/myscorder">
         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
         <div class="weui-cell__bd">
             <p>美肤预约</p>
@@ -47,6 +47,26 @@
         <div class="weui-cell__ft"></div>
     </a>
 </div>
+
+<div class="weui-cells__title">购买</div>
+<div class="weui-cells userinfo">
+    <a class="weui-cell weui-cell_access" data-href="/cards/list">
+        <i class="fa fa-credit-card" aria-hidden="true"></i>
+        <div class="weui-cell__bd">
+            <p>购买会员卡</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" data-href="/home/myscorder">
+        <i class="fa fa-ticket" aria-hidden="true"></i>
+        <div class="weui-cell__bd">
+            <p>购买优惠券</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+</div>
+
+
 
 <script>
     $(function () {

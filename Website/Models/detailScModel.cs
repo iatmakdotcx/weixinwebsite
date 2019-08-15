@@ -17,6 +17,7 @@ namespace Website.Models
             public DateTime date;
             public int remain = 0;
         }
+        public bool ordered = false;
     }
 
 }

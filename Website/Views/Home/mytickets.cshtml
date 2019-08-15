@@ -1,0 +1,44 @@
+﻿@model List<MyticketsModel>
+@{
+    ViewData["Title"] = "我的优惠券";
+    Layout = null;
+}
+    <title>@ViewData["Title"]</title>
+    <div class="content">
+        @foreach (var item in Model)
+        {
+            <div class="bg-coupon">
+                <div class="ticket">
+                    <ul class="box-l">
+                        <li class="title">@item.name</li>
+                        <li class="time">有效期至:@item.expiryDate</li>
+                    </ul>
+                    <div class="split-line"></div>
+                    <ul class="box-r">
+                        @if (item.type == "满减")
+                        {
+                            <li class="money">￥@item.value</li>
+                        }
+                        else
+                        {
+                            <li class="money">@(Math.Round(item.value * 10, 1))折</li>
+                        }
+                        @if (item.threshold > 0)
+                        {
+                            <li class="discount">满 @item.threshold 元</li>
+                        }
+                        else
+                        {
+                            <li class="discount">任意消费</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+<script>
+    $(function () {
+
+    });
+</script>
+

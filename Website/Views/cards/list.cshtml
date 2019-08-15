@@ -1,0 +1,29 @@
+﻿@model System.Collections.Generic.List<App.Data.Card>
+@{
+    ViewData["Title"] = "我的会员卡";
+    Layout = null;
+}
+    <title>@ViewData["Title"]</title>
+<div class="cards_content content">
+    @foreach (var item in Model)
+    {        
+        <a class="card" data-href="/cards/buy?id=@item.id" @(string.IsNullOrEmpty(item.img)?"":"style=background-image:url("+item.img+")")>    
+        <p class="name">@item.name</p>
+        <p class="type">@item.type</p>
+        <p class="description">特别说明：@item.description</p>
+        @if (!string.IsNullOrEmpty(item.cornerMark))
+        {
+        <p class="corner_newer">
+            <span class="des">@item.cornerMark</span>
+        </p>
+        }
+    </a> 
+    }
+</div>
+
+<script>
+    $(function () {
+
+    });
+</script>
+
