@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MakC.Common
@@ -18,6 +19,19 @@ namespace MakC.Common
                 case DayOfWeek.Saturday: return "周六";
                 case DayOfWeek.Sunday: return "周日";
                 default: return "";
+            }
+        }
+        public static string MD5Hash(string input)
+        {
+            return MD5Hash(Encoding.UTF8.GetBytes(input));
+        }
+        public static string MD5Hash(byte[] input)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var result = md5.ComputeHash(input);
+                var strResult = BitConverter.ToString(result);
+                return strResult.Replace("-", "").ToLower();
             }
         }
     }

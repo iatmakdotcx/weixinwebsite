@@ -121,7 +121,9 @@ layui.define(['config', 'admin', 'layer', 'element', 'form'], function (exports)
                 index.loadurl(location.hash.substr(1));
             }
         },
-
+        reload: function () {
+            index.loadurl(location.hash.substr(1));
+        },
         // 右侧弹出
         popupRight: function (path, w) {
             var param = new Object();
@@ -153,6 +155,24 @@ layui.define(['config', 'admin', 'layer', 'element', 'form'], function (exports)
                 $(layero).children('.layui-layer-content').load(param.path);
             };
             return layer.open(param);
+        },
+        popupCenter: function (title, url, width, height, fun) {            
+            layer.open({
+                type: 1,
+                title: title,
+                shadeClose: false,
+                shade: 0.2,
+                skin: 'layer-cur-open',
+                maxmin: false,
+                area: [width, height],               
+                zIndex: "1000",
+                success : function (layero) {                    
+                    $(layero).children('.layui-layer-content').load(url);
+                },
+                end: function () {
+                    if (fun) fun();
+                }
+            });
         },
         // 页面元素绑定事件监听
         bindEvent: function () {

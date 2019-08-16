@@ -8,7 +8,7 @@ layui.define(function (exports) {
                 async: true,
                 dataType: 'json', //服务器返回json格式数据
                 type: 'post', //HTTP请求类型
-                timeout: 10 * 1000, //超时时间设置为50秒；
+                timeout: 50 * 1000, //超时时间设置为50秒；
                 success: function (data) {
                     callFun(data);
                 },

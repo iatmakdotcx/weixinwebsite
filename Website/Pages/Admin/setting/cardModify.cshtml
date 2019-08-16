@@ -1,0 +1,189 @@
+﻿@page
+@model Website.Pages.Admin.setting.cardModifyModel
+@{
+    ViewData["Title"] = "cardModify";
+    Layout = null;
+}
+    <style>
+       #cardsettingInput{
+            padding-top:20px;
+        }
+       .layui-textarea{
+           width:520px;
+       }
+       .imgpreview{
+           height:60px;
+           z-index:2;
+       }
+       .imgpreview img{
+           width:200px;
+           height:120px;           
+       }
+    </style>
+<div id="cardsettingInput">
+    <form class="layui-form form-cus" action="" lay-filter="card-set-form-group">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="id" value="@Model.Acard?.id" />
+                <input type="text" name="name" value="@Model.Acard?.name" maxlength="20" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <select name="type" id="cardtype" lay-filter="cardtype">
+                        <option value=""></option>
+                        <option value="次卡">次卡</option>
+                        <option value="周卡">周卡</option>
+                        <option value="月卡">月卡</option>
+                        <option value="季卡">季卡</option>
+                        <option value="年卡">年卡</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline" id="ckzcs">
+                <label class="layui-form-label">总次数</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="canUseCount" value="@Model.Acard?.canUseCount" min="0" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">效期</label>
+            <div class="layui-input-inline">
+                <input type="number" name="expiry" value="@Model.Acard?.expiry" min="0" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-mid layui-word-aux">天</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">价格</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="price" value="@Model.Acard?.price" min="0" step="0.01" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">原价</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="price2" value="@Model.Acard?.price2" min="0" step="0.01" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">允许购买</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="canBuy" value="true" @((Model.Acard!=null&&Model.Acard.canBuy) ? "checked=checked" : "") lay-skin="switch" lay-text="Yes|No">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">停用</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="disabled" value="true" @((Model.Acard!=null&&Model.Acard.disabled) ? "checked=checked" : "") lay-skin="switch" lay-text="Yes|No">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="test-upload-normal">上传图片</button>
+                <input type="hidden" id="img" name="img" value="@Model.Acard?.img" />                
+            </div>
+            <div class="layui-inline imgpreview">
+                <img class="layui-upload-img" id="test-upload-normal-img" src="@Model.Acard?.img">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">角标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="cornerMark" value="@Model.Acard?.cornerMark" maxlength="20" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <p id="test-upload-demoText"></p>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">卡片说明</label>
+            <div class="layui-input-block">
+                <textarea name="description" placeholder="请输入内容" class="layui-textarea">@Model.Acard?.description</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="submit" id="submit"><i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-hide"></i>立即提交</button>
+                <button type="button" class="layui-btn layui-btn-primary btn-open-close">取消</button>
+            </div>
+        </div>
+</form>
+</div>
+<script>
+    layui.use(['form', "table", 'upload'], function () {
+        var table = layui.table
+            , element = layui.element
+            , form = layui.form;
+        var index = ($("#cardsettingInput").closest(".layui-layer-page").attr("times"));
+        @if (Model.Acard!=null)
+        {
+            <text>
+        $("#cardtype").val("@Html.Raw(Model.Acard.type)")
+            </text>
+        }
+
+        form.render(null, 'card-set-form-group');
+
+        form.on('submit(submit)', function (data) {
+            var bricon = $('#submit').attr('disabled', true).find('i');
+            bricon.removeClass('layui-hide');
+            layui.config.ajax('/api/admin/setting/saveCard', data.field, function (res) {
+                bricon.addClass('layui-hide');
+                if (res.ok) {
+                    layer.msg("保存成功");
+                    layer.close(index);
+                }
+                else {
+                   layer.alert(res.msg);
+                }
+            });
+            return false;
+        });
+        function cardtypechange(data) {
+            if (data.value == "次卡") {
+                $("#ckzcs").show();
+            } else {
+                $("#ckzcs").hide();
+            }
+        }
+        form.on('select(cardtype)', cardtypechange);
+        cardtypechange({ value: $("#cardtype").val() });
+        $(".btn-open-close").on('click', function () {
+            layer.close(index);
+        });
+        var uploadInst = layui.upload.render({
+            elem: '#test-upload-normal'
+            ,size: 1024
+            , url: '/api/admin/setting/cardimg'
+            , before: function (obj) {
+                obj.preview(function (index, file, result) {
+                    $('#test-upload-normal-img').attr('src', result);
+                });
+            }
+            , done: function (res) {
+                if (!res.ok) {
+                    return layer.msg('上传失败');
+                }
+                $("#img").val(res.data);
+            }
+            , error: function () {
+                var demoText = $('#test-upload-demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>

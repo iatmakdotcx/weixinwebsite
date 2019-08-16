@@ -1,0 +1,102 @@
+﻿@page
+@model Website.Pages.Admin.setting.cardsModel
+@{
+    ViewData["Title"] = "会员卡设置";
+    Layout = null;
+}
+
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>设置</cite></a><span lay-separator="">/</span>
+            <a><cite>会员卡设置</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="list-wall">
+            <div class="layui-form list-search" style="margin-top:10px;">
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>                
+            </div>
+            <table class="layui-hide" id="cardtablist" lay-filter="cardsettingtool"></table>
+        </div>
+        <script type="text/html" id="cardsettingtool">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon"></i> 修改</a>
+            @*<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="delete"><i class="layui-icon"></i> 删除</a>*@
+        </script>
+    </div>
+</div>
+<script>
+    layui.use(['form',"table"], function () {
+        var table = layui.table
+            , element = layui.element
+            , form = layui.form;
+
+         table.render({
+            elem: '#cardtablist',
+            url: '/api/admin/setting/getcards',
+            cols: [
+                [                    
+                    { type: 'numbers', fixed: 'left' },
+                    { field: 'name', width: 200, title: '名称', fixed: 'left' },
+                    { field: 'type', width: 60, title: '类型' },                    
+                    {
+                        field: 'img', title: '图片', width:100, templet: function (data) {
+                            return '<img src="' + data.img+'" style="width:60px;height:40px;">';
+                        }
+                    },
+                    { field: 'expiry', width: 60, title: '效期' },
+                    {
+                        field: 'canUseCount', title: '可用次数',width: 90, templet: function (data) {
+                            return data.type == "次卡" ? data.canUseCount : "-";
+                        }
+                    },
+                    { field: 'price', width: 100, title: '价格' },
+                    { field: 'price2', width: 100, title: '原价' },
+                    {
+                        width: 90, title: '允许购买',align: 'center', templet: function (data) {
+                            return data.canBuy == true ? "√" : "";
+                        }
+                    },
+                    {
+                        width: 90, title: '停用',align: 'center', templet: function (data) {
+                            return data.disabled == true ? "√" : "";
+                        }
+                    },
+                    { width: 154, title: '操作', templet: '#cardsettingtool' },
+                    { field: 'description', title: '描述' },
+                ]
+            ],
+            page: true
+            , response: { statusCode: 200}
+            , parseData: function (res) {
+                return {
+                    "code": res.statusCode,
+                    "msg": res.msg,
+                    "count": res.data.totalCnt,
+                    "data": res.data.items
+                };
+            }
+         });
+
+        var active = {
+            toolAdd: function () {
+                layui.index.popupCenter('添加会员', '/admin/setting/cardmodify', '700px', '610px', function () {
+                    layui.index.reload();
+                })
+            }
+        }
+        $('.list-search .layui-btn').on('click', function () {
+            var type = $(this).data('action');
+            active[type] ? active[type].call(this) : '';
+        });
+        table.on('tool(cardsettingtool)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                layui.index.popupCenter('修改会员', '/admin/setting/cardmodify?id=' + data.id, '700px', '610px', function () {
+                    layui.index.reload();
+                })
+            }
+        });
+    });
+</script>

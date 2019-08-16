@@ -78,19 +78,14 @@
                         <dl class="layui-nav-child">
                             <dd><a href="#setting/weixin">微信设置</a></dd>
                             <dd><a href="#setting/register">注册设置</a></dd>
-                            <dd>
-                                <a href="javascript:;">BeedUp</a>
-                                <dl class="layui-nav-child">
-                                    <dd><a href="javascript:;" lay-href="beeup/beeupkeygen.aspx">BeeupGenKey</a> </dd>
-                                </dl>
-                            </dd>
                         </dl>
                     </li>
 
                     <li class="layui-nav-item">
-                        <a href="javascript:;"><i class="layui-icon layui-icon-set"></i>&emsp;<cite>Ngrok</cite></a>
+                        <a href="javascript:;"><i class="layui-icon layui-icon-set"></i>&emsp;<cite>卡券管理</cite></a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;" lay-href="ngrok/login.aspx">login</a></dd>
+                            <dd><a href="#setting/cards">会员卡设置</a></dd>
+                            <dd><a href="#setting/tickets">优惠券设置</a></dd>
                         </dl>
                     </li>
 
@@ -177,7 +172,10 @@
             base: '/layui/mod/'
         }).use(['index'], function () {           
             var index = layui.index;            
-            index.init();            
+            index.init();
+            if (location.hash) {
+                $("a[href='" + location.hash + "']").addClass("layui-this").parents("li.layui-nav-item").addClass("layui-nav-itemed");
+            }
         });
     </script>
 </body>

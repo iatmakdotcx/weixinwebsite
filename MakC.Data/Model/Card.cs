@@ -54,7 +54,7 @@ namespace App.Data
         /// <summary>
         /// 商品原价
         /// </summary>
-        public float? price2 { get; set; }
+        public float price2 { get; set; }
 
     }
 }

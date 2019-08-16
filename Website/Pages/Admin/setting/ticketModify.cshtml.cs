@@ -10,11 +10,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Website.Pages.Admin.setting
 {
     [AdminAuthorize(Roles = "Admin")]
-    public class registerModel : PageModel
-    {        
-        public void OnGet()
+    public class ticketModifyModel : PageModel
+    {
+        public App.Data.Ticket Aticket = null;
+        public void OnGet(int id=0)
         {
-            
+            if (id > 0)
+            {
+                Aticket = DbContext.Get().GetEntityDB<App.Data.Ticket>().GetById(id);
+            }
         }
     }
 }
