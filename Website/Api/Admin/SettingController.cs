@@ -8,6 +8,8 @@ using App.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Website.Api.Admin
 {
@@ -108,8 +110,18 @@ namespace Website.Api.Admin
             return apiRes;
         }
         [HttpPost]
-        public async Task<ApiResult<string>> cardimg()
+        public async Task<ApiResult<string>> uploadimg(int p=0)
         {
+            string imgdir;
+            switch (p)
+            {
+                case 1: imgdir = "cards"; break;
+                case 2: imgdir = "class"; break;
+                case 3: imgdir = "classinfo"; break;
+                default:
+                    imgdir = "cards";
+                    break;
+            }
             var apiRes = new ApiResult<string>();
             try
             {
@@ -125,7 +137,7 @@ namespace Website.Api.Admin
                             var bbf = new byte[stream.Length];
                             stream.Read(bbf, 0, (int)stream.Length);
                             var ms5str = MakC.Common.mUtils.MD5Hash(bbf);
-                            var filename = "/images/cards/" + ms5str + ext;
+                            var filename = "/images/" + imgdir + "/" + ms5str + ext;
                             if (!System.IO.File.Exists(Environment.CurrentDirectory + "/wwwroot" + filename))
                             {
                                 await System.IO.File.WriteAllBytesAsync(Environment.CurrentDirectory + "/wwwroot" + filename, bbf);
@@ -143,6 +155,33 @@ namespace Website.Api.Admin
                 apiRes.data = "";
             }
             return apiRes;
+        }
+        [HttpPost]
+        public ContentResult UMuploadimg(string editorid = "", string callback = "")
+        {
+            var upq = uploadimg(3).Result;
+
+            if (upq.ok)
+            {
+                var jsonData= new JObject(
+                    new JProperty("state", "SUCCESS"),
+                    new JProperty("url", upq.data.Substring(1)),
+                    new JProperty("originalName", "originalName"),
+                    new JProperty("name", Path.GetFileName(upq.data)),
+                    new JProperty("size", "0"),
+                    new JProperty("type", Path.GetExtension(upq.data))
+                    );
+                HttpContext.Response.ContentType = "text/html";
+                if (string.IsNullOrEmpty(callback))
+                {
+                    return Content(jsonData.ToString(Newtonsoft.Json.Formatting.None));
+                }
+                else
+                {
+                    return Content($"<script>{callback}(JSON.parse(\"{jsonData.ToString(Newtonsoft.Json.Formatting.None).Replace("\"","\\\"")}\"));</script>");
+                }
+            }
+            return Content("");
         }
 
         public ApiResult<ApiListObj<Ticket>> gettickets(int page, int limit)

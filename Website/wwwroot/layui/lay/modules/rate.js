@@ -89,7 +89,7 @@ layui.define('jquery',function(exports){
       if(options.half){
         if(parseInt(options.value) !== options.value){
           if(i == Math.ceil(options.value)){
-            temp = temp + '<li><i class="layui-icon layui-icon-rate-half" '+ style +'></i></li>';
+            temp = temp + '<li class="layui-inline"><i class="layui-icon layui-icon-rate-half" '+ style +'></i></li>';
           }else{
             temp = temp + item 
           } 

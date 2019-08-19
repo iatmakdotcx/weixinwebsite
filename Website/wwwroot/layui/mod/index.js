@@ -1,7 +1,6 @@
-layui.define(['config', 'admin', 'layer', 'element', 'form'], function (exports) {
+layui.define(['config', 'layer', 'element', 'form'], function (exports) {
     var $ = layui.$;
     var config = layui.config;
-    var admin = layui.admin;
     var element = layui.element;
 
     var index_events = {
@@ -61,7 +60,20 @@ layui.define(['config', 'admin', 'layer', 'element', 'form'], function (exports)
         locale: function () {
             index.popupRight('admin/components/locale', "100px");
         },
-
+        avartatPreview: function () {
+            var url = this.tagName == "IMG" ? this.src : $(this.getAttribute("data-apu")).val();
+            layui.layer.photos({
+                photos: {
+                    title: "查看头像",
+                    data: [{
+                        src: url
+                    }]
+                },
+                shade: .01,
+                closeBtn: 1,
+                anim: 5
+            })
+        },
 
 
         // 左滑动tab

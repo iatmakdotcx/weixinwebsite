@@ -16,10 +16,11 @@ namespace App.Data
         public int id { get; set; }
         public string name { get; set; }
         public string tags { get; set; }
-        public bool enabled { get; set; }
+        public bool disabled { get; set; }
         public string avatar { get; set; }
         public string description { get; set; }
         public string teacher { get; set; }
         public string address { get; set; }
+        public int orderCnt { get; set; }
     } 
 }

@@ -165,7 +165,7 @@
         var uploadInst = layui.upload.render({
             elem: '#test-upload-normal'
             ,size: 1024
-            , url: '/api/admin/setting/cardimg'
+            , url: '/api/admin/setting/uploadimg'
             , before: function (obj) {
                 obj.preview(function (index, file, result) {
                     $('#test-upload-normal-img').attr('src', result);

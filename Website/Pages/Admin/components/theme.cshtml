@@ -30,13 +30,10 @@
 </div>
 
 <script>
-    layui.use(['form', 'element', 'layer', 'config', 'index', 'admin'], function () {
+    layui.use(['form', 'element', 'layer', 'config', 'index'], function () {
         var element = layui.element;
         var form = layui.form;
-        var layer = layui.layer;
         var config = layui.config;
-        var index = layui.index;
-        var admin = layui.admin;
 
         $('#set-tab').prop('checked', config.pageTabs);
         if ($(document.head).find('#layuicss-assetscsstheme-bluecss').length > 0) {

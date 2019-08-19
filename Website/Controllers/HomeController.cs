@@ -252,7 +252,7 @@ namespace Website.Controllers
         public IActionResult skincare()
         {
             var data = DbContext.Get().Db.Queryable<SkinCareClass>()
-                .Where(ii => ii.enabled)
+                .Where(ii => !ii.disabled)
                 .Select(ii => new { ii.id, ii.name, ii.avatar, ii.tags }).ToList();
             var jsonDat = JsonConvert.SerializeObject(data);
             return View((object)jsonDat);

@@ -1,0 +1,85 @@
+﻿@page
+@model Website.Pages.Admin.skclistModel
+@{
+    ViewData["Title"] = "美肤课程设置";
+}
+<title>@ViewData["Title"]</title>
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>设置</cite></a><span lay-separator="">/</span>
+            <a><cite>美肤课程设置</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="list-wall">
+            <div class="layui-form list-search" style="margin-top:10px;">
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>
+            </div>
+            <table class="layui-hide" id="cardtablist" lay-filter="cardsettingtool"></table>
+        </div>
+        <script type="text/html" id="cardsettingtool">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon"></i> 修改</a>
+            @*<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="delete"><i class="layui-icon"></i> 删除</a>*@
+        </script>
+    </div>
+</div>
+<script>
+    layui.use(['form',"table"], function () {
+        var table = layui.table
+            , element = layui.element
+            , form = layui.form;
+
+         table.render({
+            elem: '#cardtablist',
+            url: '/api/admin/class/skclist',
+            cols: [
+                [
+                    { type: 'numbers', fixed: 'left' },
+                    { field: 'name', width: 200, title: '名称', fixed: 'left' },
+                    { field: 'tags', width: 200, title: '标签' },
+                    {
+                        field: 'img', title: '图片', width:100, templet: function (data) {
+                            return '<img src="' + data.avatar+'" style="width:40px;height:40px;">';
+                        }
+                    },
+                    { field: 'teacher', width: 100, title: '老师' },
+                    { field: 'orderCnt', align: 'center',width: 120, title: '每日可约次数' },
+                    {
+                        width: 90, title: '停用',align: 'center', templet: function (data) {
+                            return data.disabled == true ? "√" : "";
+                        }
+                    },
+                    { width: 154, title: '操作', templet: '#cardsettingtool' }
+                ]
+            ],
+            page: true
+            , response: { statusCode: 200}
+            , parseData: function (res) {
+                return {
+                    "code": res.statusCode,
+                    "msg": res.msg,
+                    "count": res.data.totalCnt,
+                    "data": res.data.items
+                };
+            }
+         });
+
+        var active = {
+            toolAdd: function () {
+                location.hash = '#class/skcedit'
+            }
+        }
+        $('.list-search .layui-btn').on('click', function () {
+            var type = $(this).data('action');
+            active[type] ? active[type].call(this) : '';
+        });
+        table.on('tool(cardsettingtool)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                location.href = '#class/skcedit?id=' + data.id;
+            }
+        });
+    });
+</script>
