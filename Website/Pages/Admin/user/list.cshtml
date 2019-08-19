@@ -1,0 +1,120 @@
+﻿@page
+@model Website.Pages.Admin.user.listModel
+@{
+    ViewData["Title"] = "会员管理";
+    Layout = null;
+}
+<title>@ViewData["Title"]</title>
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>会员管理</cite></a><span lay-separator="">/</span>
+            <a><cite>会员列表</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="list-wall">
+            <div class="layui-form list-search" style="margin-top:10px;">
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>
+                搜索：
+                <div class="layui-inline">
+                    <input class="layui-input" id="qrykw" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                </div>
+                <button class="layui-btn" data-action="reload">搜索</button>
+            </div>
+            <table class="layui-hide" id="cardtablist" lay-filter="cardsettingtool"></table>
+        </div>
+        <script type="text/html" id="cardsettingtool">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon"></i> 修改</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="setpwd"><i class="layui-icon"></i> 重置密码</a>
+        </script>
+    </div>
+</div>
+<script>
+    layui.use(['form',"table"], function () {
+        var table = layui.table
+            , element = layui.element
+            , form = layui.form;
+
+         table.render({
+            elem: '#cardtablist',
+            url: '/api/admin/user/list',
+            cols: [
+                [                    
+                    { type: 'numbers', fixed: 'left' },
+                    { field: 'tel', width: 130, title: '手机号', fixed: 'left' },                  
+                    {
+                        field: 'nickname', width: 200, title: '昵称', templet: function (data) {
+                            return '<img src="' + data.avatar+'" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;
+                        }
+                    },
+                    { field: 'vipRebate', width: 80, title: 'Vip折扣' },
+                    { field: 'balance', width: 100, title: '余额' },
+                    { field: 'address', width: 150, title: '地址' },
+                    {
+                        width: 90, title: '绑定微信',align: 'center', templet: function (data) {
+                            return data.wxid != null ? "√" : "";
+                        }
+                    },
+                    { field: 'createAt', width: 165, title: '创建时间' },
+                    {
+                        width: 90, title: '停用',align: 'center', templet: function (data) {
+                            return data.disabled == true ? "√" : "";
+                        }
+                    },
+                    { width: 180, title: '操作', templet: '#cardsettingtool' },
+                    { field: 'description', title: '描述' },
+                ]
+            ],
+            page: true
+            , response: { statusCode: 200}
+             , parseData: function (res) {
+                 console.log(res);
+                return {
+                    "code": res.statusCode,
+                    "msg": res.msg,
+                    "count": res.data.totalCnt,
+                    "data": res.data.items
+                };
+            }
+         });
+
+        var active = {
+            toolAdd: function () {
+                layui.index.popupCenter('添加会员', '/admin/user/edit', '720px', '510px', function () {
+                    layui.index.reload();
+                })
+            },
+            reload: function () {
+                table.reload('cardtablist', {
+                    where: { kw:$("#qrykw").val() }
+                });
+            }
+        }
+        $('.list-search .layui-btn').on('click', function () {
+            var type = $(this).data('action');
+            active[type] ? active[type].call(this) : '';
+        });
+        table.on('tool(cardsettingtool)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                layui.index.popupCenter('修改会员资料', '/admin/user/edit?id=' + data.id, '720px', '510px', function () {
+                    layui.index.reload();
+                })
+            }else if (obj.event === 'setpwd') {
+                layer.prompt({ title: '新密码' }, function (value, index) {                    
+                    layui.config.ajax('/api/admin/user/resetPassword', {id:data.id,tel:data.tel,newpwd:value}, function (res) {
+                        if (res.ok) {
+                            layer.msg("保存成功");
+                            layer.close(index);
+                        }
+                        else {
+                            layer.alert(res.msg);
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>

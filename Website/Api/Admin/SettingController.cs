@@ -77,9 +77,8 @@ namespace Website.Api.Admin
         {
             ApiResult<ApiListObj<Card>> alc = new ApiResult<ApiListObj<Card>>();
             var dbh = DbContext.Get();
-            alc.data = new ApiListObj<Card>();
-            alc.data.totalCnt = dbh.Db.Queryable<Card>().Count();
-            alc.data.items = dbh.Db.Queryable<Card>().ToList();
+            alc.data = new ApiListObj<Card>();            
+            alc.data.items = dbh.Db.Queryable<Card>().ToPageList(page, limit, ref alc.data.totalCnt);
             alc.ok = true;
             return alc;
         }
@@ -150,9 +149,8 @@ namespace Website.Api.Admin
         {
             ApiResult<ApiListObj<Ticket>> alc = new ApiResult<ApiListObj<Ticket>>();
             var dbh = DbContext.Get();
-            alc.data = new ApiListObj<Ticket>();
-            alc.data.totalCnt = dbh.Db.Queryable<Ticket>().Count();
-            alc.data.items = dbh.Db.Queryable<Ticket>().ToList();
+            alc.data = new ApiListObj<Ticket>();            
+            alc.data.items = dbh.Db.Queryable<Ticket>().ToPageList(page, limit, ref alc.data.totalCnt);
             alc.ok = true;
             return alc;
         }

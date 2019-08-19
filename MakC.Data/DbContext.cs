@@ -35,6 +35,7 @@ namespace App.Data
             });
             Db.Aop.OnLogExecuting = (sql, pars) => //SQL执行前 可以修改SQL
             {
+#if DEBUG
                 StringBuilder sbsql = new StringBuilder();
                 sbsql.AppendLine("---------------------------------sql start-----------------------------------------");
                 sbsql.AppendLine(sql);
@@ -45,7 +46,7 @@ namespace App.Data
                 }
                 sbsql.AppendLine("----------------------------------sql end----------------------------------------");
                 System.Diagnostics.Trace.WriteLine(sbsql.ToString());
-
+#endif
             };
 
         }

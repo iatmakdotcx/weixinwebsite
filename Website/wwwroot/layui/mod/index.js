@@ -221,6 +221,9 @@ layui.define(['config', 'admin', 'layer', 'element', 'form'], function (exports)
         },
         render: function (html, title) {
             $('.layui-body').html(html);
+            if (title) {
+                document.title = title;
+            }
         },
         openTabWindow: function (menuId, menuPath, menuName) {
             layer.load(2);

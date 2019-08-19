@@ -19,9 +19,11 @@ namespace App.Data
         public int? height { get; set; }
         public float? weight { get; set; }
         public string wxId { get; set; }
-        public int VipLevel { get; set; }
+        public float vipRebate { get; set; }
         public decimal balance { get; set; }
         public DateTime createAt { get; set; }
         public string avatar { get; set; }
+        public bool disabled { get; set; }
+        public string description { get; set; }
     }
 }
