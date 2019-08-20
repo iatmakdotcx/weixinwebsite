@@ -8,7 +8,7 @@
     </div>
 
     <div class="weui-tabbar">
-        <a href="#mainview" data-href="/home/mycards" class="weui-tabbar__item">
+        <a href="#mainview" data-href="/home/home" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="~/images/icon_nav_button.png" alt="">
             </div>
@@ -69,7 +69,7 @@
             loadurl("#mainview", location.hash.substr(1));
             $("a[data-href='" + location.hash.substr(1) + "']").addClass("weui-bar__item--on");
         } else {
-            loadurl("#mainview", "/home/mycards");
+            loadurl("#mainview", "/home/home");
         }
         window.onhashchange = function () {
             loadurl("#mainview", location.hash.substr(1));

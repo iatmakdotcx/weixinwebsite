@@ -12,9 +12,10 @@ namespace Website.Api
 
     public class wxApiController : ControllerBase
     {
-        public string getwxid()
+        public string getwxid(string code)
         {
-            return "";
+            string wxid = MakC.Common.Auth.Auth_WeiXin.Get_openid(code);
+            return wxid;
         }
 
 

@@ -32,8 +32,42 @@ namespace Website.Api.Admin
             var apiRes = new ApiResult<string>();
             try
             {
-                ConfigHelper.Configuration["Weixin:appID"] = appid;
-                ConfigHelper.Configuration["Weixin:appsecret"] = key;
+                //ConfigHelper.Configuration["Weixin:appID"] = appid;
+                //ConfigHelper.Configuration["Weixin:appsecret"] = key;
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
+        [HttpPost]
+        public ApiResult<string> sms(string url, string key, string template)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var dbh = DbContext.Get();
+                int optc = dbh.Db.Updateable<Setting>().SetColumns(ii => ii.value == url).Where(ii => ii.key == "SMS_APIHost").ExecuteCommand();
+                if (optc == 0)
+                {
+                    dbh.Db.Insertable(new Setting() { key = "SMS_APIHost", value = url }).ExecuteCommand();
+                }
+                optc = dbh.Db.Updateable<Setting>().SetColumns(ii => ii.value == key).Where(ii => ii.key == "SMS_appcode").ExecuteCommand();
+                if (optc == 0)
+                {
+                    dbh.Db.Insertable(new Setting() { key = "SMS_appcode", value = key }).ExecuteCommand();
+                }
+                optc = dbh.Db.Updateable<Setting>().SetColumns(ii => ii.value == template).Where(ii => ii.key == "SMS_template").ExecuteCommand();
+                if (optc == 0)
+                {
+                    dbh.Db.Insertable(new Setting() { key = "SMS_template", value = template }).ExecuteCommand();
+                }
+                Website.Models.SettingModel.clearCache();
                 apiRes.ok = true;
                 apiRes.data = "";
             }
@@ -63,6 +97,31 @@ namespace Website.Api.Admin
                 {
                     dbh.Db.Insertable(new Setting() { key = "reg_agreement", value = agreement }).ExecuteCommand();
                 }
+                Website.Models.SettingModel.clearCache();
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
+        [HttpPost]
+        public ApiResult<string> firstpage(string data)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var dbh = DbContext.Get();
+                int optc = dbh.Db.Updateable<Setting>().SetColumns(ii => ii.value == data).Where(ii => ii.key == "mobile_FirstPage").ExecuteCommand();
+                if (optc == 0)
+                {
+                    dbh.Db.Insertable(new Setting() { key = "mobile_FirstPage", value = data }).ExecuteCommand();
+                }
+                Website.Models.SettingModel.clearCache();
                 apiRes.ok = true;
                 apiRes.data = "";
             }

@@ -32,7 +32,7 @@ layui.use(['jquery', 'form', 'config'], function () {
                     }
                 }, 1000);
             } else {
-                $(".login-tip span").html(res.message);
+                $(".login-tip span").html(res.msg);
                 $("#password").val('');
                 $(".login-tip").animate({ 'height': '30px' });
                 setTimeout(function () {

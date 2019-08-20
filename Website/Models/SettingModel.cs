@@ -43,6 +43,11 @@ namespace Website.Models
                     }
             return instance;
         }
+        public static void clearCache()
+        {
+            instance = null;
+        }
+
         /// <summary>
         /// 允许注册
         /// </summary>
@@ -51,11 +56,6 @@ namespace Website.Models
         /// 注册会员条款
         /// </summary>
         public string reg_agreement { get; set; }
-        /// <summary>
-        /// 美肤每天可预约数量
-        /// </summary>
-        public int skincare_apc_p_day { get; set; }
-        /// <summary>
         /// 预约规则协议
         /// </summary>
         public string skincare_apc_agreement { get; set; }
@@ -67,6 +67,23 @@ namespace Website.Models
         /// 瑜伽场馆电话
         /// </summary>
         public string Yoga_Tel { get; set; }
-        
+
+        /// <summary>
+        /// 短信接口地址 
+        /// </summary>
+        public string SMS_APIHost { get; set; }
+        /// <summary>
+        /// 短信接口认证码
+        /// </summary>
+        public string SMS_appcode { get; set; }
+        /// <summary>
+        /// 短信模板
+        /// </summary>
+        public string SMS_template { get; set; }
+       /// <summary>
+       /// 手机端首页设置
+       /// </summary>
+        public string mobile_FirstPage { get; set; }
+
     }
 }

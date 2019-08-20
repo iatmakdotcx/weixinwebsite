@@ -24,19 +24,17 @@ namespace Website.Controllers
             detailScModel model = new detailScModel();
             model.data = data;
 
-            var pcnt = SettingModel.getInstance().skincare_apc_p_day;
-
             var appointmentData = dbh.Db.Queryable<SkinCareOrder>()
                 .Where(ii => ii.ClassId == id && ii.reserveDate >= DateTime.Now.Date && ii.reserveDate <= DateTime.Now.Date.AddDays(9))
                 .GroupBy(ii => ii.reserveDate)
-                .Select(ii => new { ii.reserveDate, Cnt = pcnt - SqlSugar.SqlFunc.AggregateCount(ii.id) }).ToList();
+                .Select(ii => new { ii.reserveDate, Cnt = data.orderCnt - SqlSugar.SqlFunc.AggregateCount(ii.id) }).ToList();
 
             var tmpobj = new JObject();
             var Vobj = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(appointmentData));
             var thisDay = DateTime.Now.Date;
             for (int i = 0; i < 9; i++)
             {
-                tmpobj.Add(thisDay.ToString("yyyy-MM-dd"), pcnt);
+                tmpobj.Add(thisDay.ToString("yyyy-MM-dd"), data.orderCnt);
                 thisDay = thisDay.AddDays(1);
             }
             foreach (var item in appointmentData)

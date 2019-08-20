@@ -1,0 +1,66 @@
+﻿@page
+@model Website.Pages.Admin.setting.homepageModel
+@{
+    ViewData["Title"] = "首页设置";
+}
+<title>@ViewData["Title"]</title>
+<link href="~/um/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="~/um/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="~/um/umeditor.js"></script>
+<script type="text/javascript" src="~/um/lang/zh-cn/zh-cn.js"></script>
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>设置</cite></a><span lay-separator="">/</span>
+            <a><cite>首页设置</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-card">
+                <div class="layui-card-header">首页设置</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="register-setting">
+                      
+                        <script type="text/plain" id="myEditor" style="width:1000px;height:440px;">@Html.Raw(Website.Models.SettingModel.getInstance().mobile_FirstPage)</script>
+
+                    <div class="layui-form-item" style="padding-top:20px;">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="register-setting">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    layui.use(['form'], function () {
+        var element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'register-setting');
+        element.render('breadcrumb', 'breadcrumb');
+
+        var um = UM.getEditor('myEditor');
+
+        form.on('submit(register-setting)', function (data) {
+            layui.layer.load(2);
+            data.field.data = UM.getEditor('myEditor').getContent();
+            layui.config.ajax('/api/admin/setting/firstpage', data.field, function (res) {
+                layer.closeAll('loading');
+                if (res.ok) {
+                    layer.msg("成功", { time: 1000 });
+                } else {
+                    layer.msg(res.message, { time: 1000 });
+                }
+            }, function () {
+                layer.closeAll('loading');
+                layer.msg("操作失败", { time: 1000 });
+            });
+            return false;
+        });
+    });
+</script>

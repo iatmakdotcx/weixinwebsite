@@ -53,6 +53,7 @@ namespace Website
             });
             services.AddSingleton<ILoggerHelper, LogHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +71,8 @@ namespace Website
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
-          //  app.UseHttpsRedirection();
+            app.UseSession();
+            //  app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {

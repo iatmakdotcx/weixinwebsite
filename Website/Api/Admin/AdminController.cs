@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using App.Data;
 using App.Extensions;
 using MakC.Common;
 using Microsoft.AspNetCore.Authentication;
@@ -31,33 +32,37 @@ namespace Website.Api.Admin
         public ApiResult<string> Login(string loginname, string password)
         {
             var apiRes = new ApiResult<string>();
-            var token = "";
             try
             {
-
+                var dbh = DbContext.Get();
+                var managerobj = dbh.GetEntityDB<Manager>().AsQueryable().First(ii => ii.username == loginname);
+                if (mUtils.MD5Hash(password??"") != managerobj.password)
+                {
+                    apiRes.msg = "账号或密码错误";
+                    return apiRes;
+                }
                 var identity = new ClaimsPrincipal(
-                    new ClaimsIdentity(new[]
-                        {
-                            new Claim(ClaimTypes.Sid,"0123456789"),
+                       new ClaimsIdentity(new[]
+                           {
+                            new Claim(ClaimTypes.Sid, managerobj.id.ToString()),
                             new Claim(ClaimTypes.Role,"Admin"),
-                            new Claim(ClaimTypes.Name,"admin's name"),
-                            new Claim(ClaimTypes.WindowsAccountName,"admin"),
-                            new Claim(ClaimTypes.UserData,"user.UpLoginDate.ToString()")
-                        }, AdminAuthorizeAttribute.AuthenticationScheme)
-                );
+                            new Claim(ClaimTypes.Name, managerobj.username),
+                            new Claim(ClaimTypes.WindowsAccountName,managerobj.username)
+                           }, AdminAuthorizeAttribute.AuthenticationScheme)
+                   );
                 HttpContext.SignInAsync(AdminAuthorizeAttribute.AuthenticationScheme, identity,
                     new AuthenticationProperties
                     {
                         IsPersistent = true,
                         ExpiresUtc = DateTimeOffset.Now.Add(TimeSpan.FromDays(7)) // 有效时间
                     });
+                apiRes.ok = true;                
             }
             catch (Exception ex)
             {
-                
-            }
-            apiRes.ok = true;
-            apiRes.data = token;
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+            }            
             return apiRes;
         }
 
@@ -69,7 +74,7 @@ namespace Website.Api.Admin
         [AllowAnonymous]
         public ApiResult<string> LogOut()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.SignOutAsync(AdminAuthorizeAttribute.AuthenticationScheme);
             return new ApiResult<string>() { data = "/admin/login/" };
         }
     }

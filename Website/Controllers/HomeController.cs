@@ -27,6 +27,11 @@ namespace Website.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
+        public IActionResult home()
+        {
+            return View();
+        }
         [Route("login")]
         [AllowAnonymous]
         public IActionResult Login()
@@ -47,12 +52,18 @@ namespace Website.Controllers
                     apiRes.msg = "账号不正确";
                     return apiRes;
                 }
-                if (user.password != pwd)
+                if (user.password != mUtils.MD5Hash(pwd??""))
                 {
                     apiRes.msg = "密码不正确";
                     return apiRes;
                 }
-
+                string wxid;
+                if (string.IsNullOrEmpty(user.wxId) && !string.IsNullOrEmpty(wxid = HttpContext.Session.GetString("wxid")))
+                {
+                    //如果账号没有绑定微信，当前又是微信登录则自动绑定上
+                    user.wxId = wxid;
+                    dbh.Db.Updateable(user).UpdateColumns(ii => ii.wxId).ExecuteCommand();
+                }
                 setLogintoken(user);
 
                 apiRes.ok = true;
@@ -65,6 +76,33 @@ namespace Website.Controllers
                 apiRes.data = "";
             }
             return apiRes;
+        }
+        [Route("wx")]
+        [AllowAnonymous]
+        public IActionResult wxLogin(string code="")
+        {
+            if (!string.IsNullOrEmpty(code))
+            {
+                try
+                {
+                    var wxid = MakC.Common.Auth.Auth_WeiXin.Get_openid(code);
+                    if (!string.IsNullOrEmpty(wxid))
+                    {
+                        HttpContext.Session.SetString("wxid", wxid);
+
+                        var dbh = DbContext.Get();
+                        var usinfo = dbh.Db.Queryable<UserInfo>().First(ii => ii.wxId == wxid);
+                        if (usinfo != null)
+                        {
+                            //已绑定微信，自动登录
+                            setLogintoken(usinfo);
+                        }
+                    }
+                }
+                catch (Exception)
+                {}
+            }
+            return Redirect("/");
         }
         private void setLogintoken(UserInfo user)
         {
@@ -108,14 +146,11 @@ namespace Website.Controllers
             try
             {
                 tel = tel.Replace(" ", "").Replace("+86", "");
-
-#if !DEBUG
                 if (vcode != MemoryCacheService.Default.GetCache<string>("vcode_" + tel))
                 {
                     apiRes.msg = "手机验证码不正确";
                     return apiRes;
                 }
-#endif
                 var dbh = DbContext.Get();
                 UserInfo user = dbh.Db.Queryable<UserInfo>().First(ii => ii.tel == tel);
                 if (user != null)
@@ -135,6 +170,7 @@ namespace Website.Controllers
                     user.tel = tel;
                     user.password = pwd;
                     user.nickname = "手机用户" + tel.Substring(7);
+                    user.wxId = HttpContext.Session.GetString("wxid");
                     user.id = dbh.Db.Insertable(user).ExecuteReturnIdentity();
                 }
 
