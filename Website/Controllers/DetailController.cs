@@ -19,7 +19,7 @@ namespace Website.Controllers
         {
             var dbh = DbContext.Get();
             var data = dbh.GetEntityDB<YogaClass>().GetById(id);
-            if (data == null || !data.enabled)
+            if (data == null || data.disabled)
             {
                 return ShowErrorPage("课程不存在！");
             }
@@ -46,7 +46,7 @@ namespace Website.Controllers
                 return ShowErrorPage("登录已失效");
             }
             var data = dbh.GetEntityDB<YogaClass>().GetById(id);
-            if (data == null || !data.enabled)
+            if (data == null || data.disabled)
             {
                 return ShowErrorPage("课程不存在！");
             }

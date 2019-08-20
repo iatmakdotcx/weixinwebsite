@@ -40,18 +40,14 @@
                     { field: 'name', width: 200, title: '名称', fixed: 'left' },
                     { field: 'tags', width: 200, title: '标签' },
                     {
-                        field: 'img', title: '图片', width:100, templet: function (data) {
+                        field: 'img', title: '图片', width:73, templet: function (data) {
                             return '<img src="' + data.avatar+'" idx-event="avartatPreview" style="width:40px;height:40px;">';
                         }
                     },
-                    { field: 'star',  align: 'center',width: 100, title: '难度' },
-                     {
-                        title: '时长', width:100, templet: function (data) {
-                             return data.duration + '分钟';
-                        }
-                    },
+                    { field: 'star',  align: 'center',width: 60, title: '难度' },
+                    { field: 'rtimeRange', align: 'center', width: 116, title: '上课时间' },
                     { field: 'teacher', width: 100, title: '老师' },
-                    { field: 'kyyzs', align: 'center',width: 120, title: '可约次数' },
+                    { field: 'kyyzs', align: 'center',width: 88, title: '可约次数' },
                     { field: 'address', width: 120, title: '地址' },
                     { width: 154, title: '操作', templet: '#cardsettingtool' }
                 ]

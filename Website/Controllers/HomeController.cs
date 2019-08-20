@@ -233,9 +233,9 @@ namespace Website.Controllers
             ApiResult<List<YogaClass>> result = new ApiResult<List<YogaClass>>();
             var dbh = DbContext.Get();
             var lstdata = dbh.Db.Queryable<YogaClass>()
-                .Where(ii => ii.rdate == rq.Date && ii.enabled)
+                .Where(ii => ii.rdate == rq.Date && !ii.disabled)
                 .OrderBy(ii => ii.rtimeRange)
-                .IgnoreColumns(ii=> new { ii.description, ii.enabled })
+                .IgnoreColumns(ii=> new { ii.description})
                 //.Select(ii => new { ii.id, ii.name, ii.RtimeRange, ii.star, ii.tags, ii.avatar, ii.teacher })
                 .ToList();
 

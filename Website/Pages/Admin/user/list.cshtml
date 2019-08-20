@@ -69,8 +69,7 @@
             ],
             page: true
             , response: { statusCode: 200}
-             , parseData: function (res) {
-                 console.log(res);
+             , parseData: function (res) {                 
                 return {
                     "code": res.statusCode,
                     "msg": res.msg,

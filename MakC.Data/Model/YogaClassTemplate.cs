@@ -23,5 +23,6 @@ namespace App.Data
         public string address { get; set; }
         public string avatar { get; set; }
         public int kyyzs { get; set; }
+        public string rtimeRange { get; set; }
     } 
 }

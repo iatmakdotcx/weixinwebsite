@@ -91,8 +91,127 @@ namespace Website.Api.Admin
             }
             return apiRes;
         }
+        public ApiResult<ApiListObj<YogaClass>> yogaclist(string rq = "")
+        {
+            DateTime dt;
+            if (!DateTime.TryParse(rq, out dt))
+            {
+                dt = DateTime.Now.Date;
+            }
+            ApiResult<ApiListObj<YogaClass>> alc = new ApiResult<ApiListObj<YogaClass>>();
+            var dbh = DbContext.Get();
+            alc.data = new ApiListObj<YogaClass>();
+            alc.data.items = dbh.Db.Queryable<YogaClass>()
+                .Where(ii => ii.rdate == dt)
+                .ToList();
+            alc.ok = true;
+            return alc;
+        }
 
+        [HttpPost]
+        public ApiResult<string> saveyogac(YogaClass acard)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var dbh = DbContext.Get();
+                if (acard.id == 0)
+                {
+                    dbh.Db.Insertable(acard).ExecuteCommand();
+                }
+                else
+                    dbh.Db.Updateable(acard).IgnoreColumns(ii => ii.rdate).ExecuteCommand();
 
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
+        [HttpPost]
+        public ApiResult<string> importclass(DateTime rdate, string ids)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                List<int> tureInt = new List<int>();
+                foreach (var item in ids.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    int tmpint;
+                    if (int.TryParse(item, out tmpint))
+                    {
+                        tureInt.Add(tmpint);
+                    }
+                }
+                var dbh = DbContext.Get();
+                var qrydata = dbh.Db.Queryable<YogaClassTemplate>().In(tureInt).ToList();
+                foreach (var item in qrydata)
+                {
+                    dbh.Db.Insertable(new YogaClass()
+                    {
+                        name = item.name,
+                        tags = item.tags,
+                        avatar = item.avatar,
+                        rdate = rdate,
+                        rtimeRange = item.rtimeRange,
+                        teacher = item.teacher,
+                        address = item.address,
+                        description = item.description,
+                        star = item.star,
+                        kyyzs = item.kyyzs,
+                        yysl = 0,
+                    }).AddQueue();
+                }
+                dbh.Db.SaveQueuesAsync();
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
 
+        [HttpPost]
+        public ApiResult<string> deleteYogaclass(int id)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var dbh = DbContext.Get();
+                var yclass = dbh.GetEntityDB<YogaClass>().GetById(id);
+                if (yclass != null)
+                {
+                    if (yclass.rdate < DateTime.Now.Date)
+                    {
+                        apiRes.msg = "不能删除历史课程";
+                        return apiRes;
+                    }
+                    if (yclass.yysl > 0)
+                    {
+                        apiRes.msg = "课程已被预约！";
+                        return apiRes;
+                    }
+                    dbh.Db.Deleteable(yclass).ExecuteCommand();
+                }
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
     }
 }

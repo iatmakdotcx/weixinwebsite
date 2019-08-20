@@ -9,9 +9,9 @@
             if (url.length <= 0) {
                 return false;
             }
-            if (url.search(/http:\/\/|https:\/\//) !== 0) {
-                url += 'http://';
-            }
+            //if (url.search(/http:\/\/|https:\/\//) !== 0) {
+            //    url += 'http://';
+            //}
 
             url=url.replace(/\?[\s\S]*$/,"");
 
@@ -35,8 +35,8 @@
 //                }
 
                 return arr.push({
-                    _src: node.src,
-                    src: node.src
+                    _src: node.getAttribute("src"),
+                    src: node.getAttribute("src")
                 });
             });
 
@@ -101,7 +101,7 @@
             if (state == "SUCCESS") {
                 //显示图片计数+1
                 Upload.showCount++;
-                var $img = $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />"),
+                var $img = $("<img src='/" + url + "' class='edui-image-pic' />"),
                     $item = $("<div class='edui-image-item edui-image-upload-item'><div class='edui-image-close'></div></div>").append($img);
 
                 if ($(".edui-image-upload2", $w).length < 1) {

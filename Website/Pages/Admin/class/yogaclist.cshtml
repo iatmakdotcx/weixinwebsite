@@ -1,0 +1,125 @@
+﻿@page
+@model Website.Pages.Admin.yogaclistModel
+@{
+    ViewData["Title"] = "瑜伽排课设置";
+}
+<title>@ViewData["Title"]</title>
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>设置</cite></a><span lay-separator="">/</span>
+            <a><cite>瑜伽排课</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="list-wall">
+            <div class="layui-form list-search" style="margin-top:10px;">
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd2"><i class="layui-icon"></i> 导入课程</button>
+                <div class="layui-inline">
+                    <input type="text" class="layui-input" id="test-laydate-normal-cn" readonly="readonly">
+                </div>
+            </div>
+            <table class="layui-hide" id="cardtablist" lay-filter="cardsettingtool"></table>
+        </div>
+        <script type="text/html" id="cardsettingtool">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon"></i> 修改</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i class="layui-icon"></i> 删除</a>
+        </script>
+    </div>
+</div>
+<script>
+    layui.use(['form', "table", 'laydate'], function () {
+        var table = layui.table;
+
+        layui.laydate.render({
+            elem: '#test-laydate-normal-cn'
+            , value: localStorage.getItem("ygclrq") || new Date()
+            , btns: ['now', 'confirm']
+            , done: function (value, date) {
+                localStorage.setItem("ygclrq", value)
+                table.reload('cardtablist', {
+                    where: { rq: value }
+                });
+            }
+        });
+        table.render({
+            elem: '#cardtablist',
+            url: '/api/admin/class/yogaclist',
+            where: {
+                rq: localStorage.getItem("ygclrq") || new Date()
+            },
+            cols: [
+                [
+                    { type: 'numbers', fixed: 'left' },
+                    { field: 'name', width: 200, title: '名称', fixed: 'left' },
+                    { field: 'tags', width: 200, title: '标签' },
+                    {
+                        field: 'img', title: '图片', width: 73, templet: function (data) {
+                            return '<img src="' + data.avatar + '" idx-event="avartatPreview" style="width:40px;height:40px;">';
+                        }
+                    },
+                    { field: 'star', align: 'center', width: 60, title: '难度' },
+                    { field: 'rtimeRange', align: 'center', width: 116, title: '上课时间' },
+                    { field: 'teacher', width: 100, title: '老师' },
+                    { field: 'kyyzs', align: 'center', width: 88, title: '可约次数' },
+                     {
+                        width: 90, title: '暂停预约',align: 'center', templet: function (data) {
+                            return data.disabled == true ? "√" : "";
+                        }
+                    },
+                    { field: 'address', width: 120, title: '地址' },
+                    { width: 154, title: '操作', templet: '#cardsettingtool' }
+                ]
+            ],
+            page: false
+            , response: { statusCode: 200 }
+            , parseData: function (res) {
+                return {
+                    "code": res.statusCode,
+                    "msg": res.msg,
+                    "count": res.data.totalCnt,
+                    "data": res.data.items
+                };
+            }
+        });
+
+        var active = {
+            toolAdd: function () {
+                location.hash = '#class/yogacedit'
+            },
+            toolAdd2: function () {
+               layui.index.popupCenter('选择课程', '/admin/class/yogatlist2', '800px', '510px', function () {
+                    layui.index.reload();
+                })
+            }
+        }
+        $('.list-search .layui-btn').on('click', function () {
+            var type = $(this).data('action');
+            active[type] ? active[type].call(this) : '';
+        });
+        table.on('tool(cardsettingtool)', function (obj) {
+            _that = this;
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                location.href = '#class/yogacedit?id=' + data.id;
+            } else if (obj.event === 'delete') {
+
+                layer.confirm('确定删除当前课程？', {btn: ['确实','取消']}, function(){
+                    layui.config.ajax('/api/admin/class/deleteYogaclass',
+                        { id: data.id },
+                        function (res) {
+                            if (res.ok) {
+                                layer.msg("删除成功", { icon: 1 });
+                                $(_that).closest("tr").remove();
+                            }
+                            else {
+                                layer.alert(res.msg, { icon: 2 });
+                            }
+                        });
+                 }, function(){});
+            }
+        });
+    });
+</script>

@@ -9,7 +9,6 @@ layui.use(['jquery', 'form', 'config'], function () {
         document.getElementById("forms").reset();
     });
     //清空token
-    os.SessionRemove('ADMIN_ACCESS_TOKEN');
     form.on('submit(loginsub)', function (data) {
         //var crypt = new JSEncrypt();
         //crypt.setPrivateKey(data.field.privateKey);
@@ -23,11 +22,10 @@ layui.use(['jquery', 'form', 'config'], function () {
         os.ajax('/api/admin/login', data.field, function (res) {
             layer.closeAll('loading');
             if (res.ok) {
-                os.SetSession('ADMIN_ACCESS_TOKEN', res.data);
                 setTimeout(function () {
                     var rurl = os.getUrlParam('ReturnUrl');
                     if (!rurl) {
-                        window.location.href = '/admin/index';
+                        window.location.href = '/admin';
                     }
                     else {
                         window.location.href = rurl;
