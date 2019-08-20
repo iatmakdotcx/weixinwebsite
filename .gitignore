@@ -154,7 +154,9 @@ $RECYCLE.BIN/
 .DS_Store
 
 /packages/
-**/modules/*.min.js
+**/images/cards/*
+**/images/class/*
+**/images/classinfo/*
 /WebApp/config/
 /nnproxy/config/
 /WebApp/xingshen/help/proxy.zip

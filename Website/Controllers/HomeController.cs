@@ -140,7 +140,7 @@ namespace Website.Controllers
         }
         [HttpPost("reg")]
         [AllowAnonymous]
-        public ApiResult<string> regNewAccount(string tel, string pwd, string vcode)
+        public ApiResult<string> regNewAccount(string tel, string vcode, string pwd = "")
         {
             var apiRes = new ApiResult<string>();
             try
@@ -166,14 +166,16 @@ namespace Website.Controllers
                 {
                     user = new UserInfo();
                     user.createAt = DateTime.Now;
-                    user.avatar = "/images/avatardef.jpg";
                     user.tel = tel;
                     user.password = pwd;
                     user.nickname = "手机用户" + tel.Substring(7);
                     user.wxId = HttpContext.Session.GetString("wxid");
                     user.id = dbh.Db.Insertable(user).ExecuteReturnIdentity();
                 }
-
+                if (string.IsNullOrEmpty(user.avatar))
+                {
+                    user.avatar = "/images/avatardef.jpg";
+                }
                 setLogintoken(user);
                 apiRes.ok = true;
                 apiRes.data = "";

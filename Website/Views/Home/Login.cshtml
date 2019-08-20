@@ -24,40 +24,67 @@
             <input class="weui-input" id="tel" type="tel" placeholder="请输入手机号">
         </div>
     </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd">
-            <label class="weui-label">密码</label>
-        </div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="pwd" type="password" placeholder="请输入密码">
-        </div>
-    </div>
     <div class="weui-cell weui-cell_vcode">
-        <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
+        <div class="weui-cell__hd">
+            <label class="weui-label">验证码</label>
+        </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" type="number" placeholder="请输入验证码">
+            <input class="weui-input" id="vcode" type="tel" placeholder="请输入验证码">
         </div>
         <div class="weui-cell__ft">
-            <img class="weui-vcode-img" src="./images/vcode.jpg">
+            <button class="weui-vcode-btn">获取验证码</button>
         </div>
     </div>
     <div class="weui-btn-area">
         <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>
     </div>
 </div>
-<div class="weui-footer" style="padding-top:20px">
-    <a href="/reg" class="weui-footer__link">点击注册</a>
-</div>
 @section Scripts{
     <script>
         $(function () {
+            function smsCountDown(t) {
+                $(".weui-vcode-btn").text(t).attr("disabled", "disabled");
+                var t1 = window.setInterval(function () {
+                    t--;
+                    $(".weui-vcode-btn").text(t).attr("disabled", "disabled");
+                    if (t == 0) {
+                        window.clearInterval(t1);
+                        $(".weui-vcode-btn").text("获取验证码").removeAttr("disabled");
+                    }
+                }, 1000);
+            }
+            function SendSms(tel, vcode) {
+                $.showLoading();
+                $.ajax({
+                    url: "/smsapi/svcode",
+                    async: true,
+                    type: "POST",
+                    data: { tel: tel, vcode: vcode },
+                    dataType: "json",
+                    success: function (data) {
+                        $.hideLoading();
+                        if (data.ok) {
+                            smsCountDown(parseInt(data.data));
+                        } else {
+                            $.toast(data.msg, "text");
+                        }
+                    },
+                    error: function (err) {
+                        $.hideLoading();
+                        $.toptip('连接服务器失败', 'error');
+                    }
+                });
+            }
+            $(".weui-vcode-btn").click(function () {
+                SendSms($("#tel").val(), "");
+            });
             $("#showTooltips").click(function () {
                 $.showLoading();
                 $.ajax({
-                    url: "/login",
+                    url: "/reg",
                     async: true,
                     type: "POST",
-                    data: { tel: $("#tel").val(), pwd: $("#pwd").val() },
+                    data: { tel: $("#tel").val(), vcode: $("#vcode").val() },
                     dataType: "json",
                     success: function (data) {
                         $.hideLoading();

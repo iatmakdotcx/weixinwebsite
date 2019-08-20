@@ -6,7 +6,7 @@
 <title>@ViewData["Title"]</title>
 <div class="date_show">
     <ul class="date_list">
-        @for (int i = 0; i < 4; i++)
+        @for (int i = 0; i < 7; i++)
         {
             <li>
                 <a href="javascript:void(0);" data="@tmpDate.AddDays(i).ToString("yyyy-MM-dd")" @(i > 0 ? "" : "class=current")>@tmpDate.AddDays(i).ToString("MM-dd")<br>@MakC.Common.mUtils.getweekText(tmpDate.AddDays(i).DayOfWeek)</a>
@@ -20,14 +20,16 @@
         <div class="weui-cell__hd avatar"><img v-bind:src="arow.avatar"></div>
         <div class="weui-cell__bd">
             <p class="name">{{ arow.name }}</p>
-            <p class="schedule">{{ arow.rtimeRange }}  <span style="margin-left:20px;">{{ arow.teacher }}</span></p>
+            <p class="star">难度：<span v-html="$options.filters.disStar(arow.star)"></span></p>
+            <p class="schedule">{{ arow.rtimeRange }}  <span style="margin-left:20px;">{{ arow.teacher }}</span><span style="margin-left:20px;right: 100px;position: absolute;">还可约<span style="color:#00a3ff">{{ arow.kyyzs-arow.yysl }}</span>人</span></p>            
             <div class="tags" v-if="arow.tags">
                 <span v-for="tag in arow.tags.split('|')">{{tag}}</span>
             </div>
         </div>
         <div class="book_status">
-            <i class="course_status stop"></i>
-            <i class="status_warning">名额不多</i>
+            <i class="course_status available" v-if="(arow.kyyzs-arow.yysl)>0"></i>
+            <i class="course_status full" v-if="(arow.kyyzs-arow.yysl)<=0"></i>
+            <i class="status_warning" v-if="(arow.kyyzs-arow.yysl)<=2 && (arow.kyyzs-arow.yysl)>0">名额不多</i>            
         </div>
     </a>
 </div>
@@ -43,22 +45,38 @@
             var t = $(this).attr("data");
             courseData(t);
         });
+        function disStar(v) {
+            var starVal = parseInt(v);
+            var fillStar = parseInt(starVal / 2);
+            var HalfStar = parseInt(starVal % 2);
+            var EnptyStar = 5 - (fillStar + HalfStar);
+            var htmlv = "";
+            for (var i = 0; i < fillStar; i++) {
+                htmlv += '<i class="fa fa-star" aria-hidden="true"></i>';
+            }
+            for (var i = 0; i < HalfStar; i++) {
+                htmlv += '<i class="fa fa-star-half-o" aria-hidden="true"></i>';
+            } for (var i = 0; i < EnptyStar; i++) {
+                htmlv += '<i class="fa fa-star-o" aria-hidden="true"></i>';
+            }
+            return htmlv;
+        }
         function courseData(rq) {
             $.showLoading();
-            var rqa = $(".date_show a[data='" + rq + "']");
-            rqa.parent().parent().find(".current").removeClass("current");
-            rqa.addClass("current");
+            $(".date_list .current").removeClass("current");
+            $(".date_show a[data='" + rq + "']").addClass("current");
             $.ajax({
                 url: "/home/yoga_data?rq=" + rq,
                 type: "get",
                 success: function (data) {
                     $.hideLoading();
                     if (data.ok) {
-                        console.log(data.data);
+                        console.log(data);
                         $(".yoga-class-list").html(contentTemplate);
                         new Vue({
                             el: '.yoga-class-list',
-                            data: { all: data.data }
+                            data: { all: data.data },
+                            filters: {disStar}
                         });
                     }
                 },
@@ -75,7 +93,7 @@
             minDate: "@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")",
             container: ".calendar_show",
             onChange: function (p, value, displayValues) {
-                if ($(".calendar_show").is(":visible")) {                    
+                if ($(".calendar_show").is(":visible")) {
                     $(".calendar_show").slideToggle();
                     courseData(value);
                 }
@@ -83,8 +101,9 @@
         });
         new Vue({
             el: '.yoga-class-list',
-            data: { all:@Html.Raw(TempData["data"])}
+            data: { all:@Html.Raw(TempData["data"])},
+            filters: {disStar}
         });
-
-    });
+        
+    });    
 </script>

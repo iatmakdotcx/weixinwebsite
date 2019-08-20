@@ -96,5 +96,35 @@ namespace Website.Api.Admin
             }
             return apiRes;
         }
+        [HttpPost]
+        public ApiResult<string> addMulti(string data)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var telArr = data.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+                if (telArr.Length > 0)
+                {
+                    var dbh = DbContext.Get();
+                    foreach (var item in telArr)
+                    {
+                        string tel = item.Trim();
+                        if (tel.Length >= 11 && dbh.Db.Queryable<UserInfo>().Count(ii => ii.tel == tel) == 0)
+                        {
+                            dbh.Db.Insertable(new UserInfo() { tel = tel, nickname = "用户" + tel.Substring(7), balance = 0, createAt = DateTime.Now }).ExecuteCommand();
+                        }
+                    }                    
+                }
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace Website.Api.Admin
         {
             return "SettingController";
         }
+        
         [HttpPost]
         public ApiResult<string> weixin(string appid, string key)
         {
@@ -120,6 +121,35 @@ namespace Website.Api.Admin
                 if (optc == 0)
                 {
                     dbh.Db.Insertable(new Setting() { key = "mobile_FirstPage", value = data }).ExecuteCommand();
+                }
+                Website.Models.SettingModel.clearCache();
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
+        [HttpPost]
+        public ApiResult<string> tel(string yoga_tel,string skc_tel)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var dbh = DbContext.Get();
+                int optc = dbh.Db.Updateable<Setting>().SetColumns(ii => ii.value == yoga_tel).Where(ii => ii.key == "Yoga_Tel").ExecuteCommand();
+                if (optc == 0)
+                {
+                    dbh.Db.Insertable(new Setting() { key = "Yoga_Tel", value = yoga_tel }).ExecuteCommand();
+                }
+                optc = dbh.Db.Updateable<Setting>().SetColumns(ii => ii.value == skc_tel).Where(ii => ii.key == "skincare_Tel").ExecuteCommand();
+                if (optc == 0)
+                {
+                    dbh.Db.Insertable(new Setting() { key = "skincare_Tel", value = skc_tel }).ExecuteCommand();
                 }
                 Website.Models.SettingModel.clearCache();
                 apiRes.ok = true;

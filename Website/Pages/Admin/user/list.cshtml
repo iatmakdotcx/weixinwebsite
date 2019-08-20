@@ -17,6 +17,7 @@
         <div class="list-wall">
             <div class="layui-form list-search" style="margin-top:10px;">
                 <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAddMulti"><i class="layui-icon"></i> 批量新增</button>
                 搜索：
                 <div class="layui-inline">
                     <input class="layui-input" id="qrykw" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
@@ -46,7 +47,7 @@
                     { field: 'tel', width: 130, title: '手机号', fixed: 'left' },                  
                     {
                         field: 'nickname', width: 200, title: '昵称', templet: function (data) {
-                            return '<img src="' + data.avatar+'" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;
+                            return '<img src="' + (data.avatar||"")+'" idx-event="avartatPreview" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;
                         }
                     },
                     { field: 'vipRebate', width: 80, title: 'Vip折扣' },
@@ -84,6 +85,22 @@
                 layui.index.popupCenter('添加会员', '/admin/user/edit', '720px', '510px', function () {
                     layui.index.reload();
                 })
+            },
+            toolAddMulti: function () {
+                layui.layer.prompt({ title: '一行一个手机号', formType: 2,maxlength:99999999 }, function (data, index) {
+                    layui.layer.load(2);
+                    layui.config.ajax('/api/admin/user/addMulti', { data }, function (res) {
+                        layer.closeAll('loading');
+                        if (res.ok) {
+                            layer.msg("批量增加成功");
+                            layer.close(index);
+                            layui.index.reload();
+                        }
+                        else {
+                            layer.alert(res.msg);
+                        }
+                    });
+                });
             },
             reload: function () {
                 table.reload('cardtablist', {

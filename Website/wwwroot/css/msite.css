@@ -55,6 +55,16 @@ tags{
     margin-bottom: 5px;
     word-wrap: break-word;
 }
+.course_item .star {
+    color: #999;
+    font-size: 12px;
+    font-weight: 400;
+    padding-right: 10px;
+    margin-bottom: 5px;
+}
+.course_item .star span {
+    color: #FFB800;
+}
 .course_item .schedule {
     color: #999;
     font-size: 12px;
@@ -82,7 +92,7 @@ tags{
 .status_warning::after{display:block;content:"";width:4px;height:4px;background:#fff;position:absolute;top:8px;left:-2px;border-radius:50%}
 .date_show{height:50px;display:-webkit-box;display:-moz-flex;display:-o-flex;display:-ms-flex;display:box;border-bottom:1px solid #ddd}
 .date_show .date_list{-webkit-box-flex:1;-moz-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;list-style: none;}
-.date_show .date_list li{width:25%;float:left;position:relative}
+.date_show .date_list li{width:14.285%;float:left;position:relative}
 .date_show .date_list li a{display:block;height:50px;padding-top:11px;font-size:12px;color:#000;box-sizing:border-box;line-height:14px;text-align:center;margin:0 auto}
 .date_show .date_list li a.current{border-bottom-width:2px;border-bottom-style:solid}
 .date_show .date_list li:before{content:'';display:block;width:0;height:20px;border-right:1px solid #ddd;position:absolute;right:0;top:50%;margin-top:-10px}

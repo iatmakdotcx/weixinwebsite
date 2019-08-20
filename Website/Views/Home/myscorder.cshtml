@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="weui-form-preview__ft">
-                    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
+                    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">取消</a>
                 </div>
             </div>
         </div>
@@ -113,7 +113,8 @@
                 $(".weui-tab__bd.orders .weui-tab__bd-item").eq($(this).index()).addClass("weui-tab__bd-item--active").siblings(".weui-tab__bd-item--active").removeClass("weui-tab__bd-item--active");
             });
             $(".orders").on("click", ".weui-form-preview__ft>a", function () {
-                $.actions({
+                $.alert("<br><a href='tel:@Website.Models.SettingModel.getInstance().skincare_Tel'>请拨打电话:@Website.Models.SettingModel.getInstance().skincare_Tel</a><br><br>");
+                @*$.actions({
                     title: "选择操作",
                     onClose: function () {
                     },
@@ -122,16 +123,9 @@
                             text: "联系场馆",
                             className: "color-primary",
                             onClick: function () {
-                                $.alert("<br><a href='tel:@Website.Models.SettingModel.getInstance().skincare_Tel'>请拨打电话:@Website.Models.SettingModel.getInstance().skincare_Tel</a><br><br>");
+                               
                             }
                         },
-                        @*{
-                            text: "编辑",
-                            className: "color-warning",
-                            onClick: function () {
-                                $.alert("你选择了“编辑”");
-                            }
-                        },*@
                         {
                             text: "取消预约",
                             className: 'color-danger',
@@ -140,7 +134,7 @@
                             }
                         }
                     ]
-                });
+                });*@
             });
 
             

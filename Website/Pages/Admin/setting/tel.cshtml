@@ -1,0 +1,68 @@
+﻿@page
+@model Website.Pages.Admin.setting.telModel
+@{
+    ViewData["Title"] = "register";
+}
+
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+            <a lay-href="">主页</a><span lay-separator="">/</span>
+            <a><cite>设置</cite></a><span lay-separator="">/</span>
+            <a><cite>电话设置</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-card">
+                <div class="layui-card-header">电话设置</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="register-setting">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">瑜伽电话</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="yoga_tel" value="@Website.Models.SettingModel.getInstance().Yoga_Tel" maxlength="20" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">美肤电话</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="skc_tel" value="@Website.Models.SettingModel.getInstance().skincare_Tel" maxlength="20" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="register-setting">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form'], function () {
+        var element = layui.element
+            , form = layui.form;
+
+        form.render(null, 'register-setting');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(register-setting)', function (data) {            
+            layui.layer.load(2);
+            layui.config.ajax('/api/admin/setting/tel', data.field, function (res) {
+                layer.closeAll('loading');
+                if (res.ok) {
+                    layer.msg("成功", { time: 1000 });
+                } else {
+                    layer.msg(res.message, { time: 1000 });
+                }
+            }, function () {
+                layer.closeAll('loading');
+                layer.msg("操作失败", { time: 1000 });
+            });
+            return false;
+        });
+    });
+</script>
