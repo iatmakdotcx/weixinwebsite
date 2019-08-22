@@ -58,8 +58,13 @@
                     },
                     { field: 'createAt', width: 165, title: '创建时间' },
                     {
-                        width: 90, title: '停用',align: 'center', templet: function (data) {
+                        width: 60, title: '停用',align: 'center', templet: function (data) {
                             return data.disabled == true ? "√" : "";
+                        }
+                    },
+                    {
+                        width: 60, title: '老师',align: 'center', templet: function (data) {
+                            return data.isTeacher == true ? "√" : "";
                         }
                     },
                     { width: 180, title: '操作', templet: '#cardsettingtool' },
@@ -80,7 +85,7 @@
 
         var active = {
             toolAdd: function () {
-                layui.index.popupCenter('添加会员', '/admin/user/edit', '720px', '510px', function () {
+                layui.index.popupCenter('添加会员', '/admin/user/edit', '720px', '540px', function () {
                     layui.index.reload();
                 })
             },
@@ -113,7 +118,7 @@
         table.on('tool(cardsettingtool)', function (obj) {
             var data = obj.data;
             if (obj.event === 'edit') {
-                layui.index.popupCenter('修改会员资料', '/admin/user/edit?id=' + data.id, '720px', '510px', function () {
+                layui.index.popupCenter('修改会员资料', '/admin/user/edit?id=' + data.id, '720px', '540px', function () {
                     layui.index.reload();
                 })
             }else if (obj.event === 'setpwd') {

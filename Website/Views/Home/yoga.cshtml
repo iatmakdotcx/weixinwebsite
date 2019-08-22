@@ -4,7 +4,15 @@
     var tmpDate = DateTime.Now.Date;
 }
 <title>@ViewData["Title"]</title>
-<div class="date_show">
+<style>
+
+</style>
+<div class="weui-tab yoga">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on">团课</a>
+        <a class="weui-navbar__item">私教</a>
+    </div>
+    <div class="date_show">
     <ul class="date_list">
         @for (int i = 0; i < 7; i++)
         {
@@ -15,28 +23,54 @@
     </ul>
     <a href="javascript:void(0);" class="date_calendar fa fa-calendar"></a>
 </div>
-<div class="weui-cells content yoga-class-list">
-    <a class="weui-cell weui-cell_access course_item" v-bind:href="'/detail?id='+arow.id" v-for="arow in all">
-        <div class="weui-cell__hd avatar"><img v-bind:src="arow.avatar"></div>
-        <div class="weui-cell__bd">
-            <p class="name">{{ arow.name }}</p>
-            <p class="star">难度：<span v-html="$options.filters.disStar(arow.star)"></span></p>
-            <p class="schedule">{{ arow.rtimeRange }}  <span style="margin-left:20px;">{{ arow.teacher }}</span><span style="margin-left:20px;right: 100px;position: absolute;">还可约<span style="color:#00a3ff">{{ arow.kyyzs-arow.yysl }}</span>人</span></p>            
-            <div class="tags" v-if="arow.tags">
-                <span v-for="tag in arow.tags.split('|')">{{tag}}</span>
+    <div class="weui-tab__bd pgs">
+        <div class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="weui-cells content yoga-class-list">
+                <a class="weui-cell weui-cell_access course_item" v-bind:href="'/detail?id='+arow.id" v-for="arow in all">
+                    <div class="weui-cell__hd avatar"><img v-bind:src="arow.avatar"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">{{ arow.name }}</p>
+                        <p class="star">难度：<span v-html="$options.filters.disStar(arow.star)"></span></p>
+                        <p class="schedule">{{ arow.rtimeRange }}  <span style="margin-left:20px;">{{ arow.teacher }}</span><span style="margin-left:20px;right: 100px;position: absolute;">还可约<span style="color:#00a3ff">{{ arow.kyyzs-arow.yysl }}</span>人</span></p>
+                        <div class="tags" v-if="arow.tags">
+                            <span v-for="tag in arow.tags.split('|')">{{tag}}</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status available" v-if="(arow.kyyzs-arow.yysl)>0"></i>
+                        <i class="course_status full" v-if="(arow.kyyzs-arow.yysl)<=0"></i>
+                        <i class="status_warning" v-if="(arow.kyyzs-arow.yysl)<=2 && (arow.kyyzs-arow.yysl)>0">名额不多</i>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="book_status">
-            <i class="course_status available" v-if="(arow.kyyzs-arow.yysl)>0"></i>
-            <i class="course_status full" v-if="(arow.kyyzs-arow.yysl)<=0"></i>
-            <i class="status_warning" v-if="(arow.kyyzs-arow.yysl)<=2 && (arow.kyyzs-arow.yysl)>0">名额不多</i>            
+        <div class="weui-tab__bd-item">
+            <div class="weui-cells content yoga-class-list">
+                <a class="weui-cell weui-cell_access course_item" v-bind:href="'/detail?id='+arow.id" v-for="arow in all">
+                    <div class="weui-cell__hd avatar"><img v-bind:src="arow.avatar"></div>
+                    <div class="weui-cell__bd">
+                        <p class="name">{{ arow.name }}</p>
+                        <p class="star">难度：<span v-html="$options.filters.disStar(arow.star)"></span></p>
+                        <p class="schedule">{{ arow.rtimeRange }}  <span style="margin-left:20px;">{{ arow.teacher }}</span><span style="margin-left:20px;right: 100px;position: absolute;">还可约<span style="color:#00a3ff">{{ arow.kyyzs-arow.yysl }}</span>人</span></p>
+                        <div class="tags" v-if="arow.tags">
+                            <span v-for="tag in arow.tags.split('|')">{{tag}}</span>
+                        </div>
+                    </div>
+                    <div class="book_status">
+                        <i class="course_status available" v-if="(arow.kyyzs-arow.yysl)>0"></i>
+                        <i class="course_status full" v-if="(arow.kyyzs-arow.yysl)<=0"></i>
+                        <i class="status_warning" v-if="(arow.kyyzs-arow.yysl)<=2 && (arow.kyyzs-arow.yysl)>0">名额不多</i>
+                    </div>
+                </a>
+            </div>
         </div>
-    </a>
+    </div>
 </div>
-<input id="date3" type="hidden">
-<div class="calendar_show" style="display: none;">
 
-</div>
+
+
+<input id="date3" type="hidden">
+<div class="calendar_show" style="display: none;"></div>
 
 <script>
     $(function () {
@@ -44,6 +78,10 @@
         $(".date_list a").click(function () {
             var t = $(this).attr("data");
             courseData(t);
+        });
+        $(".weui-navbar .weui-navbar__item").click(function () {
+            $(this).addClass("weui-bar__item--on").siblings(".weui-bar__item--on").removeClass("weui-bar__item--on");
+            $(".weui-tab__bd.pgs .weui-tab__bd-item").eq($(this).index()).addClass("weui-tab__bd-item--active").siblings(".weui-tab__bd-item--active").removeClass("weui-tab__bd-item--active");
         });
         function disStar(v) {
             var starVal = parseInt(v);

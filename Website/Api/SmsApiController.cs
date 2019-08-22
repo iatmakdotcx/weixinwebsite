@@ -39,7 +39,7 @@ namespace Website.Api
             {
                 if (string.IsNullOrEmpty(tel))
                 {
-                    apiRes.msg = $"手机号码无效";
+                    apiRes.msg = $"手机号码无效(null)";
                     return apiRes;
                 }
                 tel = tel.Replace(" ", "").Replace("+86", "");

@@ -25,5 +25,6 @@ namespace App.Data
         public string avatar { get; set; }
         public bool disabled { get; set; }
         public string description { get; set; }
+        public bool isTeacher { get; set; }
     }
 }

@@ -60,7 +60,8 @@
                     $.hideLoading();
                     if (xhr.status == 401) {
                         var rurl = xhr.getResponseHeader("Location");
-                        if (rurl) loadurl(id, rurl);
+                        //if (rurl) loadurl(id, rurl);
+                        location.href = rurl;
                     }
                 }
             })

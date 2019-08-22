@@ -81,8 +81,20 @@
                 for (var i = 0; i < data.length; i++) {
                     cardids += "," + data[i].id;
                 }
-                layui.afterSelectUser = function (userids, cbak) {
-                    layui.config.ajax('/api/admin/setting/distributeticket', { cardids, userids }, cbak);
+                layui.afterSelectUser = function (users, close, err) {
+                    var userids = "";
+                    for (var i = 0; i < users.length; i++) {
+                        userids += "," + users[i].id;
+                    }
+                    layui.config.ajax('/api/admin/setting/distributeticket', { cardids, userids }, function (d) {
+                        if (d.ok) {
+                            layer.msg("成功");
+                            close();
+                        } else {
+                            layer.alert(d.msg);
+                            err()
+                        }
+                    });
                 }
                 layui.index.popupCenter('选择用户', '/admin/user/userSelect', '800px', '510px', function () { });
             }

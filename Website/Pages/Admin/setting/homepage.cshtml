@@ -37,7 +37,7 @@
 
         form.render(null, 'register-setting');
         element.render('breadcrumb', 'breadcrumb');
-
+        UM.getEditor('myEditor').destroy();
         var um = UM.getEditor('myEditor');
 
         form.on('submit(register-setting)', function (data) {

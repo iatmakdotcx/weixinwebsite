@@ -202,5 +202,11 @@
     "inputFiles": [
       "wwwroot/lib/fastclick.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/jquery-weui.min.js",
+    "inputFiles": [
+      "wwwroot/js/jquery-weui.js"
+    ]
   }
 ]

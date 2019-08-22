@@ -357,6 +357,19 @@ tags{
     position: absolute;
     z-index: 99;
     left: 0;
-    top: 50px;
+    top: 93px;
     box-shadow: 0 3px 3px rgba(123,123,123,.2)
+}
+.yoga .weui-navbar__item.weui-bar__item--on {
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}
+.yoga .weui-navbar {
+    position:unset;
+}
+.yoga .yoga-class-list {
+    margin: 0;
+}
+.yoga .weui-navbar__item{
+    padding:8px 0;
 }

@@ -11,7 +11,7 @@
                 <button class="layui-btn layui-btn-sm" id="btn_select_ok"><i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-hide"></i>确定</button>
                 搜索：
                 <div class="layui-inline">
-                    <input class="layui-input" id="qrykw" autocomplete="off">
+                    <input class="layui-input" id="qrykw" autocomplete="off" value="@HttpContext.Request.Query["kw"]">
                 </div>
                 <button class="layui-btn" id="btn_usersearch">搜索</button>
             </div>
@@ -22,33 +22,49 @@
 <script>
     layui.use(['form', "table"], function () {
         var table = layui.table;
-         
+
         table.render({
             elem: '#usrl_select',
-            url: '/api/admin/user/list',            
+            url: '/api/admin/user/list',
+            @if (!string.IsNullOrEmpty(HttpContext.Request.Query["kw"]))
+            {
+                <text>
+            where: { kw: "@Html.Raw(HttpContext.Request.Query["kw"])" },
+            </text>
+            }
             cols: [
                 [
-                    { type: 'checkbox', fixed: 'left' },
+            @if (HttpContext.Request.Query["m"]=="0")
+            {
+                <text>
+            { type: 'radio', fixed: 'left' },
+            </text>
+            }
+            else
+            {<text>
+                { type: 'checkbox', fixed: 'left' }, </text>
+            }
+
                     { field: 'tel', width: 130, title: '手机号', fixed: 'left' },
                     {
-                        field: 'nickname', width: 200, title: '昵称', templet: function (data) {
-                            return '<img src="' + (data.avatar||"")+'" idx-event="avartatPreview" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;
-                        }
-                    },
+                field: 'nickname', width: 200, title: '昵称', templet: function (data) {
+                    return '<img src="' + (data.avatar||"")+'" idx-event="avartatPreview" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;
+                }
+            },
                     { field: 'vipRebate', width: 80, title: 'Vip折扣' },
                     { field: 'balance', width: 100, title: '余额' },
                     { field: 'address', width: 150, title: '地址' },
                     {
-                        width: 90, title: '绑定微信',align: 'center', templet: function (data) {
-                            return data.wxid != null ? "√" : "";
-                        }
-                    },
+                width: 90, title: '绑定微信',align: 'center', templet: function (data) {
+                    return data.wxid != null ? "√" : "";
+                }
+            },
                     { field: 'createAt', width: 165, title: '创建时间' },
                     {
-                        width: 90, title: '停用',align: 'center', templet: function (data) {
-                            return data.disabled == true ? "√" : "";
-                        }
-                    },
+                width: 90, title: '停用',align: 'center', templet: function (data) {
+                    return data.disabled == true ? "√" : "";
+                }
+            },
                     { field: 'description', title: '描述' },
                 ]
             ],
@@ -70,19 +86,12 @@
             var bricon = $(this).attr('disabled', true).find('i');
             bricon.removeClass('layui-hide');
             var checkStatus = table.checkStatus('usrl_select'), data = checkStatus.data;
-            var ids = "";
-            for (var i = 0; i < data.length; i++) {
-                ids += "," + data[i].id;
-            }
-            layui.afterSelectUser(ids, function (res) {
+
+            layui.afterSelectUser(data, function () {
                 bricon.addClass('layui-hide');
-                if (res.ok) {
-                    layer.msg("保存成功");
-                    layer.close(($(_that).closest(".layui-layer-page").attr("times")));
-                }
-                else {
-                    layer.alert(res.msg);
-                }
+                layer.close(($(_that).closest(".layui-layer-page").attr("times")));
+            }, function () {
+bricon.addClass('layui-hide');
             });
         });
         $("#btn_usersearch").click(function () {

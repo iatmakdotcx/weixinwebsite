@@ -12,55 +12,46 @@ namespace Website.Api.Admin
     [Produces("application/json")]
     [Route("api/admin/[controller]/[action]")]
     [AdminAuthorize(Roles = "Admin")]
-    public class UserController : Controller
+    public class PtController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-        public ApiResult<ApiListObj<UserInfo>> list(int page, int limit, string kw="")
+        public ApiResult<ApiListObj<PttlistItem>> list(int page, int limit, string kw="")
         {
-            ApiResult<ApiListObj<UserInfo>> alc = new ApiResult<ApiListObj<UserInfo>>();
+            ApiResult<ApiListObj<PttlistItem>> alc = new ApiResult<ApiListObj<PttlistItem>>();
             var dbh = DbContext.Get();
-            alc.data = new ApiListObj<UserInfo>();
-            alc.data.items = dbh.Db.Queryable<UserInfo>()
-                .WhereIF(!string.IsNullOrEmpty(kw) && "老师" != kw, ii => ii.nickname.Contains(kw) || ii.tel.Contains(kw))
-                .WhereIF("老师" == kw, ii => ii.isTeacher)
+            alc.data = new ApiListObj<PttlistItem>();
+            alc.data.items = dbh.Db.Queryable<PTTemplate,UserInfo>((t1,t2)=>t1.userId==t2.id)
+                .Select((t1,t2)=>new PttlistItem(){
+                    id=t1.id,
+                    name = t1.name,
+                    tags=t1.tags,
+                    userid= t1.userId,
+                    avatar=t2.avatar,
+                    nickname=t2.nickname,
+                    rtime= t1.rtime,
+                    rlen=t1.rlen }).MergeTable()
+                .WhereIF(!string.IsNullOrEmpty(kw), ii => ii.nickname.Contains(kw) || ii.name.Contains(kw))
                 .ToPageList(page, limit, ref alc.data.totalCnt);
             alc.ok = true;
             return alc;
         }
         [HttpPost]
-        public ApiResult<string> save(UserInfo acard)
+        public ApiResult<string> saveptt(PTTemplate ptt)
         {
             var apiRes = new ApiResult<string>();
             try
             {
                 var dbh = DbContext.Get();
-                if (acard.id == 0)
+                if (ptt.id == 0)
                 {
-                    dbh.Db.Insertable(acard).ExecuteCommand();
+                    dbh.Db.Insertable(ptt).ExecuteCommand();
                 }
                 else
-                {
-                    var rrUer = dbh.GetEntityDB<UserInfo>().GetById(acard.id);
-                    if (rrUer == null)
-                    {
-                        apiRes.msg = "未找用户";
-                        return apiRes;
-                    }
+                    dbh.Db.Updateable(ptt).ExecuteCommand();
 
-                    rrUer.tel = acard.tel;
-                    rrUer.nickname = acard.nickname;
-                    rrUer.vipRebate = acard.vipRebate;
-                    rrUer.address = acard.address;
-                    rrUer.disabled = acard.disabled;
-                    rrUer.height = acard.height;
-                    rrUer.weight = acard.weight;
-                    rrUer.description = acard.description;
-                    rrUer.isTeacher = acard.isTeacher;
-                    dbh.Db.Updateable(rrUer).ExecuteCommand();
-                }
                 apiRes.ok = true;
                 apiRes.data = "";
             }
@@ -128,5 +119,17 @@ namespace Website.Api.Admin
             }
             return apiRes;
         }
+    }
+    public class PttlistItem
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string tags { get; set; }
+        public string avatar { get; set; }
+        public string rtime { get; set; }
+        public int rlen { get; set; }
+        public int userid { get; set; }
+        public string nickname { get; set; }
+
     }
 }

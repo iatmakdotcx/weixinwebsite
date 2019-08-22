@@ -57,6 +57,11 @@ namespace Website.Controllers
                     apiRes.msg = "密码不正确";
                     return apiRes;
                 }
+                if (user.disabled)
+                {
+                    apiRes.msg = "账号已被停用";
+                    return apiRes;
+                }
                 string wxid;
                 if (string.IsNullOrEmpty(user.wxId) && !string.IsNullOrEmpty(wxid = HttpContext.Session.GetString("wxid")))
                 {
@@ -92,7 +97,7 @@ namespace Website.Controllers
 
                         var dbh = DbContext.Get();
                         var usinfo = dbh.Db.Queryable<UserInfo>().First(ii => ii.wxId == wxid);
-                        if (usinfo != null)
+                        if (usinfo != null && usinfo.disabled)
                         {
                             //已绑定微信，自动登录
                             setLogintoken(usinfo);
@@ -160,6 +165,11 @@ namespace Website.Controllers
                     {
                         user.password = pwd;
                         dbh.Db.Updateable(user).UpdateColumns(ii => ii.password).ExecuteCommand();
+                    }
+                    if (user.disabled)
+                    {
+                        apiRes.msg = "账号已被停用";
+                        return apiRes;
                     }
                 }
                 else
