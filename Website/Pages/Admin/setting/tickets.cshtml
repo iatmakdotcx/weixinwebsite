@@ -16,7 +16,8 @@
     <div class="layui-fluid">
         <div class="list-wall">
             <div class="layui-form list-search" style="margin-top:10px;">
-                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>                
+                <button type="button" class="layui-btn layui-btn-sm" data-action="toolAdd"><i class="layui-icon"></i> 新增</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" data-action="tooldsp"><i class="layui-icon"></i> 分发会员卡</button>
             </div>
             <table class="layui-hide" id="cardtablist" lay-filter="cardsettingtool"></table>
         </div>
@@ -36,8 +37,9 @@
             elem: '#cardtablist',
             url: '/api/admin/setting/gettickets',
             cols: [
-                [                    
-                    { type: 'numbers', fixed: 'left' },
+                [
+                    { type: 'checkbox', fixed: 'left' },
+                    @*{ type: 'numbers', fixed: 'left' },*@
                     { field: 'name', width: 200, title: '名称', fixed: 'left' },
                     { field: 'type', width: 60, title: '类型' },
                     { field: 'expiryDay', width: 60, title: '效期' },
@@ -68,6 +70,21 @@
                 layui.index.popupCenter('添加会员', '/admin/setting/ticketmodify', '700px', '610px', function () {
                     layui.index.reload();
                 })
+            },
+            tooldsp: function () {
+                var data = table.checkStatus('cardtablist').data;
+                if (data.length == 0) {
+                    layer.msg("至少选中一张优惠券！");
+                    return false;
+                }
+                var cardids = "";
+                for (var i = 0; i < data.length; i++) {
+                    cardids += "," + data[i].id;
+                }
+                layui.afterSelectUser = function (userids, cbak) {
+                    layui.config.ajax('/api/admin/setting/distributeticket', { cardids, userids }, cbak);
+                }
+                layui.index.popupCenter('选择用户', '/admin/user/userSelect', '800px', '510px', function () { });
             }
         }
         $('.list-search .layui-btn').on('click', function () {

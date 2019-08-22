@@ -4,10 +4,6 @@
     ViewData["Title"] = "首页设置";
 }
 <title>@ViewData["Title"]</title>
-<link href="~/um/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
-<script type="text/javascript" charset="utf-8" src="~/um/umeditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="~/um/umeditor.js"></script>
-<script type="text/javascript" src="~/um/lang/zh-cn/zh-cn.js"></script>
 <div class="layadmin-tabsbody-item layui-show">
     <div class="layui-card layadmin-header">
         <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
@@ -22,9 +18,7 @@
                 <div class="layui-card-header">首页设置</div>
                 <div class="layui-card-body">
                     <form class="layui-form" action="" lay-filter="register-setting">
-                      
                         <script type="text/plain" id="myEditor" style="width:1000px;height:440px;">@Html.Raw(Website.Models.SettingModel.getInstance().mobile_FirstPage)</script>
-
                     <div class="layui-form-item" style="padding-top:20px;">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit="" lay-filter="register-setting">保存</button>

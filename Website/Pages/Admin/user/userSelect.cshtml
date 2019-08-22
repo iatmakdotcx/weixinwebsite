@@ -1,0 +1,95 @@
+﻿@page
+@model Website.Pages.user.userSelectModel
+@{
+    ViewData["Title"] = "用户选择";
+}
+<title>@ViewData["Title"]</title>
+<div class="layadmin-tabsbody-item layui-show">
+    <div class="layui-fluid" style="padding-top:0">
+        <div class="list-wall">
+            <div class="layui-form list-search" style="margin-top:10px;">
+                <button class="layui-btn layui-btn-sm" id="btn_select_ok"><i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-hide"></i>确定</button>
+                搜索：
+                <div class="layui-inline">
+                    <input class="layui-input" id="qrykw" autocomplete="off">
+                </div>
+                <button class="layui-btn" id="btn_usersearch">搜索</button>
+            </div>
+            <table class="layui-hide" id="usrl_select" lay-filter="usrl_select"></table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form', "table"], function () {
+        var table = layui.table;
+         
+        table.render({
+            elem: '#usrl_select',
+            url: '/api/admin/user/list',            
+            cols: [
+                [
+                    { type: 'checkbox', fixed: 'left' },
+                    { field: 'tel', width: 130, title: '手机号', fixed: 'left' },
+                    {
+                        field: 'nickname', width: 200, title: '昵称', templet: function (data) {
+                            return '<img src="' + (data.avatar||"")+'" idx-event="avartatPreview" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;
+                        }
+                    },
+                    { field: 'vipRebate', width: 80, title: 'Vip折扣' },
+                    { field: 'balance', width: 100, title: '余额' },
+                    { field: 'address', width: 150, title: '地址' },
+                    {
+                        width: 90, title: '绑定微信',align: 'center', templet: function (data) {
+                            return data.wxid != null ? "√" : "";
+                        }
+                    },
+                    { field: 'createAt', width: 165, title: '创建时间' },
+                    {
+                        width: 90, title: '停用',align: 'center', templet: function (data) {
+                            return data.disabled == true ? "√" : "";
+                        }
+                    },
+                    { field: 'description', title: '描述' },
+                ]
+            ],
+            height: "400px",
+            page: true
+            , response: { statusCode: 200 }
+            , parseData: function (res) {
+                return {
+                    "code": res.statusCode,
+                    "msg": res.msg,
+                    "count": res.data.totalCnt,
+                    "data": res.data.items
+                };
+            }
+        });
+
+        $("#btn_select_ok").click(function () {
+            _that = this;
+            var bricon = $(this).attr('disabled', true).find('i');
+            bricon.removeClass('layui-hide');
+            var checkStatus = table.checkStatus('usrl_select'), data = checkStatus.data;
+            var ids = "";
+            for (var i = 0; i < data.length; i++) {
+                ids += "," + data[i].id;
+            }
+            layui.afterSelectUser(ids, function (res) {
+                bricon.addClass('layui-hide');
+                if (res.ok) {
+                    layer.msg("保存成功");
+                    layer.close(($(_that).closest(".layui-layer-page").attr("times")));
+                }
+                else {
+                    layer.alert(res.msg);
+                }
+            });
+        });
+        $("#btn_usersearch").click(function () {
+            table.reload('usrl_select', {
+                    where: { kw:$("#qrykw").val() }
+                });
+        });
+
+    });
+</script>

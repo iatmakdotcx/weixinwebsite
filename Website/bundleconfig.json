@@ -1,0 +1,206 @@
+[
+  {
+    "outputFileName": "wwwroot/css/jquery-weui.min.css",
+    "inputFiles": [
+      "wwwroot/css/jquery-weui.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/login.min.css",
+    "inputFiles": [
+      "wwwroot/css/login.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/msite.min.css",
+    "inputFiles": [
+      "wwwroot/css/msite.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/demos.min.css",
+    "inputFiles": [
+      "wwwroot/css/demos.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/admin.min.css",
+    "inputFiles": [
+      "wwwroot/css/admin.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/layui.min.js",
+    "inputFiles": [
+      "wwwroot/layui/layui.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/mod/index.min.js",
+    "inputFiles": [
+      "wwwroot/layui/mod/index.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/mod/config.min.js",
+    "inputFiles": [
+      "wwwroot/layui/mod/config.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/mod/admin.min.js",
+    "inputFiles": [
+      "wwwroot/layui/mod/admin.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/util.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/util.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/carousel.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/carousel.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/code.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/code.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/colorpicker.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/colorpicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/element.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/element.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/flow.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/flow.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/form.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/form.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/laydate.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/laydate.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/jquery.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/jquery.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/layedit.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/layedit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/layer.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/layer.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/laypage.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/laypage.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/laytpl.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/laytpl.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/rate.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/rate.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/mobile.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/mobile.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/slider.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/slider.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/table.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/table.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/tree.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/tree.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/lay/modules/upload.min.js",
+    "inputFiles": [
+      "wwwroot/layui/lay/modules/upload.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/login.min.js",
+    "inputFiles": [
+      "wwwroot/js/login.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/layui/css/layui.min.css",
+    "inputFiles": [
+      "wwwroot/layui/css/layui.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/um/umeditor.config.min.js",
+    "inputFiles": [
+      "wwwroot/um/umeditor.config.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/um/lang/zh-cn/zh-cn.min.js",
+    "inputFiles": [
+      "wwwroot/um/lang/zh-cn/zh-cn.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/fastclick.min.js",
+    "inputFiles": [
+      "wwwroot/lib/fastclick.js"
+    ]
+  }
+]

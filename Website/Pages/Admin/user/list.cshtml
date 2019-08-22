@@ -20,7 +20,7 @@
                 <button type="button" class="layui-btn layui-btn-sm" data-action="toolAddMulti"><i class="layui-icon"></i> 批量新增</button>
                 搜索：
                 <div class="layui-inline">
-                    <input class="layui-input" id="qrykw" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                    <input class="layui-input" id="qrykw" autocomplete="off">
                 </div>
                 <button class="layui-btn" data-action="reload">搜索</button>
             </div>
@@ -34,9 +34,7 @@
 </div>
 <script>
     layui.use(['form',"table"], function () {
-        var table = layui.table
-            , element = layui.element
-            , form = layui.form;
+        var table = layui.table;
 
          table.render({
             elem: '#cardtablist',
@@ -44,7 +42,7 @@
             cols: [
                 [                    
                     { type: 'numbers', fixed: 'left' },
-                    { field: 'tel', width: 130, title: '手机号', fixed: 'left' },                  
+                    { field: 'tel', width: 130, title: '手机号', fixed: 'left' },
                     {
                         field: 'nickname', width: 200, title: '昵称', templet: function (data) {
                             return '<img src="' + (data.avatar||"")+'" idx-event="avartatPreview" class="layui-circle" style="width:30px;height:30px;">　'+data.nickname;

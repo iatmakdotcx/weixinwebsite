@@ -307,6 +307,72 @@ namespace Website.Api.Admin
             }
             return apiRes;
         }
+        /// <summary>
+        /// 过滤不安全的id
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        private static string checkids(string ids)
+        {
+            List<int> intlist = new List<int>();
+            foreach (var item in ids.Split(",",StringSplitOptions.RemoveEmptyEntries))
+            {
+                int tmpint;
+                if (int.TryParse(item,out tmpint))
+                {
+                    intlist.Add(tmpint);
+                }
+            }
+            return string.Join(",", intlist);
+        }
+        [HttpPost]
+        public ApiResult<string> distributecard(string cardids, string userids)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var insertSql = @"INSERT INTO usercards(userid,create_at,cardsid,cardname,cardtype,cardexpiryDate,canUseCnt,usedCnt)
+select users.id,NOW(),cards.id,cards.`name`,cards.type,DATE_ADD(NOW(),INTERVAL cards.expiry DAY),cards.canUseCount,0
+from users JOIN cards where users.id in ("+ checkids(userids) + ") and cards.id in (" + checkids(cardids) + ")";
+
+                var dbh = DbContext.Get();
+                dbh.Db.Ado.ExecuteCommand(insertSql);
+
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
+        [HttpPost]
+        public ApiResult<string> distributeticket(string cardids, string userids)
+        {
+            var apiRes = new ApiResult<string>();
+            try
+            {
+                var insertSql = @"INSERT INTO usertickets(userid,ticketid,create_at,expiryDate,deleted)
+select users.id,tickets.id,NOW(),DATE_ADD(NOW(),INTERVAL tickets.expiryDay DAY),0
+from users JOIN tickets where users.id in (" + checkids(userids) + ") and tickets.id in (" + checkids(cardids) + ")";
+
+                var dbh = DbContext.Get();
+                dbh.Db.Ado.ExecuteCommand(insertSql);
+
+                apiRes.ok = true;
+                apiRes.data = "";
+            }
+            catch (Exception ex)
+            {
+                apiRes.ok = false;
+                apiRes.msg = ex.Message;
+                apiRes.data = "";
+            }
+            return apiRes;
+        }
     }
     public class ApiListObj<T>
     {
