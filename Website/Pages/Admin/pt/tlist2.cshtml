@@ -1,9 +1,8 @@
 ﻿@page
-@model Website.Pages.Admin.yogatlist2Model
+@model Website.Pages.Admin.tlist2Model
 @{
-    ViewData["Title"] = "瑜伽课程选择";
+    ViewData["Title"] = "私教";
 }
-<title>@ViewData["Title"]</title>
 <div class="layadmin-tabsbody-item layui-show">
     <div class="layui-fluid" style="padding-top:0">
         <div class="list-wall">
@@ -16,33 +15,23 @@
 </div>
 <script>
     layui.use(['form', "table"], function () {
-        var table = layui.table
-            , element = layui.element
-            , form = layui.form;
-         
+        var table = layui.table;
+
         table.render({
             elem: '#gytl_select',
-            url: '/api/admin/class/yogatemplatelist',
-            where: {a: 1},
+url: '/api/admin/pt/list',
             cols: [
                 [
                     { type: 'checkbox', fixed: 'left' },
-                    { field: 'name', width: 200, title: '名称', fixed: 'left' },
-                    { field: 'tags', width: 200, title: '标签' },
-                    { field: 'teacher', width: 100, title: '老师' },
                     {
-                        field: 'img', title: '图片', width: 100, templet: function (data) {
-                            return '<img src="' + data.avatar + '" idx-event="avartatPreview" style="width:40px;height:40px;">';
+                        title: '老师', width: 200, fixed: 'left' , templet: function (data) {
+                            return '<img src="' + data.avatar + '" idx-event="avartatPreview" style="width:40px;height:40px;">'+data.nickname;
                         }
                     },
-                    { field: 'star', align: 'center', width: 100, title: '难度' },
-                    {
-                        title: '时长', width: 100, templet: function (data) {
-                            return data.duration + '分钟';
-                        }
-                    },
-                    { field: 'kyyzs', align: 'center', width: 120, title: '可约次数' },
-                    { field: 'address', width: 120, title: '地址' },
+                    { field: 'rtime', align: 'center', width: 116, title: '上课时间' },
+                    { field: 'rlen', align: 'center', width: 116, title: '时长' },
+                    { field: 'tags', width: 100, title: '标签' },
+                    { field: 'description', width: 116, title: '备注' },
                     { width: 154, title: '操作', templet: '#cardsettingtool' }
                 ]
             ],
@@ -68,7 +57,7 @@
             for (var i = 0; i < data.length; i++) {
                 ids += "," + data[i].id;
             }
-            layui.config.ajax('/api/admin/class/importclass',
+            layui.config.ajax('/api/admin/pt/importptt',
                 { rdate: $("#test-laydate-normal-cn").val(), ids },
                 function (res) {
                     bricon.addClass('layui-hide');

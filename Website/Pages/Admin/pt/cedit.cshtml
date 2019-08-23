@@ -1,5 +1,5 @@
 ﻿@page
-@model Website.Pages.Admin.teditModel
+@model Website.Pages.Admin.ceditModel
 @{
     ViewData["Title"] = "私教设置";
 }
@@ -14,7 +14,7 @@
         <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
             <a lay-href="">主页</a><span lay-separator="">/</span>
             <a><cite>设置</cite></a><span lay-separator="">/</span>
-            <a href="#pt/tlist"><cite>私教设置</cite></a><span lay-separator="">/</span>
+            <a href="#pt/clist"><cite>私教设置</cite></a><span lay-separator="">/</span>
             <a><cite>私教编辑</cite></a>
         </div>
     </div>
@@ -29,6 +29,7 @@
                                 <label class="layui-form-label">名称</label>
                                 <div class="layui-input-inline">
                                     <input type="hidden" name="id" value="@Model.data?.id" />
+                                    <input type="hidden" name="rdate" value="@HttpContext.Request.Query["rdate"]" />
                                     <input type="text" name="name" value="@Model.data?.name" maxlength="20" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
@@ -51,10 +52,23 @@
                                 <label class="layui-form-label">老师</label>
                                 <div class="layui-input-inline">
                                     <input type="hidden" name="userId" id="userId" value="@Model.data?.userId">
-                                    <input type="text" value="@Model.teacherName" readonly="readonly" lay-verify="required" lay-verType="tips" class="layui-input">
+                                    <input type="text" name="username" value="@Model.data?.username" readonly="readonly" lay-verify="required" lay-verType="tips" class="layui-input">
                                 </div>
                                 <div class="layui-input-inline">
                                     <button class="layui-btn layui-btn-primary" id="btn_pttselect">选择老师</button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">图片</label>
+                                <div class="layui-input-inline">
+                                    <input name="avatar" lay-verify="required" id="skcform_avatar" placeholder="图片地址" value="@Model.data?.avatar" class="layui-input">
+                                </div>
+                                <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                                    <button type="button" class="layui-btn layui-btn-primary" id="test-upload-normal">
+                                        <i class="layui-icon">&#xe67c;</i>上传图片
+                                    </button>
+                                    <button class="layui-btn layui-btn-primary" idx-event="avartatPreview" data-apu="#skcform_avatar">查看图片</button>
+                                    <p id="test-upload-demoText"></p>
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -114,7 +128,7 @@
         form.on('submit(submit)', function (data) {
             var bricon = $('#submit').attr('disabled', true).find('i');
             bricon.removeClass('layui-hide');
-            layui.config.ajax('/api/admin/pt/saveptt', data.field, function (res) {
+            layui.config.ajax('/api/admin/pt/savepts', data.field, function (res) {
                 bricon.addClass('layui-hide');
                 if (res.ok) {
                     layer.msg("保存成功");
@@ -125,6 +139,25 @@
                 }
             });
             return false;
+        });
+         var uploadInst = layui.upload.render({
+            elem: '#test-upload-normal'
+            , size: 1024
+            , url: '/api/admin/setting/uploadimg?p=4'
+            , before: function (obj) { }
+            , done: function (res) {
+                if (!res.ok) {
+                    return layer.msg('上传失败');
+                }
+                $("#skcform_avatar").val(res.data);
+            }
+            , error: function () {
+                var demoText = $('#test-upload-demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
         });
     });
 </script>

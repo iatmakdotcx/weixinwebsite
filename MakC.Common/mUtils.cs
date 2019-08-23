@@ -34,5 +34,23 @@ namespace MakC.Common
                 return strResult.Replace("-", "").ToLower();
             }
         }
+        /// <summary>
+        /// 过滤不安全的id
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static string checkids(string ids)
+        {
+            List<int> intlist = new List<int>();
+            foreach (var item in ids.Split(",", StringSplitOptions.RemoveEmptyEntries))
+            {
+                int tmpint;
+                if (int.TryParse(item, out tmpint))
+                {
+                    intlist.Add(tmpint);
+                }
+            }
+            return string.Join(",", intlist);
+        }
     }
 }
