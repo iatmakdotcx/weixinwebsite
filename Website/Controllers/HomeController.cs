@@ -293,6 +293,23 @@ namespace Website.Controllers
             return result;
         }
 
+        [AllowAnonymous]
+        public ApiResult<List<PTSchedule>> pt_data(DateTime rq)
+        {
+            ApiResult<List<PTSchedule>> result = new ApiResult<List<PTSchedule>>();
+            var dbh = DbContext.Get();
+            var lstdata = dbh.Db.Queryable<PTSchedule>()
+                .Where(ii => ii.rdate == rq.Date)
+                .OrderBy(ii => ii.rtime)
+                .IgnoreColumns(ii => new { ii.description })
+                //.Select(ii => new { ii.id, ii.name, ii.RtimeRange, ii.star, ii.tags, ii.avatar, ii.teacher })
+                .ToList();
+
+            result.data = lstdata;
+            result.ok = true;
+
+            return result;
+        }
 
 
 
@@ -439,6 +456,56 @@ namespace Website.Controllers
                         new JProperty("className", item.className),
                         new JProperty("teacher", item.teacher),
                         new JProperty("address", item.address)
+                        ));
+                }
+            }
+            var tmpAllData = new JObject(new JProperty("d1", d1), new JProperty("d2", d2), new JProperty("d3", d3));
+            TempData["listdata"]= tmpAllData.ToString(Formatting.None);
+            return View();
+        }
+        public IActionResult myptorder()
+        {
+            var userid = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            var qryd = dbh.Db.Queryable<PtOrder, PTSchedule>((t1, t2) => t1.ptId == t2.id)
+                .Where((t1, t2) => t1.userId == userid && t2.rdate > DateTime.Now.Date.AddDays(-365))
+                .Select((t1, t2) => new { t1.id, t2.rdate, className = t2.name, t2.rlen, t2.username, t2.rtime, t1.canceled })
+                .MergeTable()
+                .OrderBy(t1 => t1.rdate, SqlSugar.OrderByType.Desc).ToList();
+            var d1 = new JArray();
+            var d2 = new JArray();
+            var d3 = new JArray();
+            var tdv =DateTime.Now.Date;
+            foreach (var item in qryd)
+            {
+                if (item.canceled)
+                {
+                    d3.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("rdate", item.rdate.ToString("yyyy-MM-dd")),
+                        new JProperty("teacher", item.username),
+                        new JProperty("rtime", item.rtime),
+                        new JProperty("rlen", item.rlen)
+                        ));
+                }
+                else if (item.rdate < tdv)
+                {
+                    d2.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("rdate", item.rdate.ToString("yyyy-MM-dd")),
+                        new JProperty("teacher", item.username),
+                        new JProperty("rtime", item.rtime),
+                        new JProperty("rlen", item.rlen)
+                        ));
+                }
+                else
+                {
+                    d1.Add(new JObject(
+                        new JProperty("id", item.id),
+                        new JProperty("rdate", item.rdate.ToString("yyyy-MM-dd")),
+                        new JProperty("teacher", item.username),
+                        new JProperty("rtime", item.rtime),
+                        new JProperty("rlen", item.rlen)
                         ));
                 }
             }

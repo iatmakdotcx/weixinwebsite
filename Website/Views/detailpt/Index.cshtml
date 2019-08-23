@@ -1,0 +1,48 @@
+﻿@model detailPtModel;
+@{
+    ViewData["Title"] = "详情";
+}
+    <div class="bd">
+        <div class="weui-flex course_info">
+            <p class="thumb"><img src="@Model.data.avatar"></p>
+            <div class="weui-flex__item detail">
+                <p class="name">@Model.data.username</p>
+                <p class="locate">日期：@Model.data.rdate.ToString("yyyy-MM-dd")</p>
+                <p class="locate">时间：@Model.data.rtime</p>
+                <p class="locate">时长：@Model.data.rlen 分钟</p>
+            </div>
+            <div></div>
+        </div>
+        <div class="course_desci">
+            <div class="info_detail" style="display:block">
+                @Html.Raw(Model.data.description)
+            </div>
+        </div>
+        <div class="weui-footer_fixed-bottom">
+            @if (Model.data.yysl >= Model.data.kyyzs)
+            {
+                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary weui-btn_disabled">已约满</a>
+            }
+            else if (User == null || User.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone) == null)
+            {
+                //游客
+                <a class="weui-btn weui-btn_plain-default weui-btn_mini" href="/login?ReturnUrl=@System.Web.HttpUtility.UrlEncode(Context.Request.Path)">立即预约</a>
+            }
+            else
+            {
+                //已登录的用户可以预约
+                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="btn_appointment">预约</a>
+            }
+        </div>
+    </div> 
+@section Scripts{
+    <script>
+        $(function () {
+            $("#btn_appointment").click(function () {
+                $.confirm("您的预留手机号为 @User?.FindFirst(System.Security.Claims.ClaimTypes.MobilePhone)?.Value <br/>确认预约当前私教？", function () {
+                    location.href = "detailpt/save?id=@Context.Request.Query["id"]"
+                }, function() {});
+            });
+        });
+    </script>
+}

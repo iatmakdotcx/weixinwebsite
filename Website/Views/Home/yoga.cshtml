@@ -5,12 +5,14 @@
 }
 <title>@ViewData["Title"]</title>
 <style>
+    .tag{
 
+    }
 </style>
 <div class="weui-tab yoga">
     <div class="weui-navbar">
         <a class="weui-navbar__item weui-bar__item--on">团课</a>
-        <a class="weui-navbar__item">私教</a>
+        <a class="weui-navbar__item pt">私教</a>
     </div>
     <div class="date_show">
     <ul class="date_list">
@@ -45,15 +47,14 @@
             </div>
         </div>
         <div class="weui-tab__bd-item">
-            <div class="weui-cells content yoga-class-list">
-                <a class="weui-cell weui-cell_access course_item" v-bind:href="'/detail?id='+arow.id" v-for="arow in all">
+            <div class="weui-cells content pt-class-list">
+                <a class="weui-cell weui-cell_access course_item" v-bind:href="'/detailpt?id='+arow.id" v-for="arow in all">
                     <div class="weui-cell__hd avatar"><img v-bind:src="arow.avatar"></div>
                     <div class="weui-cell__bd">
-                        <p class="name">{{ arow.name }}</p>
-                        <p class="star">难度：<span v-html="$options.filters.disStar(arow.star)"></span></p>
-                        <p class="schedule">{{ arow.rtimeRange }}  <span style="margin-left:20px;">{{ arow.teacher }}</span><span style="margin-left:20px;right: 100px;position: absolute;">还可约<span style="color:#00a3ff">{{ arow.kyyzs-arow.yysl }}</span>人</span></p>
-                        <div class="tags" v-if="arow.tags">
-                            <span v-for="tag in arow.tags.split('|')">{{tag}}</span>
+                        <p class="name">{{ arow.username }}</p>                        
+                        <p class="schedule">{{ arow.rtime }}  <span style="margin-left:20px;">{{ arow.teacher }}</span></p>
+                        <div class="tags" style="min-height:24px;">
+                            <span v-for="tag in ((arow.tags||'').split('|'))" v-if="tag">{{tag}}</span>
                         </div>
                     </div>
                     <div class="book_status">
@@ -74,14 +75,18 @@
 
 <script>
     $(function () {
+        var grq = "@DateTime.Now.ToString("yyyy-MM-dd")", gt = $(".yoga .weui-navbar__item.pt").is(":visible") ? "1" : "0";
         var contentTemplate = $(".yoga-class-list").html();
+        var contentTemplate2 = $(".pt-class-list").html();
         $(".date_list a").click(function () {
-            var t = $(this).attr("data");
-            courseData(t);
+            grq = $(this).attr("data");
+            courseData();
         });
         $(".weui-navbar .weui-navbar__item").click(function () {
             $(this).addClass("weui-bar__item--on").siblings(".weui-bar__item--on").removeClass("weui-bar__item--on");
             $(".weui-tab__bd.pgs .weui-tab__bd-item").eq($(this).index()).addClass("weui-tab__bd-item--active").siblings(".weui-tab__bd-item--active").removeClass("weui-tab__bd-item--active");
+            gt = $(".yoga .weui-navbar__item.pt").is(":visible") ? "1" : "0";
+            courseData();
         });
         function disStar(v) {
             var starVal = parseInt(v);
@@ -99,23 +104,32 @@
             }
             return htmlv;
         }
-        function courseData(rq) {
+        function courseData() {
             $.showLoading();
             $(".date_list .current").removeClass("current");
-            $(".date_show a[data='" + rq + "']").addClass("current");
+            $(".date_show a[data='" + grq + "']").addClass("current");
             $.ajax({
-                url: "/home/yoga_data?rq=" + rq,
+                url: "/home/" + (gt == "0" ? "yoga_data" : "pt_data") + "?rq=" + grq + "&t=" + gt,
                 type: "get",
                 success: function (data) {
                     $.hideLoading();
                     if (data.ok) {
                         console.log(data);
-                        $(".yoga-class-list").html(contentTemplate);
-                        new Vue({
-                            el: '.yoga-class-list',
-                            data: { all: data.data },
-                            filters: {disStar}
-                        });
+                        if (gt == "0") {
+                            $(".yoga-class-list").html(contentTemplate);
+                            new Vue({
+                                el: '.yoga-class-list',
+                                data: { all: data.data },
+                                filters: { disStar }
+                            });
+                        } else {
+                            $(".pt-class-list").html(contentTemplate2);
+                            new Vue({
+                                el: '.pt-class-list',
+                                data: { all: data.data },
+                                filters: { disStar }
+                            });
+                        }
                     }
                 },
                 error: function (xhr, status, error) {
@@ -133,7 +147,8 @@
             onChange: function (p, value, displayValues) {
                 if ($(".calendar_show").is(":visible")) {
                     $(".calendar_show").slideToggle();
-                    courseData(value);
+                    grq = value;
+                    courseData();
                 }
             }
         });
