@@ -19,6 +19,7 @@ namespace App.Data
         public int star { get; set; }
         public int duration { get; set; }
         public string tags { get; set; }
+        public int teacherid { get; set; }
         public string teacher { get; set; }
         public string address { get; set; }
         public string avatar { get; set; }

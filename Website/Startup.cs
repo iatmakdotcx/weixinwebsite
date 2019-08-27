@@ -68,6 +68,8 @@ namespace Website
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseMiddleware<ExceptionFilter>();
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();

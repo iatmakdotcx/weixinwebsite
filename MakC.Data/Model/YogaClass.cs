@@ -19,6 +19,7 @@ namespace App.Data
         public bool disabled { get; set; }
         public string avatar { get; set; }
         public string description { get; set; }
+        public int teacherid { get; set; }
         public string teacher { get; set; }
         public string address { get; set; }
         public DateTime rdate { get; set; }

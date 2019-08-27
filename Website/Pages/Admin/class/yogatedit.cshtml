@@ -50,7 +50,11 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">老师</label>
                                 <div class="layui-input-inline">
+                                    <input type="hidden" name="teacherid" id="teacherid" value="@Model.data?.teacherid">
                                     <input type="text" name="teacher" value="@Model.data?.teacher" min="0" step="0.01" lay-verify="required" lay-verType="tips" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <button class="layui-btn layui-btn-primary" id="btn_pttselect">选择老师</button>
                                 </div>
                                 <label class="layui-form-label">课程难度</label>
                                 <div class="layui-inline">
@@ -144,7 +148,15 @@
             });
             return false;
         });
-
+        $("#btn_pttselect").click(function () {
+            layui.afterSelectUser = function (users, close, err) {
+                if (users.length > 0) {
+                    $("#teacherid").val(users[0].id).next().val(users[0].nickname);
+                    close();
+                }
+            }
+            layui.index.popupCenter('选择老师', '/admin/user/userSelect?kw=老师&m=0', '800px', '510px', function () { });
+        })
         var uploadInst = layui.upload.render({
             elem: '#test-upload-normal'
             , size: 1024

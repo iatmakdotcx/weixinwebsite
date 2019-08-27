@@ -117,10 +117,10 @@
             }
         });
         $("#btn_pttselect").click(function () {
-            layui.afterSelectUser = function (users, close, err) {                
-                if (users.length>0) {
-                $("#userId").val(users[0].id).next().val(users[0].nickname);
-                close();
+            layui.afterSelectUser = function (users, close, err) {
+                if (users.length > 0) {
+                    $("#userId").val(users[0].id).next().val(users[0].nickname);
+                    close();
                 }
             }
             layui.index.popupCenter('选择老师', '/admin/user/userSelect?kw=老师&m=0', '800px', '510px', function () { });

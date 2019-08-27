@@ -159,6 +159,7 @@ namespace Website.Api.Admin
                         avatar = item.avatar,
                         rdate = rdate,
                         rtimeRange = item.rtimeRange,
+                        teacherid = item.teacherid,
                         teacher = item.teacher,
                         address = item.address,
                         description = item.description,

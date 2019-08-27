@@ -75,7 +75,7 @@
 
 <script>
     $(function () {
-        var grq = "@DateTime.Now.ToString("yyyy-MM-dd")", gt = $(".yoga .weui-navbar__item.pt").is(":visible") ? "1" : "0";
+        var grq = "@DateTime.Now.ToString("yyyy-MM-dd")", gt = $(".yoga .weui-navbar__item.pt").hasClass("weui-bar__item--on") ? "1" : "0";
         var contentTemplate = $(".yoga-class-list").html();
         var contentTemplate2 = $(".pt-class-list").html();
         $(".date_list a").click(function () {
@@ -85,7 +85,7 @@
         $(".weui-navbar .weui-navbar__item").click(function () {
             $(this).addClass("weui-bar__item--on").siblings(".weui-bar__item--on").removeClass("weui-bar__item--on");
             $(".weui-tab__bd.pgs .weui-tab__bd-item").eq($(this).index()).addClass("weui-tab__bd-item--active").siblings(".weui-tab__bd-item--active").removeClass("weui-tab__bd-item--active");
-            gt = $(".yoga .weui-navbar__item.pt").is(":visible") ? "1" : "0";
+            gt = $(".yoga .weui-navbar__item.pt").hasClass("weui-bar__item--on") ? "1" : "0";
             courseData();
         });
         function disStar(v) {
