@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "课程签到";
+    Layout = null;
+    var tmpDate = DateTime.Now.Date;
+}
+<title>@ViewData["Title"]</title>
+<div class="weui-tab yoga">
+    <div class="date_show">
+    <ul class="date_list">
+        @for (int i = 0; i < 7; i++)
+        {
+            <li>
+                <a href="javascript:void(0);" data="@tmpDate.AddDays(i).ToString("yyyy-MM-dd")" @(i > 0 ? "" : "class=current")>@tmpDate.AddDays(i).ToString("MM-dd")<br>@MakC.Common.mUtils.getweekText(tmpDate.AddDays(i).DayOfWeek)</a>
+            </li>
+        }
+    </ul>
+    <a href="javascript:void(0);" class="date_calendar fa fa-calendar"></a>
+</div>
+    <div class="weui-cells content yoga-class-list" style="background-color:unset;">
+        <a class="weui-form-preview" v-bind:href="'/signu?id='+aord.id" v-for="aord in all" style="display:block;">
+            <div style="padding:10px 15px 0 15px;color: black;">{{aord.name}}</div>
+            <div class="weui-form-preview__bd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">时间</label>
+                    <span class="weui-form-preview__value">{{aord.rtimeRange}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">预约人数</label>
+                    <span class="weui-form-preview__value">{{aord.yysl}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">签到人数</label>
+                    <span class="weui-form-preview__value">{{aord.qdsl}}</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<input id="date3" type="hidden">
+<div class="calendar_show" style="display: none;"></div>
+<script>
+    $(function () {
+        var grq = "";
+        var contentTemplate = $(".yoga-class-list").html();
+        $(".date_list a").click(function () {
+            grq = $(this).attr("data");
+            courseData();
+        });
+        function disStar(v) {
+            var starVal = parseInt(v);
+            var fillStar = parseInt(starVal / 2);
+            var HalfStar = parseInt(starVal % 2);
+            var EnptyStar = 5 - (fillStar + HalfStar);
+            var htmlv = "";
+            for (var i = 0; i < fillStar; i++) {
+                htmlv += '<i class="fa fa-star" aria-hidden="true"></i>';
+            }
+            for (var i = 0; i < HalfStar; i++) {
+                htmlv += '<i class="fa fa-star-half-o" aria-hidden="true"></i>';
+            } for (var i = 0; i < EnptyStar; i++) {
+                htmlv += '<i class="fa fa-star-o" aria-hidden="true"></i>';
+            }
+            return htmlv;
+        }
+        function courseData() {
+            $.showLoading();
+            $(".date_list .current").removeClass("current");
+            $(".date_show a[data='" + grq + "']").addClass("current");
+            $.ajax({
+                url: "/home/sign_data?rq=" + grq,
+                type: "get",
+                success: function (data) {
+                    $.hideLoading();
+                    if (data.ok) {
+                        $(".yoga-class-list").html(contentTemplate);
+                        new Vue({
+                            el: '.yoga-class-list',
+                            data: { all: data.data },
+                            filters: { disStar }
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $.hideLoading();
+                }
+            });
+        }
+        $(".date_show .date_calendar").click(function () {
+            $(".calendar_show").slideToggle();
+        });
+        $("#date3").calendar({
+            dateFormat:"yyyy-mm-dd",
+            minDate: "@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")",
+            container: ".calendar_show",
+            onChange: function (p, value, displayValues) {
+                if ($(".calendar_show").is(":visible")) {
+                    $(".calendar_show").slideToggle();
+                    grq = value;
+                    courseData();
+                }
+            }
+        });
+        new Vue({
+            el: '.yoga-class-list',
+            data: { all:@Html.Raw(TempData["data"])},
+            filters: {disStar}
+        });
+        
+    });    
+</script>

@@ -514,8 +514,40 @@ namespace Website.Controllers
             return View();
         }
 
-
-
+        public IActionResult sign()
+        {           
+            var data = sign_data(DateTime.Now.Date);
+            if (!data.ok)
+            {
+                return ShowErrorPage(data.msg);
+            }
+            TempData["data"] = JsonConvert.SerializeObject(data.data);
+            return View();
+        }
+        public ApiResult<List<YogaClass>> sign_data(DateTime rq)
+        {
+            ApiResult<List<YogaClass>> result = new ApiResult<List<YogaClass>>();
+            var id = User.FindFirst(ClaimTypes.Sid).Value.AsInt();
+            var dbh = DbContext.Get();
+            UserInfo user = dbh.Db.Queryable<UserInfo>().InSingle(id);
+            if (user == null || !user.isTeacher)
+            {
+                result.msg = "无法使用此功能";
+                return result;
+            }
+            result.data = dbh.Db.Queryable<YogaClass>().Where(ii => ii.teacherid == id && ii.rdate == rq).ToList(); 
+            result.ok = true;
+            return result;
+        }
+        private IActionResult ShowErrorPage(string msg, string description = "")
+        {
+            ErrorViewModel erv = new ErrorViewModel();
+            erv.Msg = msg;
+            erv.Description = description;
+            erv.Url = HttpContext.Request.Path;
+            //erv.Referer = HttpContext.Request.Headers["Referer"];
+            return View("Error", erv);
+        }
 
     }
 }

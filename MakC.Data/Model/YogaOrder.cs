@@ -21,5 +21,6 @@ namespace App.Data
         public bool canceled { get; set; }
         public int? cancelUser { get; set; }
         public DateTime? cancelTime { get; set; }
+        public string cancelMsg { get; set; }
     } 
 }

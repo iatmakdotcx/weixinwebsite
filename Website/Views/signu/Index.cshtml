@@ -1,0 +1,106 @@
+﻿@model signListModel;
+@{
+    ViewData["Title"] = "课程签到";
+}
+<style>
+    .course_info .star span{
+        color: #FFB800;
+    }
+    .aday.ap{
+       padding: 10px 8px 8px 8px;
+    }
+.schedule_info .aday.current {
+    border: 1px solid #bb0303;
+    background-color: #efe1e1;
+}
+</style>
+<div class="bd">
+    <div class="weui-flex course_info">
+        <p class="thumb"><img src="@Model.data.avatar"></p>
+        <div class="weui-flex__item detail">
+            <p class="name">@Model.data.name</p>
+            <p class="star">难度：<span></span></p>
+            <p class="date">日期：@Model.data.rdate.ToString("yyyy-MM-dd")（@MakC.Common.mUtils.getweekText(Model.data.rdate.DayOfWeek)）</p>
+            <p class="time">时间：@Model.data.rtimeRange</p>
+            <p class="locate">场地：@Model.data.address</p>
+            <p class="coach">老师：@Model.data.teacher</p>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="schedule_info">
+        <p class="schedule_title">预约人数：@Model.listitems.Count</p>        
+        <p class="schedule_title">选择未到人员</p>
+        <div class="weui-grids orders">
+            @foreach (var item in Model.listitems)
+            {
+                <div class="weui-grid-2">
+                    <div class="aday ap @(item.canceled?"current":"")" data-id="@item.id">
+                        <p class="weui-grid__label date">@item.name</p>
+                        <hr>
+                        <div class="weui-grid__label remain">@Html.Raw(item.tel.Insert(7, "<br>"))</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="weui-footer_fixed-bottom">
+        <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="btn_appointment">确认</a>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#btn_appointment").click(function () { 
+                var q = $(".orders .aday.current");
+                $.confirm("未到人数：" + q.length, function () {
+                    $.showLoading();
+                    var idxs = "";
+                    q.each(function () {
+                        idxs += "," + $(this).attr("data-id");
+                    })
+                    $.ajax({
+                        url: "/signu/save?id=@Context.Request.Query["id"]",
+                        type: "post",
+                        data: {idxs},
+                        success: function (data) {
+                            $.hideLoading();
+                            if (data.ok) {
+                                $.toast("成功", "text");
+                            } else {
+                                $.toast(data.msg, "text");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $.hideLoading();
+                        }
+                    });
+                    //location.href = "detail/save?id="
+                }, function () {
+                });
+            });
+            function disStar() {
+                var starVal = @Model.data.star;
+                var fillStar = parseInt(starVal / 2);
+                var HalfStar = parseInt(starVal % 2);
+                var EnptyStar = 5 - (fillStar + HalfStar);
+                var htmlv = "";
+                for (var i = 0; i < fillStar; i++) {
+                    htmlv += '<i class="fa fa-star" aria-hidden="true"></i>';
+                }
+                for (var i = 0; i < HalfStar; i++) {
+                    htmlv += '<i class="fa fa-star-half-o" aria-hidden="true"></i>';
+                } for (var i = 0; i < EnptyStar; i++) {
+                    htmlv += '<i class="fa fa-star-o" aria-hidden="true"></i>';
+                }
+                $(".course_info .star span").html(htmlv);
+            }
+            disStar();
+            var adys = $(".schedule_info .aday").click(function () {
+                $(this).toggleClass("current");
+            });
+        });
+    </script>
+}

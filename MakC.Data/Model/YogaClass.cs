@@ -33,5 +33,9 @@ namespace App.Data
         /// 已预约数量
         /// </summary>
         public int yysl { get; set; }
+        /// <summary>
+        /// 实际签到数量
+        /// </summary>
+        public int qdsl { get; set; }
     } 
 }
