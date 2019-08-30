@@ -1,0 +1,98 @@
+﻿@model Tou_yogaModel;
+@{
+    ViewData["Title"] = "选择用户";
+}
+<style>
+    .userList .weui-cell__bd p:last-child {
+        font-size: 12px;
+        color: #999;
+    }
+</style>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>@Model.data.name</p>
+            <p>@Model.data.rtimeRange</p>
+        </div>
+        <div class="weui-cell__ft">@Model.data.teacher</div>
+    </div>
+</div>
+<div class="weui-search-bar" id="searchBar">
+    <form class="weui-search-bar__form" action="#">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+        </div>
+        <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+</div>
+<div class="weui-cells__title">用户列表</div>
+<div class="weui-cells weui-cells_checkbox userList">
+    <label class="weui-cell weui-check__label" v-bind:for="arow.id" v-for="arow in all">
+        <div class="weui-cell__hd">
+            <input type="checkbox" class="weui-check" v-bind:id="arow.id">
+            <i class="weui-icon-checked"></i>
+        </div>
+        <div class="weui-cell__bd">
+            <p>{{arow.name}}</p>
+            <p>{{arow.tel}}</p>
+        </div>
+    </label>
+</div>
+<div class="weui-cells weui-cells_form">
+    <input class="weui-btn weui-btn_primary" type="button" value="确定" id="btn_selectuserok" />
+</div>
+
+@section Scripts{
+    <script>
+$(function () {
+    $("#date").calendar({
+        value: ["@DateTime.Now.ToString("yyyy-MM-dd")"],
+        dateFormat: 'yyyy-mm-dd',
+    });
+    $("#btn_qryclass").click(function () {
+        return true;
+    });
+    $("#btn_selectuserok").click(function () {
+        var sed = $(".userList input:checkbox:checked");
+        if (sed.length == 0) {
+            alert("必须选择用户")
+            return;
+        }
+        $.showLoading();
+        var ids = "";
+        sed.each(function () {
+            ids += "," + this.id.toString();
+        });
+        $.ajax({
+            url: "/home/tousave",
+            async: true,
+            type: "POST",
+            data: { classid: @Model.data.id, ids},
+            dataType: "json",
+            success: function (data) {
+                $.hideLoading();
+                if (data.ok) {
+                    location.href = "/home/tocsave"
+                } else {
+                    $.toast(data.msg, "text");
+                }
+            },
+            error: function (err) {
+                $.hideLoading();
+                $.toptip('连接服务器失败', 'error');
+            }
+        });
+    });
+    new Vue({
+        el: '.weui-cells_checkbox.userList',
+        data: { all:@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.users))}
+    });
+});
+    </script>
+}

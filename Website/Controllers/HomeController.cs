@@ -548,6 +548,73 @@ namespace Website.Controllers
             //erv.Referer = HttpContext.Request.Headers["Referer"];
             return View("Error", erv);
         }
+        public IActionResult toc()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult tocresult(DateTime qrydate, TocResultModel model)
+        {
+            model.qrydate = qrydate;
+            if (model.type == "1")
+            {
+                //私教
+            }
+            else
+            { //瑜伽
 
+                var dbh = DbContext.Get();
+                model.yoga = dbh.Db.Queryable<YogaClass>().Where(ii => ii.rdate == model.qrydate).ToList();
+            }
+            return View(model);
+        }
+        public IActionResult tou_yoga(int id)
+        {
+            var dbh = DbContext.Get();
+            Tou_yogaModel model = new Tou_yogaModel();
+            model.data = dbh.Db.Queryable<YogaClass>().First(ii => ii.id == id);
+
+            dbh.Db.Queryable<YogaClass>().First(ii => ii.id == id);
+            //查询7天内预约了相同课程的人
+            model.users = dbh.Db.Ado.SqlQuery<dynamic>(@"select distinct a.id,a.tel,a.nickname name FROM users a join yogaorder b on a.id=b.userid
+where classid in (select id from yogaclass where Rdate >= '" + DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")+"' and name = '"+ model.data.name+ "') limit 0,30");
+
+            return View(model);
+        }
+        [HttpPost]
+        public ApiResult<string> tousave(int classid, string ids)
+        {
+            ApiResult<string> result = new ApiResult<string>();
+            try
+            {
+                var dbh = DbContext.Get();
+                var aids = dbh.Db.Queryable<UserInfo>().Select(ii => new { ii.id, ii.tel }).In("id", mUtils.idsToList(ids)).ToList();
+
+                foreach (var item in aids)
+                {
+                    if (dbh.GetEntityDB<YogaOrder>().Count(ii => ii.classId == classid && ii.userId == item.id) == 0)
+                    {
+                        YogaOrder yo = new YogaOrder();
+                        yo.create_at = DateTime.Now;
+                        yo.classId=classid;
+                        yo.userId = item.id;
+                        yo.tel = item.tel;
+                        yo.canceled = false;
+                        dbh.Db.Insertable(yo).ExecuteCommand();
+                    }
+                }
+                result.ok = true;
+            }
+            catch (Exception ex)
+            {
+                result.ok = false;
+                result.msg = ex.Message;
+            }
+            return result;
+        }
+        public IActionResult tocsave()
+        {
+            return View();
+        }
     }
 }

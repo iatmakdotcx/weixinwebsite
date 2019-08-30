@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "代人约课";
+    Layout = null;
+    var tmpDate = DateTime.Now.Date;
+}
+<title>@ViewData["Title"]</title>
+
+<form action="/home/tocresult" method="post">
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="date" class="weui-label">日期</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="date" type="text" name="qrydate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells__title">类型</div>
+    <div class="weui-cells weui-cells_radio">
+        <label class="weui-cell weui-check__label" for="x11">
+            <div class="weui-cell__bd">
+                <p>瑜伽</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="radio" name="type" value="0" class="weui-check" id="x11" checked="checked">
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+        <label class="weui-cell weui-check__label" for="x12">
+            <div class="weui-cell__bd">
+                <p>私教</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="radio" name="type" value="1" class="weui-check" id="x12">
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <input class="weui-btn weui-btn_primary" type="submit" value="确定" id="btn_qryclass" />
+    </div>
+</form>
+
+<script>
+$(function () {
+    $("#date").calendar({
+        value: ["@DateTime.Now.ToString("yyyy-MM-dd")"],
+        dateFormat: 'yyyy-mm-dd',
+    });
+    $("#btn_qryclass").click(function () {
+
+        return true;
+
+    });
+});
+</script>

@@ -34,12 +34,7 @@ namespace MakC.Common
                 return strResult.Replace("-", "").ToLower();
             }
         }
-        /// <summary>
-        /// 过滤不安全的id
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public static string checkids(string ids)
+        public static List<int> idsToList(string ids)
         {
             List<int> intlist = new List<int>();
             foreach (var item in ids.Split(",", StringSplitOptions.RemoveEmptyEntries))
@@ -50,7 +45,16 @@ namespace MakC.Common
                     intlist.Add(tmpint);
                 }
             }
-            return string.Join(",", intlist);
+            return intlist;
+        }
+        /// <summary>
+        /// 过滤不安全的id
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static string checkids(string ids)
+        {            
+            return string.Join(",", idsToList(ids));
         }
     }
 }

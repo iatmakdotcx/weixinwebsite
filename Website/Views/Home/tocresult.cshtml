@@ -1,0 +1,47 @@
+﻿@model TocResultModel;
+@{
+    ViewData["Title"] = "约课 - 选择课程";
+}
+<style>
+    .yogac .weui-cell__bd p:last-child {
+        font-size: 12px;
+        color: #999;
+    }
+</style>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">@Model.typeMc</div>
+        <div class="weui-cell__bd" style="padding-left:20px;">@Model.qrydate.ToString("yyyy-MM-dd")</div>
+    </div>
+</div>
+<div class="weui-cells__title">课程</div>
+<div class="weui-cells yogac">
+
+    @if (Model.type == "1")
+    {
+        //私教
+
+    }
+    else
+    { //瑜伽
+
+        foreach (var item in Model.yoga)
+        {
+    <a class="weui-cell weui-cell_access" href="/home/tou_yoga?id=@item.id">
+        <div class="weui-cell__bd">
+            <p>@item.name</p>
+            <p>@item.rtimeRange</p>
+        </div>
+        <div class="weui-cell__ft">@item.teacher</div>
+    </a>
+        }
+    }
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+
+        });
+    </script>
+}
