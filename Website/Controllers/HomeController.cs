@@ -98,7 +98,7 @@ namespace Website.Controllers
 
                         var dbh = DbContext.Get();
                         var usinfo = dbh.Db.Queryable<UserInfo>().First(ii => ii.wxId == wxid);
-                        if (usinfo != null && usinfo.disabled)
+                        if (usinfo != null && !usinfo.disabled)
                         {
                             //已绑定微信，自动登录
                             setLogintoken(usinfo);
@@ -161,16 +161,23 @@ namespace Website.Controllers
                 UserInfo user = dbh.Db.Queryable<UserInfo>().First(ii => ii.tel == tel);
                 if (user != null)
                 {
-                    //已存在 （重置密码
-                    if (!string.IsNullOrEmpty(pwd))
-                    {
-                        user.password = pwd;
-                        dbh.Db.Updateable(user).UpdateColumns(ii => ii.password).ExecuteCommand();
-                    }
                     if (user.disabled)
                     {
                         apiRes.msg = "账号已被停用";
                         return apiRes;
+                    }
+                    var wxId = HttpContext.Session.GetString("wxid");
+                    if (!string.IsNullOrEmpty(wxId) && string.IsNullOrEmpty(user.wxId))
+                    {
+                        //使用微信登录，且当前账号没有绑定微信
+                        user.wxId = wxId;
+                        dbh.Db.Updateable(user).UpdateColumns(ii => ii.password).ExecuteCommand();
+                    }
+                    if (!string.IsNullOrEmpty(pwd))
+                    {
+                        //已存在 （重置密码
+                        user.password = pwd;
+                        dbh.Db.Updateable(user).UpdateColumns(ii => ii.password).ExecuteCommand();
                     }
                 }
                 else
