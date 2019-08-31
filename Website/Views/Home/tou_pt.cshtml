@@ -1,4 +1,4 @@
-﻿@model Tou_yogaModel;
+﻿@model Tou_PtModel;
 @{
     ViewData["Title"] = "选择用户";
 }
@@ -12,9 +12,9 @@
     <div class="weui-cell">
         <div class="weui-cell__bd">
             <p>@Model.data.name</p>
-            <p>@Model.data.rtimeRange</p>
+            <p>@Model.data.rtime</p>
         </div>
-        <div class="weui-cell__ft">@Model.data.teacher</div>
+        <div class="weui-cell__ft">@Model.data.username</div>
     </div>
 </div>
 <div class="weui-search-bar" id="searchBar">
@@ -74,7 +74,7 @@ $(function () {
             url: "/home/tousave",
             async: true,
             type: "POST",
-            data: { classid: @Model.data.id, ids, type:0},
+            data: { classid: @Model.data.id, ids, type:1},
             dataType: "json",
             success: function (data) {
                 $.hideLoading();
@@ -97,7 +97,7 @@ $(function () {
                 url: "/home/touqry",
                 async: true,
                 type: "POST",
-                data: { kw: $("#searchInput").val(),type:0 },
+                data: { kw: $("#searchInput").val(), type:1 },
                 dataType: "json",
                 success: function (data) {
                     $.hideLoading();

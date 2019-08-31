@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -556,14 +557,14 @@ namespace Website.Controllers
         public IActionResult tocresult(DateTime qrydate, TocResultModel model)
         {
             model.qrydate = qrydate;
+            var dbh = DbContext.Get();
             if (model.type == "1")
             {
                 //私教
+                model.PT = dbh.Db.Queryable<PTSchedule>().Where(ii => ii.rdate == model.qrydate).ToList();
             }
             else
             { //瑜伽
-
-                var dbh = DbContext.Get();
                 model.yoga = dbh.Db.Queryable<YogaClass>().Where(ii => ii.rdate == model.qrydate).ToList();
             }
             return View(model);
@@ -572,17 +573,57 @@ namespace Website.Controllers
         {
             var dbh = DbContext.Get();
             Tou_yogaModel model = new Tou_yogaModel();
-            model.data = dbh.Db.Queryable<YogaClass>().First(ii => ii.id == id);
-
-            dbh.Db.Queryable<YogaClass>().First(ii => ii.id == id);
+            model.data = dbh.Db.Queryable<YogaClass>().First(ii => ii.id == id);            
             //查询7天内预约了相同课程的人
             model.users = dbh.Db.Ado.SqlQuery<dynamic>(@"select distinct a.id,a.tel,a.nickname name FROM users a join yogaorder b on a.id=b.userid
 where classid in (select id from yogaclass where Rdate >= '" + DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")+"' and name = '"+ model.data.name+ "') limit 0,30");
 
             return View(model);
         }
+        public IActionResult tou_pt(int id)
+        {
+            var dbh = DbContext.Get();
+            Tou_PtModel model = new Tou_PtModel();
+            model.data = dbh.Db.Queryable<PTSchedule>().First(ii => ii.id == id);            
+            //查询7天内预约了相同课程的人
+            model.users = dbh.Db.Ado.SqlQuery<dynamic>(@"select distinct b.id,b.tel,b.nickname name from ptorder a join users b on a.userid=b.id
+where ptid in (select id from PTSchedule where Rdate >= '" + DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") + "' and userid = '" + model.data.userId + "') order by create_at desc limit 0,30");
+
+            return View(model);
+        }
+        public class touqryObj
+        {
+            public int id;
+            public string tel;
+            public string name;
+        }
         [HttpPost]
-        public ApiResult<string> tousave(int classid, string ids)
+        public ApiResult<List<touqryObj>> touqry(string kw,int type)
+        {
+            ApiResult<List<touqryObj>> result = new ApiResult<List<touqryObj>>();
+            try
+            {
+                var dbh = DbContext.Get();
+                var resultdata = dbh.Db.Queryable<UserInfo>()
+                    .Where(ii => ii.nickname.Contains(kw) || ii.tel.Contains(kw))
+                    .Select(ii => new { ii.id, ii.tel, name=ii.nickname })
+                    .Take(50).ToList();
+                result.data = new List<touqryObj>();
+                foreach (var item in resultdata)
+                {
+                    result.data.Add(new touqryObj() { id = item.id, tel = item.tel, name = item.name });
+                }                
+                result.ok = true;
+            }
+            catch (Exception ex)
+            {
+                result.ok = false;
+                result.msg = ex.Message;
+            }
+            return result;
+        }
+        [HttpPost]
+        public ApiResult<string> tousave(int classid, string ids, int type)
         {
             ApiResult<string> result = new ApiResult<string>();
             try
@@ -590,17 +631,37 @@ where classid in (select id from yogaclass where Rdate >= '" + DateTime.Now.AddD
                 var dbh = DbContext.Get();
                 var aids = dbh.Db.Queryable<UserInfo>().Select(ii => new { ii.id, ii.tel }).In("id", mUtils.idsToList(ids)).ToList();
 
-                foreach (var item in aids)
+                if (type == 1)
                 {
-                    if (dbh.GetEntityDB<YogaOrder>().Count(ii => ii.classId == classid && ii.userId == item.id) == 0)
+                    //私教
+                    foreach (var item in aids)
                     {
-                        YogaOrder yo = new YogaOrder();
-                        yo.create_at = DateTime.Now;
-                        yo.classId=classid;
-                        yo.userId = item.id;
-                        yo.tel = item.tel;
-                        yo.canceled = false;
-                        dbh.Db.Insertable(yo).ExecuteCommand();
+                        if (dbh.GetEntityDB<PtOrder>().Count(ii => ii.ptId == classid && ii.userId == item.id) == 0)
+                        {
+                            PtOrder yo = new PtOrder();
+                            yo.create_at = DateTime.Now;
+                            yo.ptId = classid;
+                            yo.userId = item.id;
+                            yo.tel = item.tel;
+                            yo.canceled = false;
+                            dbh.Db.Insertable(yo).ExecuteCommand();
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var item in aids)
+                    {
+                        if (dbh.GetEntityDB<YogaOrder>().Count(ii => ii.classId == classid && ii.userId == item.id) == 0)
+                        {
+                            YogaOrder yo = new YogaOrder();
+                            yo.create_at = DateTime.Now;
+                            yo.classId = classid;
+                            yo.userId = item.id;
+                            yo.tel = item.tel;
+                            yo.canceled = false;
+                            dbh.Db.Insertable(yo).ExecuteCommand();
+                        }
                     }
                 }
                 result.ok = true;

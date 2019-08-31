@@ -20,20 +20,29 @@
     @if (Model.type == "1")
     {
         //私教
-
+        foreach (var item in Model.PT)
+        {
+            <a class="weui-cell weui-cell_access" href="/home/tou_pt?id=@item.id">
+                <div class="weui-cell__bd">
+                    <p>@item.name</p>
+                    <p>@item.rtime</p>
+                </div>
+                <div class="weui-cell__ft">@item.username</div>
+            </a>
+        }
     }
     else
     { //瑜伽
 
         foreach (var item in Model.yoga)
         {
-    <a class="weui-cell weui-cell_access" href="/home/tou_yoga?id=@item.id">
-        <div class="weui-cell__bd">
-            <p>@item.name</p>
-            <p>@item.rtimeRange</p>
-        </div>
-        <div class="weui-cell__ft">@item.teacher</div>
-    </a>
+            <a class="weui-cell weui-cell_access" href="/home/tou_yoga?id=@item.id">
+                <div class="weui-cell__bd">
+                    <p>@item.name</p>
+                    <p>@item.rtimeRange</p>
+                </div>
+                <div class="weui-cell__ft">@item.teacher</div>
+            </a>
         }
     }
 </div>

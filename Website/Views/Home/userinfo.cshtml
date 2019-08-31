@@ -72,6 +72,8 @@
             <div class="weui-cell__ft"></div>
         </a>
     </div>*@
+@if (Model.isTeacher)
+{
 <div class="weui-cells__title">老师</div>
 <div class="weui-cells userinfo">
     <a class="weui-cell weui-cell_access" data-href="/home/sign">
@@ -89,7 +91,7 @@
         <div class="weui-cell__ft"></div>
     </a>
 </div>
-
+}
 
 <script>
     $(function () {
