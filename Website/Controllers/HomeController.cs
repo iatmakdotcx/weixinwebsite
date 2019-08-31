@@ -594,7 +594,7 @@ where classid in (select id from yogaclass where Rdate >= '" + DateTime.Now.AddD
             model.data = dbh.Db.Queryable<PTSchedule>().First(ii => ii.id == id);            
             //查询7天内预约了相同课程的人
             model.users = dbh.Db.Ado.SqlQuery<dynamic>(@"select distinct b.id,b.tel,b.nickname name from ptorder a join users b on a.userid=b.id
-where ptid in (select id from PTSchedule where Rdate >= '" + DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") + "' and userid = '" + model.data.userId + "') order by create_at desc limit 0,30");
+where ptid in (select id from ptschedule where Rdate >= '" + DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") + "' and userid = '" + model.data.userId + "') order by create_at desc limit 0,30");
 
             return View(model);
         }
