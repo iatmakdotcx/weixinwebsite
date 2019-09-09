@@ -29,7 +29,7 @@
             @if (!string.IsNullOrEmpty(HttpContext.Request.Query["kw"]))
             {
                 <text>
-            where: { kw: "@Html.Raw(HttpContext.Request.Query["kw"])" },
+            where: { kw: "@Html.Raw(HttpContext.Request.Query["kw"])" ,a:1 },
             </text>
             }
             cols: [

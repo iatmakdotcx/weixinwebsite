@@ -55,14 +55,24 @@ namespace Website.Api.Admin
             return apiRes;
         }
 
-        public ApiResult<ApiListObj<YogaClassTemplate>> yogatemplatelist(int page, int limit, string kw = "")
+        public ApiResult<ApiListObj<YogaClassTemplate>> yogatemplatelist(int page, int limit, int a = 0, string kw = "")
         {
             ApiResult<ApiListObj<YogaClassTemplate>> alc = new ApiResult<ApiListObj<YogaClassTemplate>>();
             var dbh = DbContext.Get();
             alc.data = new ApiListObj<YogaClassTemplate>();
-            alc.data.items = dbh.Db.Queryable<YogaClassTemplate>()
-                .WhereIF(!string.IsNullOrEmpty(kw), ii => ii.name.Contains(kw) || ii.tags.Contains(kw))
-                .ToPageList(page, limit, ref alc.data.totalCnt);
+            if (a == 1)
+            {
+                //排课选择课程
+                alc.data.items = dbh.Db.Queryable<YogaClassTemplate>()
+                    .WhereIF(!string.IsNullOrEmpty(kw), ii => ii.name.Contains(kw) || ii.tags.Contains(kw))
+                    .ToList();
+            }
+            else
+            {
+                alc.data.items = dbh.Db.Queryable<YogaClassTemplate>()
+                    .WhereIF(!string.IsNullOrEmpty(kw), ii => ii.name.Contains(kw) || ii.tags.Contains(kw))
+                    .ToPageList(page, limit, ref alc.data.totalCnt);
+            }
             alc.ok = true;
             return alc;
         }

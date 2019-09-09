@@ -18,15 +18,25 @@ namespace Website.Api.Admin
         {
             return View();
         }
-        public ApiResult<ApiListObj<UserInfo>> list(int page, int limit, string kw="")
+        public ApiResult<ApiListObj<UserInfo>> list(int page, int limit, int a=0 ,string kw="")
         {
             ApiResult<ApiListObj<UserInfo>> alc = new ApiResult<ApiListObj<UserInfo>>();
             var dbh = DbContext.Get();
             alc.data = new ApiListObj<UserInfo>();
-            alc.data.items = dbh.Db.Queryable<UserInfo>()
-                .WhereIF(!string.IsNullOrEmpty(kw) && "老师" != kw, ii => ii.nickname.Contains(kw) || ii.tel.Contains(kw))
-                .WhereIF("老师" == kw, ii => ii.isTeacher)
-                .ToPageList(page, limit, ref alc.data.totalCnt);
+            if (a == 1)
+            {
+                alc.data.items = dbh.Db.Queryable<UserInfo>()
+                    .WhereIF(!string.IsNullOrEmpty(kw) && "老师" != kw, ii => ii.nickname.Contains(kw) || ii.tel.Contains(kw))
+                    .WhereIF("老师" == kw, ii => ii.isTeacher)
+                    .ToList();
+            }
+            else
+            {
+                alc.data.items = dbh.Db.Queryable<UserInfo>()
+                    .WhereIF(!string.IsNullOrEmpty(kw) && "老师" != kw, ii => ii.nickname.Contains(kw) || ii.tel.Contains(kw))
+                    .WhereIF("老师" == kw, ii => ii.isTeacher)
+                    .ToPageList(page, limit, ref alc.data.totalCnt);
+            }
             alc.ok = true;
             return alc;
         }
